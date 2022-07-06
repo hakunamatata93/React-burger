@@ -1,10 +1,12 @@
 import React from "react";
+import PropTypes from 'prop-types';
 
 import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import burgerIngridientsStyles from './burger-ingridients.module.css';
 
 import { data } from '../../utils/data.js';
+import { cardPropTypes } from '../../utils/prop-types';
 
 const BurgerTabs = () => {
   const [current, setCurrent] = React.useState('one')
@@ -40,6 +42,10 @@ const Card = ({cardData}) => {
     </>
   );
   }
+
+  Card.propTypes = {
+    cardData: cardPropTypes.isRequired,
+  };
 
   const MenuList = (props) => {
     const typeData = data.filter(item => item.type === props.type);
