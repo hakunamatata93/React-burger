@@ -22,11 +22,12 @@
   .menu {
     list-style: none;
     padding: 0;
+    margin: 0;
+    box-sizing: content-box;
   }
 
   .menuItems {
     list-style: none; 
-    width: 100%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 32px 24px;
@@ -34,10 +35,10 @@
   }
 
   .window {
-    height: calc(100vh - 290px);
+    height: calc(100vh - 100px);
     overflow-y: scroll;
   }
-  
+
   .name {
     text-align: center;
   }
