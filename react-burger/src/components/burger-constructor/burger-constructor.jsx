@@ -1,8 +1,9 @@
 import React from "react";
-
+import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { data } from '../../utils/data.js';
 import burgerConstructorStyles from './burger-constructor.module.css';
+import { cardPropTypes } from '../../utils/prop-types';
 
 const ConstructorItem = ({ cardData }) => {
   const { image, price, name } = cardData;
@@ -20,12 +21,16 @@ const ConstructorItem = ({ cardData }) => {
   );
 }
 
+ConstructorItem.propTypes = {
+  cardData: cardPropTypes.isRequired,
+};
+
 const ConstructorItems = () => {
   const bunData = data.filter(item => item.type === 'bun');
   const sauceMainData = data.filter(item => item.type !== 'bun');
   return (    
     <ul className={burgerConstructorStyles.items}>
-    <li>
+    <li className='ml-3'>
       <ConstructorElement
         type="top"
         isLocked={true}
@@ -34,12 +39,12 @@ const ConstructorItems = () => {
         thumbnail={bunData[0].image}
       />
     </li>
-    <li className={burgerConstructorStyles.items}>
+    <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
       {sauceMainData.map(item => (
       <ConstructorItem key={item._id} cardData={item}/>
       ))}
     </li>
-    <li>
+    <li className='ml-3'>
       <ConstructorElement
         type="bottom"
         isLocked={true}

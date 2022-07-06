@@ -5,13 +5,13 @@
 
 .card {
     list-style: none;
-    width: 272px;
-    height: 208px;
-    border: 1px dashed #4C4CFF;
+    max-width: 272px;
+    min-height: 208px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
   } 
 
   .priceItem {
@@ -19,12 +19,25 @@
     align-items: center;
   }
 
-  .menuList {
+  .menu {
     list-style: none;
+    padding: 0;
   }
 
   .menuItems {
+    list-style: none; 
+    width: 100%;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, 1fr);
     gap: 32px 24px;
+    padding: 0 16px;
+  }
+
+  .window {
+    height: calc(100vh - 290px);
+    overflow-y: auto;
+  }
+  
+  .tab {
+    display: flex;
   }

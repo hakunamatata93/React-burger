@@ -11,7 +11,7 @@ import { cardPropTypes } from '../../utils/prop-types';
 const BurgerTabs = () => {
   const [current, setCurrent] = React.useState('one')
     return (
-        <div style={{ display: 'flex' }}>
+      <div className={burgerIngridientsStyles.tab}>
           <Tab value="one" active={current === 'one'} onClick={setCurrent}>
             Булки
           </Tab>
@@ -49,7 +49,7 @@ const Card = ({cardData}) => {
   const MenuList = (props) => {
     const typeData = data.filter(item => item.type === props.type);
     return(
-      <ul className={burgerIngridientsStyles.menuItems}>
+      <ul className={`${burgerIngridientsStyles.menuItems} pl-4 pr-4`}>
         {typeData.map(item => (
           <Card key={item._id} cardData={item} />
         ))}
@@ -60,22 +60,24 @@ const Card = ({cardData}) => {
 const BurgerIngridients = ({}) => {
   return(
     <div className={burgerIngridientsStyles.main}>
-    <h1>Соберите бургер</h1>
+    <h1 className='mt-10 mb-5 text text_type_main-large'>Соберите бургер</h1>
     <BurgerTabs />
-    <ul className={burgerIngridientsStyles.menuList}>
+    <div className={`${burgerIngridientsStyles.window} custom-scroll`}>
+      <ul className={burgerIngridientsStyles.menu}>
         <li>
-          <h2>Булки</h2>
+          <h2 className='text text_type_main-medium mt-10 mb-6'>Булки</h2>
           <MenuList type='bun' />
         </li>
         <li>
-          <h2>Соусы</h2>
+          <h2 className='text text_type_main-medium mt-10 mb-6'>Соусы</h2>
           <MenuList type='sauce' />
         </li>
         <li>
-          <h2>Начинки</h2>
+          <h2 className='text text_type_main-medium mt-10 mb-6'>Начинки</h2>
           <MenuList type='main' />
         </li>
       </ul>
+    </div>
   </div>
   )
 }

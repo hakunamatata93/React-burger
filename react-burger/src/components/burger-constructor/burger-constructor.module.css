@@ -15,6 +15,19 @@
     gap: 10px;
     list-style: none;
   }
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    list-style: none;
+  }
+  
+  .window {
+    height: calc(100vh - 426px);
+    overflow-y: auto;
+  }
+  
   
   .item {
     display: flex;
