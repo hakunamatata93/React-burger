@@ -4,12 +4,11 @@ import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger
 
 import burgerIngridientsStyles from './burger-ingridients.module.css';
 
-import bun02 from '../../images/bun-02.png'
+import { data } from '../../utils/data.js';
 
 const BurgerTabs = () => {
   const [current, setCurrent] = React.useState('one')
     return (
-      <>
         <div style={{ display: 'flex' }}>
           <Tab value="one" active={current === 'one'} onClick={setCurrent}>
             Булки
@@ -21,27 +20,39 @@ const BurgerTabs = () => {
             Начинки
           </Tab>
         </div>
-      </>
     )
 }
 
-const Card = ({image, price, name }) => {
+const Card = ({cardData}) => {
+  const { image, price, name } = cardData;
   return(
     <>
       <Counter />
       <article className={burgerIngridientsStyles.card}>
-        <img src={bun02} alt={name} className='ml-4 mr-4 mb-1'/>
+        <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
         <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
-          <span className='mr-1'>{price}20</span>
+          <span className='mr-1'>{price}</span>
           <CurrencyIcon type='primary' />
         </div>
-        <span className={burgerIngridientsStyles.name}>{name}Краторная булка</span>
+        <span className={burgerIngridientsStyles.name}>{name}</span>
         <Counter count={1} size="default" />
     </article>
     </>
   );
   }
-const BurgerIngridients = ({data}) => {
+
+  const MenuList = (props) => {
+    const typeData = data.filter(item => item.type === props.type);
+    return(
+      <ul className={burgerIngridientsStyles.menuItems}>
+        {typeData.map(item => (
+          <Card key={item._id} cardData={item} />
+        ))}
+      </ul>
+    )
+  }
+
+const BurgerIngridients = ({}) => {
   return(
     <div className={burgerIngridientsStyles.main}>
     <h1>Соберите бургер</h1>
@@ -49,24 +60,15 @@ const BurgerIngridients = ({data}) => {
     <ul className={burgerIngridientsStyles.menuList}>
         <li>
           <h2>Булки</h2>
-          <div className={burgerIngridientsStyles.menuItems}>
-            <Card />
-            <Card />
-          </div>
+          <MenuList type='bun' />
         </li>
         <li>
           <h2>Соусы</h2>
-          <div className={burgerIngridientsStyles.menuItems}>
-            <Card />
-            <Card />
-          </div>
+          <MenuList type='sauce' />
         </li>
         <li>
           <h2>Начинки</h2>
-          <div className={burgerIngridientsStyles.menuItems}>
-            <Card />
-            <Card />
-          </div>
+          <MenuList type='main' />
         </li>
       </ul>
   </div>
