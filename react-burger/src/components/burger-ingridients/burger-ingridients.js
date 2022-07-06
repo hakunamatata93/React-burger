@@ -4,7 +4,7 @@ import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger
 
 import burgerIngridientsStyles from './burger-ingridients.module.css';
 
-
+import bun02 from '../../images/bun-02.png'
 
 const BurgerTabs = () => {
   const [current, setCurrent] = React.useState('one')
@@ -25,18 +25,20 @@ const BurgerTabs = () => {
     )
 }
 
-const Card = () => {
+const Card = ({image, price, name }) => {
   return(
-    <li className={burgerIngridientsStyles.card}>
+    <>
       <Counter />
-      <img />
-      <div>
-        <p>20</p>
-        <CurrencyIcon type="primary" />
-      </div>
-      <p>Краторная булка</p>
-
-    </li>
+      <article className={burgerIngridientsStyles.card}>
+        <img src={bun02} alt={name} className='ml-4 mr-4 mb-1'/>
+        <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
+          <span className='mr-1'>{price}20</span>
+          <CurrencyIcon type='primary' />
+        </div>
+        <span className={burgerIngridientsStyles.name}>{name}Краторная булка</span>
+        <Counter count={1} size="default" />
+    </article>
+    </>
   );
   }
 const BurgerIngridients = ({data}) => {
