@@ -29,15 +29,14 @@ const Card = ({cardData}) => {
   const { image, price, name } = cardData;
   return(
     <>
-      <Counter />
-      <article className={burgerIngridientsStyles.card}>
+    <article className={burgerIngridientsStyles.card}>
       <Counter count={1} size="default" />
-        <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
-        <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
-          <span className='mr-1'>{price}</span>
-          <CurrencyIcon type='primary' />
-        </div>
-        <span className={burgerIngridientsStyles.name}>{name}</span>
+      <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
+      <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
+        <span className='mr-1'>{price}</span>
+        <CurrencyIcon type='primary' />
+      </div>
+      <span className={burgerIngridientsStyles.name}>{name}</span>
     </article>
     </>
   );
