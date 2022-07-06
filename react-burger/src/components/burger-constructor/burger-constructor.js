@@ -1,15 +1,14 @@
 import React from "react";
 
-import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { data } from '../../utils/data.js';
-import icon from '../../images/burger-constructor_icon.svg';
 import burgerConstructorStyles from './burger-constructor.module.css';
 
 const ConstructorItem = ({ cardData }) => {
   const { image, price, name } = cardData;
   return(
-    <li className={burgerConstructorStyles.item}>
-        <img src={icon} alt='иконка меню' className={`${burgerConstructorStyles.icon} mr-2`}/>
+    <div className={burgerConstructorStyles.item}>
+      <DragIcon type="primary"/>
         <ConstructorElement
           type="top"
           isLocked={true}
@@ -17,25 +16,48 @@ const ConstructorItem = ({ cardData }) => {
           price={price}
           thumbnail={image}
         />
-      </li>
+      </div>
   );
 }
 
 const ConstructorItems = () => {
-  return (
+  const bunData = data.filter(item => item.type === 'bun');
+  const sauceMainData = data.filter(item => item.type !== 'bun');
+  return (    
     <ul className={burgerConstructorStyles.items}>
-      {data.map(item => (
-        <ConstructorItem key={item._id} cardData={item}/>
-        ))}
-    </ul>
+    <li>
+      <ConstructorElement
+        type="top"
+        isLocked={true}
+        text={bunData[0].name + ' (верх)'}
+        price={bunData[0].price}
+        thumbnail={bunData[0].image}
+      />
+    </li>
+    <li className={burgerConstructorStyles.items}>
+      {sauceMainData.map(item => (
+      <ConstructorItem key={item._id} cardData={item}/>
+      ))}
+    </li>
+    <li>
+      <ConstructorElement
+        type="bottom"
+        isLocked={true}
+        text={bunData[0].name + ' (низ)'}
+        price={bunData[0].price}
+        thumbnail={bunData[0].image}
+      />
+    </li>
+  </ul>
   );
 }
 
 const Order = () => {
+  const totalPrice = data.reduce((acc, item) => acc + item.price, 0)
   return(
     <div className={`${burgerConstructorStyles.main} mt-25`}>
       <div className={`${burgerConstructorStyles.price} mr-10`}>
-        <span className="text text_type_digits-medium mr-4">610</span>
+        <span className="text text_type_digits-medium mr-4">{totalPrice}</span>
         <CurrencyIcon type="primary" />
       </div>
       <Button type="primary" size="large">
@@ -47,6 +69,7 @@ const Order = () => {
 }
 
 const BurgerConstructor = () => {
+  
   return(
     <section className={`${burgerConstructorStyles.main} mt-25`}>
       <ConstructorItems />
