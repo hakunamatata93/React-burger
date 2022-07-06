@@ -4,14 +4,14 @@
   }
 
 .card {
-    list-style: none;
-    max-width: 272px;
-    min-height: 208px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
+  list-style: none;
+  max-width: 272px;
+  min-height: 208px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
   } 
 
   .priceItem {
@@ -35,7 +35,11 @@
 
   .window {
     height: calc(100vh - 290px);
-    overflow-y: auto;
+    overflow-y: scroll;
+  }
+  
+  .name {
+    text-align: center;
   }
   
   .tab {

@@ -60,7 +60,7 @@ const ConstructorItems = () => {
 const Order = () => {
   const totalPrice = data.reduce((acc, item) => acc + item.price, 0)
   return(
-    <div className={`${burgerConstructorStyles.main} mt-25`}>
+    <div className={`${burgerConstructorStyles.order} mt-10`}>
       <div className={`${burgerConstructorStyles.price} mr-10`}>
         <span className="text text_type_digits-medium mr-4">{totalPrice}</span>
         <CurrencyIcon type="primary" />
