@@ -1,10 +1,10 @@
 import React from "react";
 
-const BurgerIngredients = () => {
+const BurgerIngridients = () => {
   return(
     <div>1</div>
 
   );
 }
 
-export default BurgerIngredients;
+export default BurgerIngridients;

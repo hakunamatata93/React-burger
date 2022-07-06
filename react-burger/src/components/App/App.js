@@ -1,14 +1,14 @@
 import React from "react";
 
 import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
+import BurgerIngridients from "../BurgerIngridients/BurgerIngridients";
 import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
 
 const App = () => {
   return(
     <>
       <AppHeader />
-      <BurgerIngredients />
+      <BurgerIngridients />
       <BurgerConstructor />
     </>
   );
