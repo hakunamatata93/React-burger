@@ -7,13 +7,13 @@ import appStyles from './app.module.css';
 
 const App = () => {
   return(
-    <>
+    <div className={appStyles.app}>
       <AppHeader />
       <main className={appStyles.main}>
         <BurgerIngridients data={data}/>
         <BurgerConstructor data={data}/>
       </main>
-    </>
+    </div>
   );
 };
 export default App;

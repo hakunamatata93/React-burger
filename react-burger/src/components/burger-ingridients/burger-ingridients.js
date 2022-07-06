@@ -43,27 +43,33 @@ const Card = ({image, price, name }) => {
   }
 const BurgerIngridients = ({data}) => {
   return(
-    <>
+    <div className={burgerIngridientsStyles.main}>
     <h1>Соберите бургер</h1>
     <BurgerTabs />
     <ul className={burgerIngridientsStyles.menuList}>
-        <li className={burgerIngridientsStyles.menuItem}>
+        <li>
           <h2>Булки</h2>
-          <Card />
-          <Card />
+          <div className={burgerIngridientsStyles.menuItems}>
+            <Card />
+            <Card />
+          </div>
         </li>
-        <li className={burgerIngridientsStyles.menuItem}>
+        <li>
           <h2>Соусы</h2>
-          <Card />
-          <Card />
+          <div className={burgerIngridientsStyles.menuItems}>
+            <Card />
+            <Card />
+          </div>
         </li>
-        <li className={burgerIngridientsStyles.menuItem}>
+        <li>
           <h2>Начинки</h2>
-          <Card />
-          <Card />
+          <div className={burgerIngridientsStyles.menuItems}>
+            <Card />
+            <Card />
+          </div>
         </li>
       </ul>
-  </>
+  </div>
   )
 }
 

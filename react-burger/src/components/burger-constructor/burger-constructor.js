@@ -2,6 +2,7 @@ import React from "react";
 
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import bun02 from '../../images/bun-02.png'
+import burgerConstructorStyles from './burger-constructor.module.css';
 
 const ConstructorItems = () => {
   return (
@@ -50,7 +51,7 @@ const ConstructorItems = () => {
 
 const Order = () => {
   return(
-    <>
+    <div className={`${burgerConstructorStyles.main} mt-25`}>
       <div>
         <span>610</span>
         <CurrencyIcon type="primary" />
@@ -58,7 +59,7 @@ const Order = () => {
       <Button type="primary" size="large">
         Оформить заказ
       </Button>
-    </>
+    </div>
 
   );
 }

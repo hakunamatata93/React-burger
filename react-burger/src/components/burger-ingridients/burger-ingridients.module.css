@@ -1,3 +1,8 @@
+.main {
+    display: flex;
+    flex-direction: column;
+  }
+
 .card {
     list-style: none;
     width: 272px;
@@ -16,4 +21,10 @@
 
   .menuList {
     list-style: none;
+  }
+
+  .menuItems {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px 24px;
   }
