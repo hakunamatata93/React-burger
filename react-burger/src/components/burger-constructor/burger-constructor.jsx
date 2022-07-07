@@ -11,8 +11,8 @@ const ConstructorItem = ({ cardData }) => {
     <div className={burgerConstructorStyles.item}>
       <DragIcon type="primary"/>
         <ConstructorElement
-          type="top"
-          isLocked={true}
+          // type="top"
+          // isLocked={true}
           text={name}
           price={price}
           thumbnail={image}
@@ -29,8 +29,8 @@ const ConstructorItems = () => {
   const bunData = data.filter(item => item.type === 'bun');
   const sauceMainData = data.filter(item => item.type !== 'bun');
   return (    
-    <ul className={burgerConstructorStyles.items}>
-    <li className='ml-3'>
+    <ul className={`${burgerConstructorStyles.items} pl-4`}>
+    <li className={`${burgerConstructorStyles.list} ml-5`}>
       <ConstructorElement
         type="top"
         isLocked={true}
@@ -60,7 +60,7 @@ const ConstructorItems = () => {
 const Order = () => {
   const totalPrice = data.reduce((acc, item) => acc + item.price, 0)
   return(
-    <div className={`${burgerConstructorStyles.order} mt-10`}>
+    <div className={`${burgerConstructorStyles.order} mt-25`}>
       <div className={`${burgerConstructorStyles.price} mr-10`}>
         <span className="text text_type_digits-medium mr-4">{totalPrice}</span>
         <CurrencyIcon type="primary" />
