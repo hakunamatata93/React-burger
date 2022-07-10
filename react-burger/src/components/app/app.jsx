@@ -6,7 +6,6 @@ import AppHeader from "../app-header/app-header";
 
 import appStyles from './app.module.css';
 
-const baseUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
 function checkResponse(res) {
   if (res.ok) {
@@ -16,24 +15,29 @@ function checkResponse(res) {
 }
 
 const App = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState([]);
+
+  const baseUrl = 'https://norma.nomoreparties.space/api/ingredients';
 
   useEffect(() => {
-    fetch('https://norma.nomoreparties.space/api/ingredients')
+    fetch(`${baseUrl}`)
     .then(checkResponse)
-    .then((data) => {
-      console.log(data);
+    .then((res) => {
+      setData(res.data);
     })
-  }, [])
-  
+    .catch((err) => console.log(err));
+  }, []); // передаем пустой массив, чтобы запустить useEffect на момент первого рендера
+
   return(
     <div className={appStyles.app}>
       <AppHeader />
       <main className={appStyles.main}>
-        <BurgerIngridients />
-        <BurgerConstructor />
+        <BurgerIngridients ingridients={data}/>
+        <BurgerConstructor ingridients={data}/> 
       </main>
     </div>
   );
-};
+}
+
 export default App;
+
