@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import burgerIngridientsStyles from './burger-ingridients.module.css';
+import ingridientDetails from '../ingridient-details/ingridient-details';
 
 //import { data } from '../../utils/data.js';
 import { cardPropTypes } from '../../utils/prop-types';
@@ -29,15 +30,15 @@ const Card = ({cardData}) => {
   const { image, price, name } = cardData;
   return(
     <>
-    <article className={burgerIngridientsStyles.card}>
-      <Counter count={1} size="default" />
-      <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
-      <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
-        <span className='mr-1'>{price}</span>
-        <CurrencyIcon type='primary' />
-      </div>
-      <span className={burgerIngridientsStyles.name}>{name}</span>
-    </article>
+        <article className={burgerIngridientsStyles.card}>
+        <Counter count={1} size="default" />
+        <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
+        <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
+          <span className='mr-1'>{price}</span>
+          <CurrencyIcon type='primary' />
+        </div>
+        <span className={burgerIngridientsStyles.name}>{name}</span>
+      </article>
     </>
   );
   }

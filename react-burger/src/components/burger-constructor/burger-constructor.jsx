@@ -4,6 +4,9 @@ import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktiku
 //import { data } from '../../utils/data.js';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
+import Modal from '../modal/modal';
+
+import OrderDetails from '../order-details/order-details'
 
 const ConstructorItem = ({ cardData }) => {
   const { image, price, name } = cardData;
@@ -64,17 +67,35 @@ const ConstructorItems = (props) => {
 }
 
 const Order = (props) => {
+  const [modalActive, setModalActive] = React.useState(false);
+
+  const openModal = () => {
+    setModalActive(true);
+  };
+
+  const closeModal = () => {
+    setModalActive(false);
+  };
+
+  const modal = (
+    <Modal >
+      <OrderDetails  />
+    </Modal>
+  );
   const totalPrice = props.ingridients.reduce((acc, item) => acc + item.price, 0)
   return(
-    <div className={`${burgerConstructorStyles.order} mt-25`}>
-      <div className={`${burgerConstructorStyles.price} mr-10`}>
-        <span className="text text_type_digits-medium mr-4">{totalPrice}</span>
-        <CurrencyIcon type="primary" />
+    <>
+      <div className={`${burgerConstructorStyles.order} mt-10`}>
+        <div className={`${burgerConstructorStyles.price} mr-10`}>
+          <span className="text text_type_digits-medium mr-4">{totalPrice}</span>
+          <CurrencyIcon type="primary" />
+        </div>
+        <Button type="primary" size="large" onClick={openModal}>
+          Оформить заказ
+        </Button>
       </div>
-      <Button type="primary" size="large">
-        Оформить заказ
-      </Button>
-    </div>
+      {modalActive && modal}
+    </>
 
   );
 }
