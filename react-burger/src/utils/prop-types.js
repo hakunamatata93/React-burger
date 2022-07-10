@@ -11,4 +11,6 @@ export const cardPropTypes = PropTypes.shape({
   price: PropTypes.number.isRequired,
   image: PropTypes.string.isRequired,
   image_large: PropTypes.string.isRequired,
+  image_mobile: PropTypes.string.isRequired,
+  __v: PropTypes.number.isRequired,
 });
