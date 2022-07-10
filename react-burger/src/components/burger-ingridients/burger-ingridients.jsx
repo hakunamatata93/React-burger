@@ -4,7 +4,8 @@ import PropTypes from 'prop-types';
 import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import burgerIngridientsStyles from './burger-ingridients.module.css';
-import ingridientDetails from '../ingridient-details/ingridient-details';
+import Modal from '../modal/modal';
+import IngridientDetails from '../ingridient-details/ingridient-details';
 
 //import { data } from '../../utils/data.js';
 import { cardPropTypes } from '../../utils/prop-types';
@@ -28,9 +29,25 @@ const BurgerTabs = () => {
 
 const Card = ({cardData}) => {
   const { image, price, name } = cardData;
+
+  const [modalActive, setModalActive] = React.useState(false);
+
+  const openModal = () => {
+    setModalActive(true);
+  };
+
+  const closeModal = () => {
+    setModalActive(false);
+  };
+
+  const modalIngridients = (
+    <Modal closing={closeModal}>
+      <IngridientDetails ingridients={cardData}/>
+    </Modal >
+  );
   return(
     <>
-        <article className={burgerIngridientsStyles.card}>
+     <article className={burgerIngridientsStyles.card} onClick={openModal}>
         <Counter count={1} size="default" />
         <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
         <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
@@ -39,6 +56,7 @@ const Card = ({cardData}) => {
         </div>
         <span className={burgerIngridientsStyles.name}>{name}</span>
       </article>
+      {modalActive && modalIngridients}
     </>
   );
   }
