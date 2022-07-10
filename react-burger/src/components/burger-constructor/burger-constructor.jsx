@@ -66,6 +66,10 @@ const ConstructorItems = (props) => {
   );
 }
 
+ConstructorItems.propTypes = {
+  ingridients: PropTypes.arrayOf(cardPropTypes).isRequired,
+};
+
 const Order = (props) => {
   const [modalActive, setModalActive] = React.useState(false);
 
@@ -77,7 +81,7 @@ const Order = (props) => {
     setModalActive(false);
   };
 
-  const modal = (
+  const modalOrder = (
     <Modal closing={closeModal}>
       <OrderDetails  />
     </Modal>
@@ -94,7 +98,7 @@ const Order = (props) => {
           Оформить заказ
         </Button>
       </div>
-      {modalActive && modal}
+      {modalActive && modalOrder}
     </>
 
   );
@@ -109,5 +113,8 @@ const BurgerConstructor = (props) => {
     </section>
   );
 }
+BurgerConstructor.propTypes = {
+  ingridients: PropTypes.arrayOf(cardPropTypes).isRequired,
+};
 
 export default BurgerConstructor;
