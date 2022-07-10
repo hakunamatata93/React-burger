@@ -78,7 +78,7 @@ const Order = (props) => {
   };
 
   const modal = (
-    <Modal >
+    <Modal closing={closeModal}>
       <OrderDetails  />
     </Modal>
   );
