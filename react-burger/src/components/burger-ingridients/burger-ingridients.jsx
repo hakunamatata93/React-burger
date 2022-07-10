@@ -42,7 +42,7 @@ const Card = ({cardData}) => {
 
   const modalIngridients = (
     <Modal title='Детали ингредиента' closing={closeModal}>
-      <IngridientDetails ingridients={cardData}/>
+      <IngridientDetails ingridient={cardData}/>
     </Modal >
   );
   return(
@@ -65,8 +65,8 @@ const Card = ({cardData}) => {
     cardData: cardPropTypes.isRequired,
   };
 
-  const MenuList = (props) => {
-    const typeData = props.ingridients.filter(item => item.type === props.type);
+  const MenuList = ({ ingridientData, type }) => {
+    const typeData = ingridientData.filter(item => item.type === type);
     return(
       <ul className={`${burgerIngridientsStyles.menuItems}`}>
         {typeData.map(item => (
@@ -76,7 +76,11 @@ const Card = ({cardData}) => {
     )
   }
 
-const BurgerIngridients = (props) => {
+  MenuList.propTypes = {
+    ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
+    type: PropTypes.oneOf(['bun', 'main', 'sauce']).isRequired,
+  };
+const BurgerIngridients = ({ ingridients }) => {
   return(
     <div className={burgerIngridientsStyles.main}>
     <h1 className='mt-10 mb-5 text text_type_main-large'>Соберите бургер</h1>
@@ -85,20 +89,24 @@ const BurgerIngridients = (props) => {
       <ul className={burgerIngridientsStyles.menu}>
         <li>
           <h2 className='text text_type_main-medium mt-10 mb-6'>Булки</h2>
-          <MenuList type='bun' ingridients={props.ingridients}/>
+          <MenuList type='bun' ingridientData={ingridients}/>
         </li>
         <li>
           <h2 className='text text_type_main-medium mt-10 mb-6'>Соусы</h2>
-          <MenuList type='sauce' ingridients={props.ingridients}/>
+          <MenuList type='sauce' ingridientData={ingridients}/>
         </li>
         <li>
           <h2 className='text text_type_main-medium mt-10 mb-6'>Начинки</h2>
-          <MenuList type='main' ingridients={props.ingridients}/>
+          <MenuList type='main' ingridientData={ingridients}/>
         </li>
       </ul>
     </div>
   </div>
   )
+}
+
+BurgerIngridients.propTypes = {
+  ingridients: PropTypes.arrayOf(cardPropTypes).isRequired,
 }
 
 export default BurgerIngridients;

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { cardPropTypes } from '../../utils/prop-types';
 
 import ingridientDetailsStyles from './ingridient-details.module.css';
 
-const IngridientDetails = ({ ingridients }) => {
-  const { image_large, name, calories, proteins, fat, carbohydrates } = ingridients;
+const IngridientDetails = ({ ingridient}) => {
+  const { image_large, name, calories, proteins, fat, carbohydrates } = ingridient;
  
   return(
     <article className={ingridientDetailsStyles.container}>
@@ -33,5 +33,9 @@ const IngridientDetails = ({ ingridients }) => {
     </article>
   );
 }
+
+IngridientDetails.propTypes = {
+    ingridient: cardPropTypes.isRequired,
+  };
 
 export default IngridientDetails;
