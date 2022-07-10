@@ -5,7 +5,6 @@ import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktiku
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import Modal from '../modal/modal';
-import bun02 from '../../images/bun-02.png'
 import OrderDetails from '../order-details/order-details'
 
 const ConstructorItem = ({ cardData }) => {
@@ -112,7 +111,6 @@ const Order = ({ingridientData}) => {
 
 Order.propTypes = {
   ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
-  openModal: PropTypes.func.isRequired,
 };
 const BurgerConstructor = ({ ingridients }) => {
   

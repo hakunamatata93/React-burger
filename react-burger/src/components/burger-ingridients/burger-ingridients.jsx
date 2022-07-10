@@ -7,7 +7,6 @@ import burgerIngridientsStyles from './burger-ingridients.module.css';
 import Modal from '../modal/modal';
 import IngridientDetails from '../ingridient-details/ingridient-details';
 
-//import { data } from '../../utils/data.js';
 import { cardPropTypes } from '../../utils/prop-types';
 
 const BurgerTabs = () => {
@@ -63,7 +62,6 @@ const Card = ({cardData}) => {
 
   Card.propTypes = {
     cardData: cardPropTypes.isRequired,
-    openModal: PropTypes.func.isRequired,
   };
 
   const MenuList = ({ ingridientData, type }) => {

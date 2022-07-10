@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import BurgerIngridients from "../burger-ingridients/burger-ingridients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import AppHeader from "../app-header/app-header";
-import OrderDetails from '../order-details/order-details';
-import IngridientDetails from '../ingridient-details/ingridient-details';
 
 import appStyles from './app.module.css';
 
