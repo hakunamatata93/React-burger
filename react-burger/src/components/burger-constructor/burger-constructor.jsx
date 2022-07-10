@@ -29,31 +29,40 @@ ConstructorItem.propTypes = {
 };
 
 const ConstructorItems = ({ingridientData}) => {
+  const bunData = ingridientData.find(item => item.type === 'bun');
   const sauceMainData = ingridientData.filter(item => item.type !== 'bun');
   return (    
     <ul className={`${burgerConstructorStyles.items} pl-4`}>
-      <li className={`${burgerConstructorStyles.list} ml-6`}>
+            <li className={`${burgerConstructorStyles.list} ml-5`}>
+        {bunData
+        ? 
           <ConstructorElement
-        type="top"
-        isLocked={true}
-        text='Краторная булка N-200i (верх)'
-        price={20}
-        thumbnail={bun02}
+          type="top"
+          isLocked={true}
+          text={bunData.name + ' (верх)'}
+          price={bunData.price}
+          thumbnail={bunData.image}
+          key={bunData._id}
         />
+        : ''}
     </li>
     <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
       {sauceMainData.map(item => (
       <ConstructorItem key={item._id} cardData={item}/>
       ))}
     </li>
-    <li className={`${burgerConstructorStyles.list} ml-6`}>
+    <li className={`${burgerConstructorStyles.list} ml-5`}>
+        {bunData
+        ? 
           <ConstructorElement
-        type="bottom"
-        isLocked={true}
-        text='Краторная булка N-200i (низ)'
-        price={20}
-        thumbnail={bun02}
+          type="bottom"
+          isLocked={true}
+          text={bunData.name + ' (низ)'}
+          price={bunData.price}
+          thumbnail={bunData.image}
+          key={bunData._id}
       />
+      : ''}
     </li>
   </ul>
   );
