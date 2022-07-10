@@ -16,7 +16,7 @@
   display: flex;
 }
 
-.button {
+.link {
   height: 56px;
   border-radius: 40px;
   background: #1C1C21;
@@ -27,5 +27,6 @@
   box-sizing: border-box;
   color: #F2F2F3;
   display: flex;
+  text-decoration: none;
 } 
 
