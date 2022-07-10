@@ -32,8 +32,6 @@ const App = () => {
   return(
     <div className={appStyles.app}>
       <AppHeader />
-      <OrderDetails />
-      <h1>xxx</h1>
       <main className={appStyles.main}>
         <BurgerIngridients ingridients={data}/>
         <BurgerConstructor ingridients={data}/> 

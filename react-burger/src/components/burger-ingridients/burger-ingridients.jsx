@@ -41,7 +41,7 @@ const Card = ({cardData}) => {
   };
 
   const modalIngridients = (
-    <Modal closing={closeModal}>
+    <Modal title='Детали ингредиента' closing={closeModal}>
       <IngridientDetails ingridients={cardData}/>
     </Modal >
   );
@@ -51,7 +51,7 @@ const Card = ({cardData}) => {
         <Counter count={1} size="default" />
         <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
         <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
-          <span className='mr-1'>{price}</span>
+          <span className='text text_type_digits-default mr-1'>{price}</span>
           <CurrencyIcon type='primary' />
         </div>
         <span className={burgerIngridientsStyles.name}>{name}</span>
@@ -68,7 +68,7 @@ const Card = ({cardData}) => {
   const MenuList = (props) => {
     const typeData = props.ingridients.filter(item => item.type === props.type);
     return(
-      <ul className={`${burgerIngridientsStyles.menuItems} pl-4 pr-4`}>
+      <ul className={`${burgerIngridientsStyles.menuItems}`}>
         {typeData.map(item => (
           <Card key={item._id} cardData={item} />
         ))}

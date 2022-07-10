@@ -26,6 +26,7 @@ const Modal = (props) => {
       <>
         <ModalOverlay closing={props.closing}/>
         <div className={modalStyles.modal}>
+        <h2 className='text text_type_main-large ml-10 mt-15'>{props.title}</h2>
           <button className={modalStyles.button} type='button'>
             <CloseIcon type="primary" onClick={props.closing}/>
           </button>

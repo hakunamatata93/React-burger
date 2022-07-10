@@ -8,11 +8,10 @@ const IngridientDetails = ({ ingridients }) => {
   const { image_large, name, calories, proteins, fat, carbohydrates } = ingridients;
  
   return(
-    <article className={`${ingridientDetailsStyles.container} p-10`}>
-      <h1 className={`${ingridientDetailsStyles.title} text text_type_main-large mt-4`}>Детали ингредиента</h1>
+    <article className={ingridientDetailsStyles.container}>
       <img src={image_large} alt={name} />
       <span className='text text_type_main-medium mt-4 mb-8'>{name}</span>
-      <ul className={ingridientDetailsStyles.nutrients}>
+      <ul className={`${ingridientDetailsStyles.nutrients} mb-15`}>
         <li className={ingridientDetailsStyles.nutrient}>
           <p className='text text_type_main-default text_color_inactive mb-2'>Калории,ккал</p>
           <span className='text text_type_main-default text_color_inactive'>{calories}</span>
