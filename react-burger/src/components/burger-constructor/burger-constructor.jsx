@@ -1,11 +1,13 @@
 import React from "react";
 import PropTypes from 'prop-types';
-import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { ConstructorElement, CurrencyIcon, DragIcon, Button, EditIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useEffect, useState, useMemo } from 'react';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details'
+import OrderDetails from '../order-details/order-details';
+import { OrderTotalContext, PlaceOrderContext } from '../../services/burger-constructor-context';
+import { DataContext } from '../../services/app-context';
 
 
 const BASEURL= 'https://norma.nomoreparties.space/api';
@@ -82,12 +84,13 @@ ConstructorItems.propTypes = {
 const OrderData = ({ingridientData}) => {
   const [modalActive, setModalActive] = useState(false);
   const [order, setOrder] = useState(null);
+  const ingridientsId = ingridientData.map(el => el._id);
 
   const placeOrder = () => {
     fetch(`${BASEURL}/orders`, {
       method: 'POST',
       body: JSON.stringify({
-        ingredients: ingridientData
+        ingridients: ingridientsId
       })
     })
     .then(checkResponse)
@@ -108,7 +111,9 @@ const OrderData = ({ingridientData}) => {
 
   const modalOrder = (
     <Modal closing={closeModal}>
-      <OrderDetails  />
+       <PlaceOrderContext.Provider value={order}>
+        <OrderDetails  />
+      </PlaceOrderContext.Provider>
     </Modal>
   );
   const totalPrice = useMemo(

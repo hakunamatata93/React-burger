@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import BurgerIngridients from "../burger-ingridients/burger-ingridients";
 import BurgerConstructor from "../burger-constructor/burger-constructor";
 import AppHeader from "../app-header/app-header";
+import { DataContext } from '../../services/app-context';
 
 import appStyles from './app.module.css';
 
@@ -31,8 +32,10 @@ const App = () => {
     <div className={appStyles.app}>
       <AppHeader />
       <main className={appStyles.main}>
-        <BurgerIngridients ingridients={data}/>
-        <BurgerConstructor ingridients={data}/> 
+      <DataContext.Provider value={data}>
+          <BurgerIngridients />
+          <BurgerConstructor ingredients={data} /> 
+        </DataContext.Provider>
       </main>
     </div>
   );
