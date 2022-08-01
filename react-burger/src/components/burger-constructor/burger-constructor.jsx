@@ -1,79 +1,76 @@
-import React from "react";
+import { useState, useMemo, useContext } from 'react';
 import PropTypes from 'prop-types';
-import { ConstructorElement, CurrencyIcon, DragIcon, Button, EditIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useEffect, useState, useMemo } from 'react';
+import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { OrderTotalContext, PlaceOrderContext } from '../../services/burger-constructor-context';
+import { PlaceOrderContext } from '../../services/burger-constructor-context';
 import { DataContext } from '../../services/app-context';
+import { BASEURL, checkResponse } from '../../utils/constants';
 
-
-const BASEURL= 'https://norma.nomoreparties.space/api';
-
-function checkResponse(res) {
-  if (res.ok) {
-    return res.json()
-  }
-  return Promise.reject(`Ошибка: ${res.status}`);
-}
 
 const ConstructorItem = ({ cardData }) => {
   const { image, price, name } = cardData;
   return(
-    <div className={burgerConstructorStyles.item}>
-      <DragIcon type="primary"/>
+    <div 
+      className={burgerConstructorStyles.item}>
+        <DragIcon type="primary"/>
         <ConstructorElement
           text={name}
           price={price}
           thumbnail={image}
         />
-      </div>
-  );
+    </div> 
+  )
 }
 
 ConstructorItem.propTypes = {
   cardData: cardPropTypes.isRequired,
 };
 
-const ConstructorItems = ({ingridientData}) => {
+
+const ConstructorItems = ({ ingridientData }) => {
+
   const bunData = ingridientData.find(item => item.type === 'bun');
   const sauceMainData = ingridientData.filter(item => item.type !== 'bun');
-  return (    
+
+  return (
     <ul className={`${burgerConstructorStyles.items} pl-4`}>
-            <li className={`${burgerConstructorStyles.list} ml-5`}>
+      <li className={`${burgerConstructorStyles.list} ml-5`}>
         {bunData
         ? 
           <ConstructorElement
-          type="top"
-          isLocked={true}
-          text={bunData.name + ' (верх)'}
-          price={bunData.price}
-          thumbnail={bunData.image}
-          key={bunData._id}
+            type="top"
+            isLocked={true}
+            text={bunData.name + ' (верх)'}
+            price={bunData.price}
+            thumbnail={bunData.image}
+            key={bunData._id}
+          />
+          : ''}
+      </li>
+      
+      <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
+        {sauceMainData.map(item => (
+        <ConstructorItem key={item._id} cardData={item}/>
+        ))}
+      </li>
+
+      <li className={`${burgerConstructorStyles.list} ml-5`}>
+        {bunData
+        ? 
+          <ConstructorElement
+            type="bottom"
+            isLocked={true}
+            text={bunData.name + ' (низ)'}
+            price={bunData.price}
+            thumbnail={bunData.image}
+            key={bunData._id}
         />
         : ''}
-    </li>
-    <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
-      {sauceMainData.map(item => (
-      <ConstructorItem key={item._id} cardData={item}/>
-      ))}
-    </li>
-    <li className={`${burgerConstructorStyles.list} ml-5`}>
-        {bunData
-        ? 
-          <ConstructorElement
-          type="bottom"
-          isLocked={true}
-          text={bunData.name + ' (низ)'}
-          price={bunData.price}
-          thumbnail={bunData.image}
-          key={bunData._id}
-      />
-      : ''}
-    </li>
-  </ul>
+      </li>
+    </ul>
   );
 }
 
@@ -81,14 +78,20 @@ ConstructorItems.propTypes = {
   ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
 };
 
-const OrderData = ({ingridientData}) => {
+const OrderTotal = ({ ingridientData }) => {
+
   const [modalActive, setModalActive] = useState(false);
   const [order, setOrder] = useState(null);
-  const ingridientsId = ingridientData.map(el => el._id);
-
+      
   const placeOrder = () => {
+
+    const ingridientsId = ingridientData.map(el => el._id);
+    
     fetch(`${BASEURL}/orders`, {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         ingridients: ingridientsId
       })
@@ -96,36 +99,46 @@ const OrderData = ({ingridientData}) => {
     .then(checkResponse)
     .then((res) => {
       setOrder(res.order.number);
+      console.log(res)
     })
     .catch((err) => console.log(err))
   };
+  
 
   const openModal = () => {
     setModalActive(true);
-    placeOrder();
+    placeOrder(); // отправляем данные заказа (айдишки) на сервер
   };
 
   const closeModal = () => {
     setModalActive(false);
   };
-
+  
+  // сюда передаю контекст-провайдер заказа
   const modalOrder = (
     <Modal closing={closeModal}>
-       <PlaceOrderContext.Provider value={order}>
+      <PlaceOrderContext.Provider value={order}>
         <OrderDetails  />
       </PlaceOrderContext.Provider>
-    </Modal>
+    </Modal >
   );
-  const totalPrice = useMemo(
+
+  const bunData = ingridientData.find(item => item.type === 'bun');
+  const sauceMainData = ingridientData.filter(item => item.type !== 'bun');
+  
+  const bunDataPrice = bunData ? bunData.price*2 : 0;
+
+  const total = useMemo(
     () => 
-    ingridientData.reduce((acc, item) => acc + item.price, 0),
-    [ingridientData]
-  );
+    sauceMainData.reduce((acc, item) => acc + item.price, 0) + bunDataPrice,
+  [sauceMainData, bunDataPrice]
+  )
+
   return(
     <>
       <div className={`${burgerConstructorStyles.order} mt-10`}>
         <div className={`${burgerConstructorStyles.price} mr-10`}>
-          <span className="text text_type_digits-medium mr-4">{totalPrice}</span>
+          <span className="text text_type_digits-medium mr-4">{total}</span>
           <CurrencyIcon type="primary" />
         </div>
         <Button type="primary" size="large" onClick={openModal}>
@@ -134,24 +147,24 @@ const OrderData = ({ingridientData}) => {
       </div>
       {modalActive && modalOrder}
     </>
-
   );
 }
 
-OrderData.propTypes = {
+OrderTotal.propTypes = {
   ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
 };
-const BurgerConstructor = ({ ingridients }) => {
-  
+
+const BurgerConstructor = () => {
+
+  const ingridients = useContext(DataContext);
+
   return(
     <section className={`${burgerConstructorStyles.main} mt-25`}>
       <ConstructorItems ingridientData={ingridients} />
-      <OrderData ingridientData={ingridients} />
+      <OrderTotal ingridientData={ingridients} />
     </section>
   );
 }
-BurgerConstructor.propTypes = {
-  ingridients: PropTypes.arrayOf(cardPropTypes).isRequired,
-};
+
 
 export default BurgerConstructor;
