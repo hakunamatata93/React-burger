@@ -1,11 +1,21 @@
 import React from "react";
 import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-//import { data } from '../../utils/data.js';
+import { useEffect, useState, useMemo } from 'react';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details'
+
+
+const BASEURL= 'https://norma.nomoreparties.space/api';
+
+function checkResponse(res) {
+  if (res.ok) {
+    return res.json()
+  }
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
 
 const ConstructorItem = ({ cardData }) => {
   const { image, price, name } = cardData;
@@ -13,8 +23,6 @@ const ConstructorItem = ({ cardData }) => {
     <div className={burgerConstructorStyles.item}>
       <DragIcon type="primary"/>
         <ConstructorElement
-          // type="top"
-          // isLocked={true}
           text={name}
           price={price}
           thumbnail={image}
@@ -71,11 +79,27 @@ ConstructorItems.propTypes = {
   ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
 };
 
-const Order = ({ingridientData}) => {
-  const [modalActive, setModalActive] = React.useState(false);
+const OrderData = ({ingridientData}) => {
+  const [modalActive, setModalActive] = useState(false);
+  const [order, setOrder] = useState(null);
+
+  const placeOrder = () => {
+    fetch(`${BASEURL}/orders`, {
+      method: 'POST',
+      body: JSON.stringify({
+        ingredients: ingridientData
+      })
+    })
+    .then(checkResponse)
+    .then((res) => {
+      setOrder(res.order.number);
+    })
+    .catch((err) => console.log(err))
+  };
 
   const openModal = () => {
     setModalActive(true);
+    placeOrder();
   };
 
   const closeModal = () => {
@@ -87,7 +111,7 @@ const Order = ({ingridientData}) => {
       <OrderDetails  />
     </Modal>
   );
-  const totalPrice = React.useMemo(
+  const totalPrice = useMemo(
     () => 
     ingridientData.reduce((acc, item) => acc + item.price, 0),
     [ingridientData]
@@ -109,7 +133,7 @@ const Order = ({ingridientData}) => {
   );
 }
 
-Order.propTypes = {
+OrderData.propTypes = {
   ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
 };
 const BurgerConstructor = ({ ingridients }) => {
@@ -117,7 +141,7 @@ const BurgerConstructor = ({ ingridients }) => {
   return(
     <section className={`${burgerConstructorStyles.main} mt-25`}>
       <ConstructorItems ingridientData={ingridients} />
-      <Order ingridientData={ingridients} />
+      <OrderData ingridientData={ingridients} />
     </section>
   );
 }
