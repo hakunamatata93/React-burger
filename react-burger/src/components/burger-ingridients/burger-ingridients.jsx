@@ -9,7 +9,7 @@ import { DataContext } from '../../services/app-context';
 import { useSelector, useDispatch } from 'react-redux';
 import { OPEN_MODAL, CLOSE_MODAL } from '../../services/actions/currentIngridient';
 import { getCurrentIngridient } from '../../services/actions/currentIngridient';
-import { useDrag } from "react-dnd";
+import { useDrag, useDrop } from "react-dnd";
 
 
 const BurgerTabs = () => {
@@ -30,16 +30,17 @@ const BurgerTabs = () => {
 }
 
 const Card = ({ cardData }) => {
-  const { image, price, name, type, id } = cardData;
+  const { image, price, name, type, _id: id, __v } = cardData;
+  const { constructorItems, constructorBun } = useSelector(store => store.constructorItems);
+  const { ingridients } = useSelector(store => store.ingridients);
   
-  const [modalActive, setModalActive] = useState(false);
 
   const [, dragRef] = useDrag({
-    type: 'ingredient',
+    type: 'ingridient',
     item: { id, type },
-
   });
-  
+  const [modalActive, setModalActive] = useState(false);
+
   const dispatch = useDispatch();
 
   const openModal = () => {
@@ -54,7 +55,7 @@ const Card = ({ cardData }) => {
 
   const modalIngridients = (
     <Modal title='Детали ингредиента' closing={closeModal}>
-      <IngridientDetails ingridient={cardData}/>
+      <IngridientDetails/>
     </Modal >
   );
 
@@ -81,8 +82,9 @@ Card.propTypes = {
   cardData: cardPropTypes.isRequired,
 };
 
-const MenuList = ({ ingridientData, type }) => {
-  const typeData = ingridientData.filter(item => item.type === type);
+const MenuList = ({  type }) => {
+  const { ingridients } = useSelector(store => store.ingridients);
+  const typeData = ingridients.filter(item => item.type === type);
 
   return(
     <div className={`${burgerIngridientsStyles.menuItems}`}>
@@ -101,24 +103,25 @@ MenuList.propTypes = {
 const BurgerIngridients = () => {
 
   const ingridients = useSelector(store => store.ingridients.ingridients);
+  const [, drop] = useDrop(() => ({ accept: 'item' }));
 
   return(
-    <section className={burgerIngridientsStyles.main}>
+    <section className={burgerIngridientsStyles.main} ref={drop}>
       <h1 className='mt-10 mb-5 text text_type_main-large'>Соберите бургер</h1>
       <BurgerTabs />
       <div className={`${burgerIngridientsStyles.window} custom-scroll`}>
         <ul className={burgerIngridientsStyles.menu}>
           <li>
             <h2 className='text text_type_main-medium mt-10 mb-6'>Булки</h2>
-            <MenuList type='bun' ingridientData={ingridients} />
+            <MenuList type='bun' />
           </li>
           <li>
             <h2 className='text text_type_main-medium mt-10 mb-6'>Соусы</h2>
-            <MenuList type='sauce' ingridientData={ingridients} />
+            <MenuList type='sauce'/>
           </li>
           <li>
             <h2 className='text text_type_main-medium mt-10 mb-6'>Начинки</h2>
-            <MenuList type='main' ingridientData={ingridients} />
+            <MenuList type='main'/>
           </li>
         </ul>
       </div>

@@ -10,40 +10,106 @@ import { DataContext } from '../../services/app-context';
 import { BASEURL, checkResponse } from '../../utils/constants';
 import { useSelector, useDispatch } from 'react-redux';
 import { postOrder } from '../../services/actions/order';
+import { ADD_INGRIDIENT, DELETE_INGRIDIENT, REPLACE_BUN } from '../../services/actions/constructor';
+import { useDrag, useDrop } from 'react-dnd';
+import { v4 as uuidv4 } from 'uuid';
 
 
-const ConstructorItem = ({ cardData }) => {
-  const { image, price, name } = cardData;
+const ConstructorItem = ({ cardData, cardKey, index, moveCard }) => {
+  const { image, price, name, type } = cardData;
+
+  /*
+  const [, dragRef] = useDrag({
+    type: 'item',
+    item: { card, index },
+    
+  });
+  */
+
+
+  const dispatch = useDispatch();
+
+  const deleteIngridient = () => {
+    dispatch({
+      type: DELETE_INGRIDIENT,
+      key: cardKey
+    })
+  };
+
   return(
     <div 
+    //ref={dragRef}
       className={burgerConstructorStyles.item}>
         <DragIcon type="primary"/>
         <ConstructorElement
           text={name}
           price={price}
           thumbnail={image}
+          //_id={_id}
+          index={index}
+          handleClose={() => deleteIngridient()}
         />
     </div> 
   )
 }
 
-ConstructorItem.propTypes = {
-  cardData: cardPropTypes.isRequired,
-};
+
+const ConstructorItems = () => {
+
+  const { ingridients } = useSelector(store => store.ingridients);
+  const { constructorItems, constructorBun } = useSelector(store => store.constructorItems);
+  console.log(constructorItems)
+  console.log(constructorBun)
+  
+  const bunData = ingridients.find(item => item.type === 'bun');
 
 
-const ConstructorItems = ({ ingridientData }) => {
+  const dispatch = useDispatch();
 
-  const bunData = ingridientData.find(item => item.type === 'bun');
-  const sauceMainData = ingridientData.filter(item => item.type !== 'bun');
+  const onDropHandler = (item) => {
+    console.log(item)
+    const isBun = item.type === 'bun';
+    dispatch({ 
+      type: isBun ? REPLACE_BUN : ADD_INGRIDIENT, 
+      id: item.id,
+      key: uuidv4()
+    });
+  };
+
+  const [, dropTarget] = useDrop({
+    accept: 'ingridient',
+    drop(item) {
+      onDropHandler(item);
+    },
+  });
+
+  /*
+  const sauceMainData = constructorItems.filter(item => item.type !== 'bun');
+  */
+
+  const sauceMainData = constructorItems.map((item, index) => {
+    const ingridient = ingridients.find(
+      el => el.type !== 'bun' && el._id === item.id
+    );
+    return (
+      ingridient &&
+      <ConstructorItem
+        key={item.key}
+        card={ingridient}
+        cardKey={item.key}
+        index={index}
+      />
+    )
+  });
+
 
   return (
-    <ul className={`${burgerConstructorStyles.items} pl-4`}>
+    <ul className={`${burgerConstructorStyles.items} pl-4`} ref={dropTarget}>
       <li className={`${burgerConstructorStyles.list} ml-5`}>
         {bunData
         ? 
           <ConstructorElement
-            type="top"
+            type='top'
             isLocked={true}
             text={bunData.name + ' (верх)'}
             price={bunData.price}
@@ -53,22 +119,23 @@ const ConstructorItems = ({ ingridientData }) => {
           : ''}
       </li>
       
+      
       <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
-        {sauceMainData.map(item => (
-        <ConstructorItem key={item._id} cardData={item}/>
-        ))}
+        {sauceMainData}
       </li>
+      
 
       <li className={`${burgerConstructorStyles.list} ml-5`}>
         {bunData
         ? 
           <ConstructorElement
-            type="bottom"
+            type='bottom'
             isLocked={true}
             text={bunData.name + ' (низ)'}
             price={bunData.price}
             thumbnail={bunData.image}
-            key={bunData._id}
+            //key={bunData._id}
+            key={bunData._id + 'bottom'}
         />
         : ''}
       </li>
@@ -76,38 +143,30 @@ const ConstructorItems = ({ ingridientData }) => {
   );
 }
 
-ConstructorItems.propTypes = {
-  ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
-};
 
+const OrderTotal = () => {
 
-const OrderTotal = ({ ingridientData }) => {
-
+  const ingridients = useSelector(store => store.ingridients.ingridients);
   const [modalActive, setModalActive] = useState(false);
-
-
   const dispatch = useDispatch();
 
   const openModal = () => {
     setModalActive(true);
-    dispatch(postOrder(ingridientData));; // отправляем данные заказа
+    dispatch(postOrder(ingridients)); // отправляем данные заказа
   };
 
   const closeModal = () => {
     setModalActive(false);
   };
   
-  // сюда передаю контекст-провайдер заказа
   const modalOrder = (
     <Modal closing={closeModal}>
-      
         <OrderDetails  />
-     
     </Modal >
   );
 
-  const bunData = ingridientData.find(item => item.type === 'bun');
-  const sauceMainData = ingridientData.filter(item => item.type !== 'bun');
+  const bunData = ingridients.find(item => item.type === 'bun');
+  const sauceMainData = ingridients.filter(item => item.type !== 'bun');
   
   const bunDataPrice = bunData ? bunData.price*2 : 0;
 
@@ -133,20 +192,16 @@ const OrderTotal = ({ ingridientData }) => {
   );
 }
 
-OrderTotal.propTypes = {
-  ingridientData: PropTypes.arrayOf(cardPropTypes).isRequired,
-};
 
 const BurgerConstructor = () => {
 
-  // const ingridients = useContext(DataContext);
-
-  const ingridients = useSelector(store => store.ingridients.ingridients);
+  //const ingridients = useContext(DataContext);
+  //const ingridients = useSelector(store => store.ingridients.ingridients);
 
   return(
     <section className={`${burgerConstructorStyles.main} mt-25`}>
-      <ConstructorItems ingridientData={ingridients} />
-      <OrderTotal ingridientData={ingridients} />
+      <ConstructorItems />
+      <OrderTotal />
     </section>
   );
 }

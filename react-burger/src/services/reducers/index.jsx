@@ -13,8 +13,9 @@ import {
     ADD_INGRIDIENT,
     DELETE_INGRIDIENT,
     RESET_INGRIDIENT,
+    REPLACE_BUN
   } from '../actions/constructor';
-  
+  import { burgerBoilerplate } from '../../utils/constants';
   const initialState = {
     ingridients: [],
     ingridientsRequest: false,
@@ -109,7 +110,8 @@ import {
   }
 
   const initialState4 = {
-    constructor: [], 
+    constructorItems: [], 
+    constructorBun: []
   };
   
   
@@ -119,19 +121,30 @@ import {
       case ADD_INGRIDIENT: {
         return {
           ...state,
-          //
-        }
+          constructorItems: state.constructorItems.concat({
+            id: action.id,
+            key: action.key,
+          }),
+        };
+        
       }
       case DELETE_INGRIDIENT: {
         return {
           ...state,
-          //
+          constructorItems: state.constructorItems.filter(item => item.key !== action.key)
+        }
+    }
+    case RESET_INGRIDIENT: {
+        return {
+          ...state,      
+          constructorItems: [], 
+          constructorBun: []
         }
       }
-      case RESET_INGRIDIENT: {
+      case REPLACE_BUN: {
         return {
-          ...state,
-          //
+          ...state,      
+          constructorBun: action.id
         }
       }
       default:
