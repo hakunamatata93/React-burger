@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
-import { ingridientsReducer, orderReducer, currentIngridientReducer } from './index';
+import { ingridientsReducer, orderReducer, currentIngridientReducer,constructorReducer } from './index';
 
 export const rootReducer = combineReducers({
   ingridients: ingridientsReducer,
   order: orderReducer,
   currentIngridient: currentIngridientReducer,
-  // constructorReducer
+  constructor: constructorReducer
   
   
 });

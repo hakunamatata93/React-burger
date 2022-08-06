@@ -9,6 +9,11 @@ import {
     GET_ORDER_FAILED,
   } from '../actions/order';
   import { CLOSE_MODAL, OPEN_MODAL } from '../actions/currentIngridient';
+  import {
+    ADD_INGRIDIENT,
+    DELETE_INGRIDIENT,
+    RESET_INGRIDIENT,
+  } from '../actions/constructor';
   
   const initialState = {
     ingridients: [],
@@ -79,7 +84,7 @@ import {
     }
   }
   const initialState3 = {
-    currentIngredient: null,
+    currentIngridient: null,
   
   };
   export const currentIngridientReducer = (state = initialState3, action) => {
@@ -98,6 +103,37 @@ import {
         }
       }
   
+      default:
+        return state;
+    }
+  }
+
+  const initialState4 = {
+    constructor: [], 
+  };
+  
+  
+  export const constructorReducer = (state = initialState4, action) => {
+  
+    switch (action.type) {
+      case ADD_INGRIDIENT: {
+        return {
+          ...state,
+          //
+        }
+      }
+      case DELETE_INGRIDIENT: {
+        return {
+          ...state,
+          //
+        }
+      }
+      case RESET_INGRIDIENT: {
+        return {
+          ...state,
+          //
+        }
+      }
       default:
         return state;
     }
