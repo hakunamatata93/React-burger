@@ -4,30 +4,26 @@ import BurgerIngridients from '../burger-ingridients/burger-ingridients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
 import appStyles from './app.module.css';
 import { DataContext } from '../../services/app-context';
-import { BASEURL,checkResponse } from '../../utils/constants';
-
+import { BASEURL, checkResponse } from '../../utils/constants';
+import { useDispatch } from 'react-redux';
+import { getIngridients } from '../../services/actions/ingridients';
 
 const App = () => {
-  const [data, setData] = useState([]);
+  //const [data, setData] = useState([]);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(`${BASEURL}/ingredients`)
-    .then(checkResponse)
-    .then((res) => {
-      setData(res.data);
-    })
-    .catch((err) => console.log(err));
-  }, []); // передаем пустой массив, чтобы запустить useEffect на момент первого рендера
+    dispatch(getIngridients());
+    },
+    [dispatch]
+  ); 
 
   return(
     <div className={appStyles.app}>
       <AppHeader />
-      
       <main className={appStyles.main}>
-        <DataContext.Provider value={data}>
-          <BurgerIngridients />
-          <BurgerConstructor /> 
-        </DataContext.Provider>
+        <BurgerIngridients />
+        <BurgerConstructor /> 
       </main>
     </div>
   );

@@ -7,7 +7,7 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { DataContext } from '../../services/app-context';
 import { BASEURL, checkResponse } from '../../utils/constants';
-
+import { useSelector } from 'react-redux';
 
 const ConstructorItem = ({ cardData }) => {
   const { image, price, name } = cardData;

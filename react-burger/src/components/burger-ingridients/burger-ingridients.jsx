@@ -6,7 +6,7 @@ import IngridientDetails from '../ingridient-details/ingridient-details';
 import burgerIngridientsStyles from './burger-ingridients.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import { DataContext } from '../../services/app-context';
-
+import { useSelector } from 'react-redux';
 
 
 const BurgerTabs = () => {
@@ -84,7 +84,7 @@ MenuList.propTypes = {
 
 const BurgerIngridients = () => {
 
-  const ingridients = useContext(DataContext);
+  const ingridients = useSelector(store => store.ingridients.ingridients);
 
   return(
     <section className={burgerIngridientsStyles.main}>
