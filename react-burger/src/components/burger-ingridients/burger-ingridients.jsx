@@ -15,7 +15,7 @@ const Card = ({ cardData, count }) => {
   const { image, price, name, _id: id } = cardData;
   
   const [, dragRef] = useDrag({
-    type: 'ingredient',
+    type: 'ingridient',
     item: cardData,
   });
 

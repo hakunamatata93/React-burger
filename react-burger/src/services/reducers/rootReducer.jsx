@@ -5,7 +5,7 @@ export const rootReducer = combineReducers({
   ingridients: ingridientsReducer,
   order: orderReducer,
   currentIngridient: currentIngridientReducer,
-  constructor: constructorReducer
+  constructorItems: constructorReducer
   
   
 });
