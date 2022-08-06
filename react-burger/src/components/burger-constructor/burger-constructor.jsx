@@ -5,7 +5,6 @@ import burgerConstructorStyles from './burger-constructor.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { PlaceOrderContext } from '../../services/burger-constructor-context';
 import { DataContext } from '../../services/app-context';
 import { BASEURL, checkResponse } from '../../utils/constants';
 
@@ -117,9 +116,7 @@ const OrderTotal = ({ ingridientData }) => {
   // сюда передаю контекст-провайдер заказа
   const modalOrder = (
     <Modal closing={closeModal}>
-      <PlaceOrderContext.Provider value={order}>
         <OrderDetails  />
-      </PlaceOrderContext.Provider>
     </Modal >
   );
 
