@@ -16,7 +16,7 @@ export function getIngridients() {
 
         dispatch({
           type: GET_INGRIDIENTS_SUCCESS,
-          ingredients: res.data
+          ingridients: res.data
         })
       } else {
 
