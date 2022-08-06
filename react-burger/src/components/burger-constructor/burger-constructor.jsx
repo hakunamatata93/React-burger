@@ -84,36 +84,7 @@ ConstructorItems.propTypes = {
 const OrderTotal = ({ ingridientData }) => {
 
   const [modalActive, setModalActive] = useState(false);
-  const [order, setOrder] = useState(null);
 
-  /*
-  const PlaceOrder = () => {
-    const dispatch = useDispatch();
-    useEffect(() => {
-      dispatch(getOrder());
-      },
-      [dispatch]
-    ); 
-  };
-  const placeOrder = () => {
-    const ingridientsId = ingridientData.map(el => el._id);
-    fetch(`${BASEURL}/orders`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        ingridients: ingridientsId
-      })
-    })
-    .then(checkResponse)
-    .then((res) => {
-      setOrder(res.order.number);
-      console.log(res)
-    })
-    .catch((err) => console.log(err))
-  };
-  */
 
   const dispatch = useDispatch();
 

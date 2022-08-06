@@ -1,12 +1,14 @@
 import React from 'react';
-
 import { cardPropTypes } from '../../utils/prop-types';
-
 import ingridientDetailsStyles from './ingridient-details.module.css';
+import { useSelector } from 'react-redux';
 
-const IngridientDetails = ({ ingridient}) => {
-  const { image_large, name, calories, proteins, fat, carbohydrates } = ingridient;
- 
+
+const IngridientDetails = () => {
+
+  const { currentIngridient } = useSelector(store => store.currentIngridient);
+
+  const { image_large, name, calories, proteins, fat, carbohydrates } = currentIngridient;
   return(
     <article className={ingridientDetailsStyles.container}>
       <img src={image_large} alt={name} />

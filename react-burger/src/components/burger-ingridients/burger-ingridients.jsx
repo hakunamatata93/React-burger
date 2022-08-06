@@ -6,7 +6,8 @@ import IngridientDetails from '../ingridient-details/ingridient-details';
 import burgerIngridientsStyles from './burger-ingridients.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import { DataContext } from '../../services/app-context';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { OPEN_MODAL, CLOSE_MODAL } from '../../services/actions/currentIngridient';
 
 
 const BurgerTabs = () => {
@@ -30,13 +31,17 @@ const Card = ({ cardData }) => {
   const { image, price, name } = cardData;
   
   const [modalActive, setModalActive] = useState(false);
+  const dispatch = useDispatch();
 
   const openModal = () => {
     setModalActive(true);
+    dispatch({type: OPEN_MODAL,
+      cardData: cardData});    
   };
 
   const closeModal = () => {
     setModalActive(false);
+    dispatch({type: CLOSE_MODAL});
   };
 
   const modalIngridients = (

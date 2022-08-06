@@ -8,6 +8,7 @@ import {
     GET_ORDER_SUCCESS,
     GET_ORDER_FAILED,
   } from '../actions/order';
+  import { CLOSE_MODAL, OPEN_MODAL } from '../actions/currentIngridient';
   
   const initialState = {
     ingridients: [],
@@ -73,6 +74,30 @@ import {
           orderRequest: false,
         }
       }
+      default:
+        return state;
+    }
+  }
+  const initialState3 = {
+    currentIngredient: null,
+  
+  };
+  export const currentIngridientReducer = (state = initialState3, action) => {
+
+    switch (action.type) {
+      case OPEN_MODAL: {
+        return {
+          ...state,
+          currentIngridient: action.cardData
+        }
+      }
+      case CLOSE_MODAL: {
+        return {
+          ...state,
+          currentIngridient: ''
+        }
+      }
+  
       default:
         return state;
     }
