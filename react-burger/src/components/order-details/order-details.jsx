@@ -1,13 +1,11 @@
-import React from 'react';
-import { useContext } from 'react';
-import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import orderDoneImg from '../../images/order-done.png'
 import orderDetailsStyles from './order-details.module.css';
-import { PlaceOrderContext } from '../../services/burger-constructor-context';
+import orderDoneImg from '../../images/order-done.png';
 import { useSelector } from 'react-redux';
 
 const OrderDetails = () => {
+
   const orderNumber = useSelector(store => store.order.order);
+
   return(
     <div className={`${orderDetailsStyles.container} pt-15`}>
       <h1 className='text text_type_digits-large mb-10'>{orderNumber}</h1>
@@ -16,8 +14,7 @@ const OrderDetails = () => {
       <span className='text text_type_main-default mt-15 mb-3'>Ваш заказ начали готовить</span>
       <span className='text text_type_main-default text_color_inactive mb-30'>Дождитесь готовности на орбитальной станции</span>     
     </div>
-
   );
 }
 
-export default OrderDetails; 
+export default OrderDetails;

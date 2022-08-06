@@ -1,5 +1,3 @@
-import React from 'react';
-import { cardPropTypes } from '../../utils/prop-types';
 import ingridientDetailsStyles from './ingridient-details.module.css';
 import { useSelector } from 'react-redux';
 
@@ -7,8 +5,8 @@ import { useSelector } from 'react-redux';
 const IngridientDetails = () => {
 
   const { currentIngridient } = useSelector(store => store.currentIngridient);
-
   const { image_large, name, calories, proteins, fat, carbohydrates } = currentIngridient;
+ 
   return(
     <article className={ingridientDetailsStyles.container}>
       <img src={image_large} alt={name} />
@@ -31,13 +29,9 @@ const IngridientDetails = () => {
           <span className='text text_type_main-default text_color_inactive'>{carbohydrates}</span>
         </li>
       </ul>
-    
     </article>
   );
 }
 
-IngridientDetails.propTypes = {
-    ingridient: cardPropTypes.isRequired,
-  };
 
 export default IngridientDetails;

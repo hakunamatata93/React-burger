@@ -1,28 +1,37 @@
-import {
+import { 
+    CLOSE_MODAL, 
+    OPEN_MODAL 
+  } from '../actions/currentIngridient';
+  
+  import {
     GET_INGRIDIENTS_REQUEST,
     GET_INGRIDIENTS_SUCCESS,
     GET_INGRIDIENTS_FAILED,
   } from '../actions/ingridients';
+  
   import {
     GET_ORDER_REQUEST,
     GET_ORDER_SUCCESS,
     GET_ORDER_FAILED,
+    RESET_ORDER,
   } from '../actions/order';
-  import { CLOSE_MODAL, OPEN_MODAL } from '../actions/currentIngridient';
+  
   import {
     ADD_INGRIDIENT,
     DELETE_INGRIDIENT,
-    RESET_INGRIDIENT,
-    REPLACE_BUN
+    SHIFT_INGRIDIENT,
+    RESET_CONSTRUCTOR
   } from '../actions/constructor';
-  import { burgerBoilerplate } from '../../utils/constants';
-  const initialState = {
+  
+  // ingridientsReducer
+  
+  const initialIngridientsState = {
     ingridients: [],
     ingridientsRequest: false,
     ingridientsFailed: false,
   };
   
-  export const ingridientsReducer = (state = initialState, action) => {
+  export const ingridientsReducer = (state = initialIngridientsState, action) => {
     switch (action.type) {
       case GET_INGRIDIENTS_REQUEST: {
         return {
@@ -49,14 +58,16 @@ import {
         return state;
     }
   }
-
-  const initialState2 = {
+  
+  // orderReducer
+  
+  const initialOrderState = {
     order: null,
     orderRequest: false,
     orderFailed: false,
   };
   
-  export const orderReducer = (state = initialState2, action) => {
+  export const orderReducer = (state = initialOrderState, action) => {
   
     switch (action.type) {
       case GET_ORDER_REQUEST: {
@@ -80,21 +91,32 @@ import {
           orderRequest: false,
         }
       }
+      case RESET_ORDER: {
+        return {
+          ...state,
+          order: null,
+          orderFailed: true,
+          orderRequest: false,
+        }
+      }
       default:
         return state;
     }
   }
-  const initialState3 = {
-    currentIngridient: null,
   
+  // currentIngridientReducer
+  
+  const initialCurrentIngridientState = {
+    currentIngridient: null, 
   };
-  export const currentIngridientReducer = (state = initialState3, action) => {
-
+  
+  export const currentIngridientReducer = (state = initialCurrentIngridientState, action) => {
+  
     switch (action.type) {
       case OPEN_MODAL: {
         return {
           ...state,
-          currentIngridient: action.cardData
+          currentIngridient: action.payload
         }
       }
       case CLOSE_MODAL: {
@@ -103,48 +125,48 @@ import {
           currentIngridient: ''
         }
       }
-  
       default:
         return state;
     }
   }
-
-  const initialState4 = {
+  
+  // constructorReducer
+  
+  const initialConstructorState = {
     constructorItems: [], 
-    constructorBun: []
+    bun: null,
   };
   
-  
-  export const constructorReducer = (state = initialState4, action) => {
+  export const constructorReducer = (state = initialConstructorState, action) => {
   
     switch (action.type) {
       case ADD_INGRIDIENT: {
+        if (action.payload.type === 'bun') {
+          return {...state, bun: action.payload}
+        }
         return {
           ...state,
-          constructorItems: state.constructorItems.concat({
-            id: action.id,
-            key: action.key,
-          }),
+          constructorItems:[...state.constructorItems, action.payload],
         };
-        
       }
       case DELETE_INGRIDIENT: {
         return {
           ...state,
-          constructorItems: state.constructorItems.filter(item => item.key !== action.key)
-        }
-    }
-    case RESET_INGRIDIENT: {
+          constructorItems: [...state.constructorItems].filter((_, index) => index !== action.payload),
+        };
+      }
+      case SHIFT_INGRIDIENT: {
+        const array = [...state.constructorItems];
+        array.splice(action.payload.to, 0, ...array.splice(action.payload.from, 1))
         return {
-          ...state,      
-          constructorItems: [], 
-          constructorBun: []
+          ...state,
+          constructorItems: [...array],
         }
       }
-      case REPLACE_BUN: {
+      case RESET_CONSTRUCTOR: {
         return {
-          ...state,      
-          constructorBun: action.id
+          constructorItems: [], 
+          bun: null
         }
       }
       default:

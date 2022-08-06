@@ -1,141 +1,114 @@
-import { useState, useMemo, useContext, useEffect } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { cardPropTypes } from '../../utils/prop-types';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
-import { PlaceOrderContext } from '../../services/burger-constructor-context';
-import { DataContext } from '../../services/app-context';
-import { BASEURL, checkResponse } from '../../utils/constants';
 import { useSelector, useDispatch } from 'react-redux';
-import { postOrder } from '../../services/actions/order';
-import { ADD_INGRIDIENT, DELETE_INGRIDIENT, REPLACE_BUN } from '../../services/actions/constructor';
+import { postOrder, RESET_ORDER } from '../../services/actions/order';
+import { addToConstructor, deleteIngridient, sortIngridient } from '../../services/actions/constructor';
 import { useDrag, useDrop } from 'react-dnd';
-import { v4 as uuidv4 } from 'uuid';
 
 
-const ConstructorItem = ({ cardData, cardKey, index, moveCard }) => {
-  const { image, price, name, type } = cardData;
-
-  /*
-  const [, dragRef] = useDrag({
-    type: 'item',
-    item: { card, index },
-    
-  });
-  */
-
+const ConstructorItem = ({ cardData, index }) => {
 
   const dispatch = useDispatch();
 
-  const deleteIngridient = () => {
-    dispatch({
-      type: DELETE_INGRIDIENT,
-      key: cardKey
-    })
-  };
+  const handleDeleteIngridient = (index) => {
+    dispatch(deleteIngridient(index))
+  }
+
+  const [, dragRef] = useDrag({
+    type: 'item',
+    item: { index }  
+  });
+
+  const [, dropRef] = useDrop({
+    accept: 'item',
+    drop(dragObject) {
+      if (dragObject.index === index) {
+        return
+      }
+      dispatch(sortIngridient(dragObject.index, index))
+    }
+  })
+
+  const ref = useRef(null);
+  const dragDropRef = dragRef(dropRef(ref));
 
   return(
     <div 
-    //ref={dragRef}
+      key={cardData.id}
+      ref={dragDropRef}
       className={burgerConstructorStyles.item}>
         <DragIcon type="primary"/>
         <ConstructorElement
-          text={name}
-          price={price}
-          thumbnail={image}
-          //_id={_id}
-          index={index}
-          handleClose={() => deleteIngridient()}
+          text={cardData.name}
+          price={cardData.price}
+          thumbnail={cardData.image}
+          handleClose={() => handleDeleteIngridient(index)}
         />
     </div> 
   )
 }
 
+ConstructorItem.propTypes = {
+  cardData: cardPropTypes.isRequired,
+  index: PropTypes.number.isRequired,
+};
+
 
 const ConstructorItems = () => {
 
-  const { ingridients } = useSelector(store => store.ingridients);
-  const { constructorItems, constructorBun } = useSelector(store => store.constructorItems);
-  console.log(constructorItems)
-  console.log(constructorBun)
-  
-  const bunData = ingridients.find(item => item.type === 'bun');
-
-
   const dispatch = useDispatch();
+  const { constructorItems, bun } = useSelector(store => store.constructorItems);
 
-  const onDropHandler = (item) => {
-    console.log(item)
-    const isBun = item.type === 'bun';
-    dispatch({ 
-      type: isBun ? REPLACE_BUN : ADD_INGRIDIENT, 
-      id: item.id,
-      key: uuidv4()
-    });
-  };
-
-  const [, dropTarget] = useDrop({
+  const [, dropTarget] = useDrop(() => ({
     accept: 'ingridient',
-    drop(item) {
-      onDropHandler(item);
-    },
-  });
-
-  /*
-  const sauceMainData = constructorItems.filter(item => item.type !== 'bun');
-  */
-
-  const sauceMainData = constructorItems.map((item, index) => {
-    const ingridient = ingridients.find(
-      el => el.type !== 'bun' && el._id === item.id
-    );
-    return (
-      ingridient &&
-      <ConstructorItem
-        key={item.key}
-        card={ingridient}
-        cardKey={item.key}
-        index={index}
-      />
-    )
-  });
-
+    drop: (item) => dispatch(addToConstructor(item)),
+  }));
 
   return (
     <ul className={`${burgerConstructorStyles.items} pl-4`} ref={dropTarget}>
       <li className={`${burgerConstructorStyles.list} ml-5`}>
-        {bunData
+        {bun
         ? 
           <ConstructorElement
             type='top'
             isLocked={true}
-            text={bunData.name + ' (верх)'}
-            price={bunData.price}
-            thumbnail={bunData.image}
-            key={bunData._id}
+            text={bun.name + ' (верх)'}
+            price={bun.price}
+            thumbnail={bun.image}
           />
           : ''}
       </li>
-      
-      
+
       <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
-        {sauceMainData}
+        {constructorItems.length > 0 
+        ? (
+            constructorItems.map((item, index) => {
+              return (
+                <ConstructorItem
+                  cardData={item}
+                  key={item.id}
+                  index={index}
+                />
+              );
+            })
+          )
+        : ''}
       </li>
       
-
       <li className={`${burgerConstructorStyles.list} ml-5`}>
-        {bunData
+        {bun
         ? 
           <ConstructorElement
             type='bottom'
             isLocked={true}
-            text={bunData.name + ' (низ)'}
-            price={bunData.price}
-            thumbnail={bunData.image}
-            //key={bunData._id}
-            key={bunData._id + 'bottom'}
+            text={bun.name + ' (низ)'}
+            price={bun.price}
+            thumbnail={bun.image}
         />
         : ''}
       </li>
@@ -147,7 +120,11 @@ const ConstructorItems = () => {
 const OrderTotal = () => {
 
   const ingridients = useSelector(store => store.ingridients.ingridients);
+  const { constructorItems, bun } = useSelector(store => store.constructorItems);
+  const { order, orderRequest } = useSelector(store => store.order);
+
   const [modalActive, setModalActive] = useState(false);
+
   const dispatch = useDispatch();
 
   const openModal = () => {
@@ -157,24 +134,27 @@ const OrderTotal = () => {
 
   const closeModal = () => {
     setModalActive(false);
+    dispatch({
+      type: RESET_ORDER
+    })
+
   };
-  
+
   const modalOrder = (
     <Modal closing={closeModal}>
-        <OrderDetails  />
+
+      <OrderDetails  />
     </Modal >
   );
 
-  const bunData = ingridients.find(item => item.type === 'bun');
-  const sauceMainData = ingridients.filter(item => item.type !== 'bun');
-  
-  const bunDataPrice = bunData ? bunData.price*2 : 0;
+  const total = useMemo(() => {
+    const bunPrice = bun ? bun.price*2 : 0;
 
-  const total = useMemo(
-    () => 
-    sauceMainData.reduce((acc, item) => acc + item.price, 0) + bunDataPrice,
-  [sauceMainData, bunDataPrice]
-  )
+    return (
+      constructorItems.reduce((acc, item) => acc + item.price, 0) + bunPrice
+    );
+  }, [constructorItems, bun]);
+
 
   return(
     <>
@@ -183,20 +163,19 @@ const OrderTotal = () => {
           <span className="text text_type_digits-medium mr-4">{total}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="large" onClick={openModal}>
+        <Button type="primary" size="large" onClick={openModal} 
+            // делаем неактивной кнопку без булки и ингредиентов
+            disabled={(bun && constructorItems.length) ? false : true}> 
           Оформить заказ
         </Button>
       </div>
-      {modalActive && modalOrder}
+      {orderRequest}
+      {order && modalActive && modalOrder}
     </>
   );
 }
 
-
 const BurgerConstructor = () => {
-
-  //const ingridients = useContext(DataContext);
-  //const ingridients = useSelector(store => store.ingridients.ingridients);
 
   return(
     <section className={`${burgerConstructorStyles.main} mt-25`}>
@@ -205,6 +184,5 @@ const BurgerConstructor = () => {
     </section>
   );
 }
-
 
 export default BurgerConstructor;
