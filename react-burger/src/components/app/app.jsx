@@ -1,25 +1,17 @@
-import React, { useEffect, useState } from "react";
-import BurgerIngridients from "../burger-ingridients/burger-ingridients";
-import BurgerConstructor from "../burger-constructor/burger-constructor";
-import AppHeader from "../app-header/app-header";
-
+import { useEffect, useState } from 'react';
+import AppHeader from '../app-header/app-header';
+import BurgerIngridients from '../burger-ingridients/burger-ingridients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
 import appStyles from './app.module.css';
+import { DataContext } from '../../services/app-context';
+import { BASEURL,checkResponse } from '../../utils/constants';
 
-
-function checkResponse(res) {
-  if (res.ok) {
-    return res.json()
-  }
-  return Promise.reject(`Ошибка: ${res.status}`);
-}
 
 const App = () => {
   const [data, setData] = useState([]);
 
-  const baseUrl = 'https://norma.nomoreparties.space/api/ingredients';
-
   useEffect(() => {
-    fetch(`${baseUrl}`)
+    fetch(`${BASEURL}/ingredients`)
     .then(checkResponse)
     .then((res) => {
       setData(res.data);
@@ -30,13 +22,15 @@ const App = () => {
   return(
     <div className={appStyles.app}>
       <AppHeader />
+      
       <main className={appStyles.main}>
-        <BurgerIngridients ingridients={data}/>
-        <BurgerConstructor ingridients={data}/> 
+        <DataContext.Provider value={data}>
+          <BurgerIngridients />
+          <BurgerConstructor /> 
+        </DataContext.Provider>
       </main>
     </div>
   );
 }
 
 export default App;
-
