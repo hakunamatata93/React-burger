@@ -10,7 +10,7 @@ export const RESET_ORDER = 'RESET_ORDER';
 // ActionsCreator
 export function postOrder(ingridientData) {
 
-  const ingridientsId = ingridientData.map(el => el._id);
+  const ingridientsId = ingridientData.map(el => el._id);;
 
   return function(dispatch) {
     dispatch({

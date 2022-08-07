@@ -119,17 +119,18 @@ const ConstructorItems = () => {
 
 const OrderTotal = () => {
 
-  const ingridients = useSelector(store => store.ingridients.ingridients);
   const { constructorItems, bun } = useSelector(store => store.constructorItems);
   const { order, orderRequest } = useSelector(store => store.order);
-
   const [modalActive, setModalActive] = useState(false);
-
+  const orderItems = [bun, ...constructorItems, bun]
+ // console.log(orderItemsId)
   const dispatch = useDispatch();
+ 
 
   const openModal = () => {
+    console.log()
     setModalActive(true);
-    dispatch(postOrder(ingridients)); // отправляем данные заказа
+    dispatch(postOrder(orderItems)); // отправляем данные заказа
   };
 
   const closeModal = () => {
