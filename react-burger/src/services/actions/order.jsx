@@ -10,7 +10,7 @@ export const RESET_ORDER = 'RESET_ORDER';
 // ActionsCreator
 export function postOrder(ingridientData) {
 
-  const ingridientsId = ingridientData.map(el => el._id);;
+  const ingridientsID = ingridientData.map(el => el._id);;
 
   return function(dispatch) {
     dispatch({
@@ -21,9 +21,9 @@ export function postOrder(ingridientData) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({
-        ingridients: ingridientsId
-      })
+      body: JSON.stringify(
+         ingridientsID
+      )
     })
     .then(checkResponse)
     .then(res  => {
