@@ -41,14 +41,14 @@ export const ingridientsReducer = (state = initialIngridientsState, action) => {
         ...state,
         ingridientsRequest: false,
         ingridientsFailed: false,
-        ingridients: action.ingridients,
+        ingridients: action.payload
       };
     }
     case GET_INGRIDIENTS_FAILED: {
       return {
         ...state,
         ingridientsFailed: true,
-        ingridientsRequest: false,
+        ingridientsRequest: false
       };
     }
     default:

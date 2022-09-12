@@ -8,7 +8,7 @@ export const ModalOverlay = (props) => {
 };
 
 ModalOverlay.propTypes = {
-  closing: PropTypes.func.isRequired,
+  closing: PropTypes.func,
 };
 
 export default ModalOverlay;
