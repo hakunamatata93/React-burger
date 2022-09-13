@@ -11,6 +11,7 @@ import { cardPropTypes } from "../../utils/prop-types";
 import Modal from "../modal/modal";
 import OrderDetails from "../order-details/order-details";
 import { useSelector, useDispatch } from "react-redux";
+import { Redirect, useHistory } from 'react-router-dom';
 import { postOrder, RESET_ORDER } from "../../services/actions/order";
 import {
   addToConstructor,
@@ -127,6 +128,8 @@ const OrderTotal = () => {
   );
   const { order, orderRequest } = useSelector((store) => store.order);
   const [modalActive, setModalActive] = useState(false);
+  const { isAuth } = useSelector(store => store.user);
+  const history = useHistory();
   const orderItems = [bun, ...constructorItems, bun];
   // console.log(orderItemsId)
   const dispatch = useDispatch();
@@ -150,6 +153,14 @@ const OrderTotal = () => {
     </Modal>
   );
 
+  const handlerOrder = () => {
+    if (isAuth) {
+      openModal()
+    } else {
+      history.replace({ pathname: 'login' })
+    }
+  }
+
   const total = useMemo(() => {
     const bunPrice = bun ? bun.price * 2 : 0;
 
@@ -165,10 +176,8 @@ const OrderTotal = () => {
           <span className="text text_type_digits-medium mr-4">{total}</span>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
-          type="primary"
-          size="large"
-          onClick={openModal}
+        <Button type="primary" size="large" 
+                onClick={ handlerOrder }
           // делаем неактивной кнопку без булки и ингредиентов
           disabled={bun && constructorItems.length ? false : true}
         >
