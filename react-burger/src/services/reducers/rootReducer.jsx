@@ -8,6 +8,9 @@ import {
 import { 
   registerReducer 
 } from './register';
+import { 
+  forgotPasswordReducer 
+} from './forgot-password';
 
 export const rootReducer = combineReducers({
   ingridients: ingridientsReducer,
@@ -15,4 +18,5 @@ export const rootReducer = combineReducers({
   currentIngridient: currentIngridientReducer,
   constructorItems: constructorReducer,
   register: registerReducer,
+  forgotPassword: forgotPasswordReducer
 });
