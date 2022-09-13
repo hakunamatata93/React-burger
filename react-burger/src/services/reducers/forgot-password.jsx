@@ -2,6 +2,7 @@ import {
     FORGOT_PASSWORD_REQUEST,
     FORGOT_PASSWORD_SUCCESS,
     FORGOT_PASSWORD_FAILED,
+    SET_FORGOT_PASSWORD
   } from '../actions/forgot-password';
   
   const initialForgotPasswordState = {
@@ -9,7 +10,8 @@ import {
       email: ''
     },
     forgotPasswordRequest: false,
-    forgotPasswordFailed: false
+    forgotPasswordFailed: false,
+    forgotPasswordSuccess: true
   };
   
   
@@ -24,7 +26,14 @@ import {
       case FORGOT_PASSWORD_SUCCESS: {
         return {
           ...state,
-          form: action.form
+          form: action.form,
+          forgotPasswordSuccess: true
+        };
+      }
+      case SET_FORGOT_PASSWORD: {
+        return {
+          ...state,
+          form: action.payload
         };
       }
       default:
