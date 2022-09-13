@@ -14,6 +14,12 @@ import {
 import { 
   resetPasswordReducer 
 } from './reset-password';
+import { 
+  loginReducer 
+} from './login';
+import { 
+  userReducer 
+} from './user';
 
 export const rootReducer = combineReducers({
   ingridients: ingridientsReducer,
@@ -22,5 +28,7 @@ export const rootReducer = combineReducers({
   constructorItems: constructorReducer,
   register: registerReducer,
   forgotPassword: forgotPasswordReducer,
-  resetPassword: resetPasswordReducer
+  resetPassword: resetPasswordReducer,
+  login: loginReducer,
+  user: userReducer
 });

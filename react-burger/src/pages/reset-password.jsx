@@ -22,7 +22,7 @@ export const ResetPasswordPage = () => {
   const onChange = (evt) => {
     dispatch({
       type: SET_NEW_PASSWORD,
-      payload: {...form, [evt.target.name]: evt.target.value} // [] - refers to dynamic key name
+      payload: {...form, [evt.target.name]: evt.target.value} 
     })
   }
 
@@ -40,16 +40,16 @@ export const ResetPasswordPage = () => {
             type={'password'}
             placeholder={'Введите новый пароль'}
             onChange={onChange}
-            value={''}
-            name={'email'}
+            value={form.password}
+            name={'password'}
             icon={'ShowIcon'}
           />
           <Input
             type={'text'}
             placeholder={'Введите код из письма'}
             onChange={onChange}
-            value={''}
-            name={'name'}
+            value={form.code}
+            name={'code'}
           />
         </fieldset>
 

@@ -27,7 +27,7 @@ export const RegisterPage = () => {
     })
   }
 
-  const onFormSubmit = (evt) => {
+  const onSubmitForm = (evt) => {
     evt.preventDefault();
     dispatch(register(form))
   } 
@@ -58,7 +58,7 @@ export const RegisterPage = () => {
           />
         </fieldset>
         
-        <Button type="primary" size="large" onClick={onFormSubmit}> 
+        <Button type="primary" size="large" onClick={onSubmitForm}> 
           Зарегистрироваться
         </Button>
       </form>

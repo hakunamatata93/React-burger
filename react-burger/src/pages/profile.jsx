@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import { useState, useRef } from "react";
 import { Input, EditIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { getUser } from '../services/actions/user';
 
 import styles from './style.module.css';
 
@@ -70,6 +71,9 @@ export const ProfilePage = () => {
             </Button>
           </div>
         </form>
+        <Button type="primary" size="large" onClick={getUser}>
+              getUser
+        </Button>
       </section>
     </main>
   );
