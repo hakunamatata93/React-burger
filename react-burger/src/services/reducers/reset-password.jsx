@@ -24,13 +24,14 @@ import {
       case RESET_PASSWORD_SUCCESS: {
         return {
           ...state,
+          form: action.form,
           resetPasswordSuccess: true
         };
       }
       case SET_NEW_PASSWORD: {
         return {
           ...state,
-          form: action.payload
+          form: action.payload,
         };
       }
       default:

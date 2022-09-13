@@ -1,28 +1,30 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 
-import { Input, EmailInput, PasswordInput, Button, ShowIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { RESET_PASSWORD_SUCCESS, SET_NEW_PASSWORD, resetPassword } from '../services/actions/reset-password';
+import { Input, Button, ShowIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { SET_NEW_PASSWORD, resetPassword } from '../services/actions/reset-password';
 
 import styles from './style.module.css';
 
 export const ResetPasswordPage = () => {
 
   const dispatch = useDispatch();
+  const { form, resetPasswordSuccess } = useSelector(store => store.resetPassword);
+  const { forgotPasswordSuccess } = useSelector(store => store.forgotPassword);
+  const { isAuth } = useSelector(store => store.user);
+  const { state } = useLocation();
 
-  const form = useSelector(store => store.resetPassword.form);
-
+  
   useEffect(() => {
     form.password = '';
     form.token = '';
-  }, []);
-
+  }, []); 
 
   const onChange = (evt) => {
     dispatch({
       type: SET_NEW_PASSWORD,
-      payload: {...form, [evt.target.name]: evt.target.value} 
+      payload: {...form, [evt.target.name]: evt.target.value}
     })
   }
 
@@ -30,6 +32,30 @@ export const ResetPasswordPage = () => {
     evt.preventDefault();
     dispatch(resetPassword(form))
   } 
+
+  if (resetPasswordSuccess) {
+    return (
+      <Redirect
+        to={{ pathname: '/login' }}
+      />
+    );
+  };
+
+  if (!forgotPasswordSuccess) {
+    return (
+      <Redirect 
+        to={{ pathname: '/forgot-password' }} 
+      />
+    );
+  };
+
+  if (isAuth) {
+    return (
+      <Redirect 
+        to={ state?.from || '/' } 
+      />
+    )
+  };
 
   return (
     <main className={styles.container}>
@@ -49,7 +75,7 @@ export const ResetPasswordPage = () => {
             placeholder={'Введите код из письма'}
             onChange={onChange}
             value={form.token}
-            name={'code'}
+            name={'token'}
           />
         </fieldset>
 

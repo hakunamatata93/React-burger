@@ -1,37 +1,127 @@
 import {
+    REGISTER_REQUEST,
+    REGISTER_SUCCESS,
+    REGISTER_FAILED,
+    SET_REGISTER_USER,
+  
+    LOGIN_REQUEST,
+    LOGIN_SUCCESS,
+    LOGIN_FAILED,
+    SET_LOGIN_USER,
+  
+    LOGOUT_REQUEST,
+    LOGOUT_SUCCESS,
+    LOGOUT_FAILED,
+  
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
     GET_USER_FAILED,
+  
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAILED,
     SET_UPDATE_USER,
     CANCEL_UPDATE_USER,
+  
     UPDATE_TOKEN_REQUEST,
     UPDATE_TOKEN_SUCCESS,
     UPDATE_TOKEN_FAILED,
-    RESET_TOKEN
-  } from '../actions/user';
+  
+  } from '../actions/auth';
   
   const initialUserState = {
     form: {
       name: '',
       email: '',
-      password: ''
+      password: '',
     },
+  
+    isAuth: false,
+  
+    registerRequest: false,
+    registerFailed: false,
+  
+    loginRequest: false,
+    loginFailed: false,
+  
+    logoutRequest: false,
+    logoutFailed: false,
   
     userRequest: false,
     userFailed: false,
   
     updateTokenRequest: false,
     updateTokenFailed: false,
-    
   };
   
   
   export const userReducer = (state = initialUserState, action) => {
   
     switch (action.type) {
+      case REGISTER_REQUEST: {
+        return {
+          ...state,
+        };
+      }
+      case REGISTER_SUCCESS: {
+        return {
+          ...state,
+          form: action.form,
+          isAuth: true,
+        };
+      }
+      case SET_REGISTER_USER: {
+        return {
+          ...state,
+          form: action.payload
+        };
+      }
+      case LOGIN_REQUEST: {
+        return {
+          ...state,
+          loginRequest: true,
+          loginFailed: false,
+        };
+      }
+      case LOGIN_SUCCESS: {
+        return {
+          ...state,
+          form: action.form,
+          loginRequest: false,
+          loginFailed: false,
+          isAuth: true,
+        };
+      }
+      case LOGIN_FAILED: {
+        return {
+          ...state,
+          loginRequest: false,
+          loginFailed: true,
+        };
+      }
+      case SET_LOGIN_USER: {
+        return {
+          ...state,
+          form: action.payload
+        };
+      }
+      case LOGOUT_REQUEST: {
+        return {
+          ...state,
+        };
+      }
+      case LOGOUT_SUCCESS: {
+        return {
+          ...state,
+          isAuth: false,        
+        };
+      }
+      case LOGOUT_FAILED: {
+        return {
+          ...state,
+          
+        };
+      }
       case GET_USER_REQUEST: {
         return {
           ...state,
@@ -40,7 +130,8 @@ import {
       case GET_USER_SUCCESS: {
         return {
           ...state,
-          form: action.form
+          form: action.form,
+          isAuth: true,
         };
       }
       case UPDATE_USER_REQUEST: {
@@ -69,6 +160,7 @@ import {
         return {
           ...state,
           form: action.payload,
+          isAuth: true,
         };
       }
       case CANCEL_UPDATE_USER: {

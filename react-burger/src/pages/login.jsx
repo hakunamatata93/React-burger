@@ -1,23 +1,27 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { SET_LOGIN_USER, login } from '../services/actions/login';
+import { SET_LOGIN_USER, login } from '../services/actions/auth';
 
 import styles from './style.module.css';
 
 export const LoginPage = () => {
 
   const dispatch = useDispatch();
+  
+  //const isAuth = localStorage.getItem('token');
 
-  const form = useSelector(store => store.login.form);
+  const { form, isAuth } = useSelector(store => store.user);
+  const { state } = useLocation();
 
+  
   useEffect(() => {
     form.email = '';
     form.password = '';
   }, []);
-
+  
 
   const onChange = (evt) => {
     dispatch({
@@ -26,10 +30,23 @@ export const LoginPage = () => {
     })
   }
 
-  const onSubmitForm = (evt) => {
-    evt.preventDefault();
-    dispatch(login(form))
-  } 
+  const onSubmitForm = useCallback(
+    (evt) => {
+      evt.preventDefault();
+      dispatch(login(form))
+    },
+    [form, dispatch] 
+  );
+    
+  if (isAuth) {
+    return (
+      <Redirect
+        // Если объект state не является undefined, вернём пользователя назад.
+        to={ state?.from || '/' }
+      />
+    );
+  }
+  
 
   return (
     <main className={styles.container}>

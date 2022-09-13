@@ -1,6 +1,8 @@
+import errorImg from '../images/404.png';
+
 export const NotFound = () => {
 
-    return (
-      console.log('404')
-    );
-  };
+  return (
+    <img src={errorImg} alt='Oops! Page not found'/>
+  );
+};

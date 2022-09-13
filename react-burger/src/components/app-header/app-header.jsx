@@ -1,41 +1,46 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
-import {
-  Logo,
-  BurgerIcon,
-  ListIcon,
-  ProfileIcon,
-} from "@ya.praktikum/react-developer-burger-ui-components";
+import { 
+  Logo, 
+  BurgerIcon, 
+  ListIcon, 
+  ProfileIcon 
+} from '@ya.praktikum/react-developer-burger-ui-components';
 
-import appHeaderStyles from "./app-header.module.css";
+import appHeaderStyles from './app-header.module.css';
 
 export const AppHeader = () => {
-  return (
+
+  return(
     <header className={appHeaderStyles.header}>
-      <nav className={appHeaderStyles.nav}>
-        <a href="#" className={`${appHeaderStyles.link} p-5 mr-2`}>
-          <BurgerIcon type="primary" />
-          <span className="ml-2 text text_type_main-default">Конструктор</span>
-        </a>
-
-        <a href="#" className={`${appHeaderStyles.link} p-5`}>
+      <div className={appHeaderStyles.list}>
+      
+        <NavLink to='/' exact={true}
+            className={`${appHeaderStyles.link} p-5 mr-2`}
+            activeClassName={appHeaderStyles.activeLink}
+          ><BurgerIcon type='secondary'/>
+          <span className='ml-2 text text_type_main-default text_color_inactive'>Конструктор</span>
+        </NavLink>
+      
+        <NavLink to='/profile/orders' exact={true}
+          className={`${appHeaderStyles.link} p-5`}
+          activeClassName={appHeaderStyles.activeLink}>
           <ListIcon type="secondary" />
-          <span className="ml-2 mr-5 text text_type_main-default text_color_inactive">
-            Лента заказов
-          </span>
-        </a>
-      </nav>
+          <span className='ml-2 mr-5 text text_type_main-default text_color_inactive'>Лента заказов</span>
+        </NavLink>
+      </div>
 
-      <Logo />
+        <NavLink to='/' exact={true}>  
+          <Logo />
+        </NavLink>
 
-      <a href="#" className={`${appHeaderStyles.link} p-5`}>
-        <ProfileIcon type="secondary" />
-        <span className="ml-2 mr-5 text text_type_main-default text_color_inactive">
-          Личный кабинет
-        </span>
-      </a>
+        <NavLink to='/profile' exact={true}
+          className={`${appHeaderStyles.link} p-5`}
+          activeClassName={appHeaderStyles.activeLink}>
+          <ProfileIcon type="secondary" />
+          <span className='ml-2 mr-5 text text_type_main-default text_color_inactive'>Личный кабинет</span>
+        </NavLink>
+      
     </header>
   );
 };
-
-export default AppHeader;

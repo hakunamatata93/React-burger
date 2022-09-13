@@ -1,19 +1,19 @@
 import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_SUCCESS, SET_FORGOT_PASSWORD, forgotPassword } from '../services/actions/forgot-password';
+import { SET_FORGOT_PASSWORD, forgotPassword } from '../services/actions/forgot-password';
 
 import styles from './style.module.css';
 
 export const ForgotPasswordPage = () => {
 
   const dispatch = useDispatch();
-
+  const { state } = useLocation();
+  const { isAuth } = useSelector(store => store.user);
   const { form, forgotPasswordSuccess } = useSelector(store => store.forgotPassword);
-
-  const isAuth = localStorage.getItem('token');
+  //const isAuth = localStorage.getItem('token');
 
   useEffect(() => {
     form.email = '';
@@ -31,16 +31,22 @@ export const ForgotPasswordPage = () => {
     dispatch(forgotPassword(form))
   }; 
 
-  if (isAuth) {
+  if (forgotPasswordSuccess) {
     return (
       <Redirect
-        to={{
-          pathname: "/",
-        }}
+        to={{ pathname: '/reset-password' }}
       />
     );
-  } else {
+  }
 
+  if (isAuth) {
+    return (
+      <Redirect 
+        to={ state?.from || '/' } 
+      />
+    )
+  };
+ 
     return (
       <main className={styles.container}>
         <form className={`${styles.form} mb-20`}>
@@ -66,4 +72,3 @@ export const ForgotPasswordPage = () => {
       </main>
     );
   };
-};

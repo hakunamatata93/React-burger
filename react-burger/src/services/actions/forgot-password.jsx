@@ -5,7 +5,6 @@ export const FORGOT_PASSWORD_SUCCESS = 'FORGOT_PASSWORD_SUCCESS';
 export const FORGOT_PASSWORD_FAILED = 'FORGOT_PASSWORD_FAILED';
 export const SET_FORGOT_PASSWORD = 'SET_FORGOT_PASSWORD';
 
-
 export const forgotPassword = (form) => {
 
   return function(dispatch) {
@@ -24,6 +23,7 @@ export const forgotPassword = (form) => {
       if (res && res.success) {
         dispatch({
           type: FORGOT_PASSWORD_SUCCESS,
+          form: res.user
         })
 
       } else {

@@ -4,8 +4,8 @@ import { NavLink, Redirect } from 'react-router-dom';
 
 import { Input, EditIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../services/actions/user';
-import { logout } from '../services/actions/logout';
+import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../services/actions/auth';
+import { logout } from '../services/actions/auth';
 
 import styles from './style.module.css';
 
@@ -13,11 +13,10 @@ import styles from './style.module.css';
 export const ProfilePage = () => {
 
   const dispatch = useDispatch();
-
   const form = useSelector(store => store.user.form);
-  const isLogin = useSelector(store => store.login.isLogin);
-
+  //const isAuth = localStorage.getItem('token');
   const [actionButtons, setActionButtons] = useState(false);
+  const { isAuth } = useSelector(store => store.user);
 
 
   const onChange = (evt) => {
@@ -45,8 +44,8 @@ export const ProfilePage = () => {
     });
   };
 
-  /*
-  if (!isLogin) {
+  
+  if (!isAuth) {
     return (
       <Redirect
         to={{
@@ -55,7 +54,8 @@ export const ProfilePage = () => {
       />
     );
   }
-  */
+  
+  
 
   return (
     <main className={`${styles.main} mt-30`}>

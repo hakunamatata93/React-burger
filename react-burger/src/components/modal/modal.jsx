@@ -5,9 +5,9 @@ import modalStyles from "./modal.module.css";
 import PropTypes from "prop-types";
 import ModalOverlay from "../modal-overlay/modal-overlay";
 
-const modalRoot = document.getElementById("react-modals");
+ const modalRoot = document.getElementById("react-modals");
 
-const Modal = ({ closing, ...props }) => {
+export const Modal = ({ closing, ...props }) => {
   useEffect(() => {
     const closeEsc = (evt) => {
       if (evt.key === "Escape" || evt.key === "Esc") {
