@@ -15,7 +15,7 @@ export const ResetPasswordPage = () => {
 
   useEffect(() => {
     form.password = '';
-    form.code = '';
+    form.token = '';
   }, []);
 
 
@@ -48,7 +48,7 @@ export const ResetPasswordPage = () => {
             type={'text'}
             placeholder={'Введите код из письма'}
             onChange={onChange}
-            value={form.code}
+            value={form.token}
             name={'code'}
           />
         </fieldset>

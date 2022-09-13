@@ -31,10 +31,10 @@ import {
       case LOGIN_SUCCESS: {
         return {
           ...state,
+          form: action.form,
           loginRequest: false,
           loginFailed: false,
           isLogin: true
-          //form: action.form
         };
       }
       case LOGIN_FAILED: {

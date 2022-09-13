@@ -6,6 +6,7 @@ import {
     UPDATE_USER_SUCCESS,
     UPDATE_USER_FAILED,
     SET_UPDATE_USER,
+    CANCEL_UPDATE_USER,
     UPDATE_TOKEN_REQUEST,
     UPDATE_TOKEN_SUCCESS,
     UPDATE_TOKEN_FAILED,
@@ -52,9 +53,9 @@ import {
       case UPDATE_USER_SUCCESS: {
         return {
           ...state,
+          form: action.form,
           userFailed: false,
           userRequest: false,
-          // form: action.form,
         };
       }
       case UPDATE_USER_FAILED: {
@@ -62,13 +63,18 @@ import {
           ...state,
           userFailed: true,
           userRequest: false,
-          isUser: false,
         };
       }
       case SET_UPDATE_USER: {
         return {
           ...state,
           form: action.payload,
+        };
+      }
+      case CANCEL_UPDATE_USER: {
+        return {
+          ...state,
+          form: initialUserState.form,
         };
       }
       case UPDATE_TOKEN_REQUEST: {
