@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { BrowserRouter as Router, Route, Switch, useLocation } from 'react-router-dom';
+import {Router, Route, Switch, useLocation, useHistory } from 'react-router-dom';
 
 import { AppHeader } from '../app-header/app-header';
 import { getIngridients } from '../../services/actions/ingridients';
 import { getUser } from '../../services/actions/auth';
+import { CLOSE_MODAL } from '../../services/actions/currentIngridient';
 import { getCookie } from '../../utils/constants';
 import { HomePage, 
          LoginPage, 
@@ -15,8 +16,8 @@ import { HomePage,
          IngridientPage, 
          NotFound } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
-import  Modal  from '../modal/modal';
-import  IngridientDetails  from '../ingridient-details/ingridient-details';
+import Modal from '../modal/modal';
+import IngridientDetails from '../ingridient-details/ingridient-details';
 
 import appStyles from './app.module.css';
 
@@ -24,6 +25,7 @@ const App = () => {
 
   const dispatch = useDispatch();
   const location = useLocation();
+  const history = useHistory();
 
   const background = location.state && location.state.background;
   
@@ -44,11 +46,14 @@ const App = () => {
     []
   );
 
+  const closeModal = () => {
+    history.replace({ pathname: '/' });
+  };
+
   return (
-    <Router>
+    
       <div className={appStyles.app}>
         <AppHeader />
-
         <Switch location={ background || location }>
 
           <Route path='/' exact={true}>
@@ -70,7 +75,7 @@ const App = () => {
           <ProtectedRoute path='/profile/orders' exact={true}>
           </ProtectedRoute>
 
-          <Route path='/ingridients/:id' exact={true}>
+          <Route path='/ingridients/:id'>
             <IngridientPage />
           </Route>
 
@@ -85,19 +90,18 @@ const App = () => {
           <Route path='*'>
             <NotFound />
           </Route>
-
+        
         </Switch>
 
         { background && (
-          <Route path='/ingredients/:id'>
-            <Modal>
-              <IngridientDetails />
+          <Route path='/ingridients/:id'>
+            <Modal closing={closeModal} showModal={true}>
+              <IngridientDetails showModal={true}/>
             </Modal>
           </Route>
         )}
-
       </div>
-    </Router>
+    
   );
 }
 
