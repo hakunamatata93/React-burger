@@ -18,6 +18,9 @@ import {
   loginReducer 
 } from './login';
 import { 
+  logoutReducer 
+} from './logout';
+import { 
   userReducer 
 } from './user';
 
@@ -30,5 +33,6 @@ export const rootReducer = combineReducers({
   forgotPassword: forgotPasswordReducer,
   resetPassword: resetPasswordReducer,
   login: loginReducer,
+  logout: logoutReducer,
   user: userReducer
 });

@@ -4,7 +4,7 @@ import { setCookie } from '../../utils/constants';
 export const REGISTER_REQUEST = 'REGISTER_REQUEST';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAILED = 'REGISTER_FAILED';
-export const SET_REGISTER = 'SET_REGISTER';
+export const SET_REGISTER_USER = 'SET_REGISTER_USER';
 
 export const register = (form) => {
 
@@ -26,10 +26,8 @@ export const register = (form) => {
           type: REGISTER_SUCCESS,
           form: res.user
         });
-        const accessToken = res.accessToken.split('Bearer ')[1];
-        const refreshToken = res.refreshToken;
-        setCookie(accessToken);
-        localStorage.setItem(refreshToken, JSON.stringify(refreshToken)); 
+        setCookie('token', res.accessToken);
+        localStorage.setItem('token', res.refreshToken);     
 
       } else {
         dispatch({

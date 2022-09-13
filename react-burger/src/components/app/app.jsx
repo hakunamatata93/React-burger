@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { AppHeader } from '../app-header/app-header';
+import { getUser } from '../../services/actions/user';
+import { getCookie } from '../../utils/constants';
 
 import { useDispatch } from "react-redux";
 import { getIngridients } from "../../services/actions/ingridients";
@@ -20,6 +22,15 @@ const App = () => {
   useEffect(() => {
     dispatch(getIngridients());
   }, [dispatch]);
+
+  useEffect(() => {
+    const accessToken = getCookie('accessToken')
+    if (accessToken) {
+      dispatch(getUser())
+    }
+  }, 
+  [dispatch]
+);
 
   return (
     <Router>

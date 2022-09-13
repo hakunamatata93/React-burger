@@ -7,27 +7,79 @@ export const GET_USER_FAILED = 'GET_USER_FAILED';
 export const UPDATE_USER_REQUEST = 'UPDATE_USER_REQUEST';
 export const UPDATE_USER_SUCCESS = 'UPDATE_USER_SUCCESS';
 export const UPDATE_USER_FAILED = 'UPDATE_USER_FAILED';
+export const SET_UPDATE_USER = 'SET_UPDATE_USER';
 
-export const LOGOUT_USER_REQUEST = 'LOGOUT_USER_REQUEST';
-export const LOGOUT_USER_SUCCESS = 'LOGOUT_USER_SUCCESS';
-export const LOGOUT_USER_FAILED = 'LOGOUT_USER_FAILED';
+export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN_REQUEST';
+export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS';
+export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED';
+export const RESET_TOKEN = 'RESET_TOKEN';
 
-export const getUser = () => {
+//POST https://norma.nomoreparties.space/api/auth/token - эндпоинт обновления токена.
 
-  //const token = getCookie('accessToken')
+export function getUser() {
 
-  return fetch(`${BASEURL}/auth/user`, {
+  return function(dispatch) {
+    dispatch({
+      type: GET_USER_REQUEST
+    })
+    fetch(`${BASEURL}/auth/user`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('accessToken')
-      }
+        Authorization: 'Bearer ' + getCookie('token')
+      }    
     })
     .then(checkResponse)
     .then(res => {
-      console.log(res)
+      if (res && res.success) {
+        dispatch({
+          type: GET_USER_SUCCESS
+        })
+      } else {
+        dispatch(updateToken())
+        .then(() => {
+          dispatch(getUser())
+        })
+      }
     })
     .catch(err => {
-      console.log(err);
+      console.log(err)
+      dispatch({
+        type: GET_USER_FAILED
+      });
     })
   }
+}
+
+export function updateToken() {
+  return function(dispatch) {
+    dispatch({
+      type: UPDATE_TOKEN_REQUEST
+    })
+    fetch(`${BASEURL}/auth/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        token: localStorage.getItem('token'),
+      })    
+    })
+    .then(checkResponse)
+    .then(res => {
+      if (res && res.success) {
+        setCookie('token', res.accessToken);
+        localStorage.setItem('token', res.refreshToken);  
+        dispatch({
+          type: UPDATE_TOKEN_SUCCESS
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      dispatch({
+        type: UPDATE_TOKEN_FAILED
+      })
+    })
+  }
+}
