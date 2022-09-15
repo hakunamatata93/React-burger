@@ -9,10 +9,12 @@ import { useSelector, useDispatch } from 'react-redux';
 import { CLOSE_MODAL } from '../../services/actions/currentIngridient';
 import { getCurrentIngridient } from '../../services/actions/currentIngridient';
 import { useDrag } from 'react-dnd';
-
+import { Link, useLocation } from 'react-router-dom';
 
 const Card = ({ cardData, count }) => {
   const { image, price, name, _id: id } = cardData;
+
+  const location = useLocation();
   
   const [, dragRef] = useDrag({
     type: 'ingridient',
@@ -46,13 +48,16 @@ const Card = ({ cardData, count }) => {
         onClick={openModal}
         ref={dragRef}
       >
-        {(count > 0) && (<Counter count={count} size="default" />)}
-        <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
-        <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
-          <span className='text text_type_digits-default mr-1'>{price}</span>
-          <CurrencyIcon type='primary' />
-        </div>
-        <span className={burgerIngridientsStyles.name}>{name}</span>
+        <Link className={burgerIngridientsStyles.link} 
+          to={{ pathname: `/ingridients/${id}`, state: { background: location } }}>
+          {(count > 0) && (<Counter count={count} size="default" />)}
+          <img src={image} alt={name} className='ml-4 mr-4 mb-1'/>
+          <div className={`${burgerIngridientsStyles.priceItem} mt-1 mb-1`}>
+            <span className='text text_type_digits-default mr-1'>{price}</span>
+            <CurrencyIcon type='primary' />
+          </div>
+          <span className={burgerIngridientsStyles.name}>{name}</span>
+        </Link>
       </article>
       {modalActive && modalIngridients}
     </>

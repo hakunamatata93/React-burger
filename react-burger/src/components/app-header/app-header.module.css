@@ -11,7 +11,7 @@
     0px 0px 1px rgba(0, 0, 0, 0.04);
 }
 
-.nav {
+.list {
   display: flex;
 }
 
@@ -25,4 +25,12 @@
   color: #f2f2f3;
   display: flex;
   text-decoration: none;
+}
+
+.activeLink span {
+  color: #F2F2F3;
+}
+
+.activeLink svg {
+  fill: #F2F2F3;
 }
