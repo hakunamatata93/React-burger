@@ -16,11 +16,11 @@ export const ProfilePage = () => {
   const { isAuth } = useSelector(store => store.user);
 
 
-  if (!isAuth) {
-    return (
-      <Redirect to={{ pathname: '/login' }} />
-    );
-  }  
+  // if (!isAuth) {
+  //   return (
+  //     <Redirect to={{ pathname: '/login' }} />
+  //   );
+  // }  
 
   const handleLogout = () =>
     dispatch(

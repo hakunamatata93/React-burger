@@ -59,13 +59,10 @@ export const register = (form) => {
           type: REGISTER_SUCCESS,
           form: res.user
         });
-        setCookie('token', res.accessToken);
+        const accessToken = res.accessToken.split('Bearer ')[1];
+        setCookie('token', accessToken, { path: '/' });
         localStorage.setItem('token', res.refreshToken);     
-      } else {
-        dispatch({
-          type: REGISTER_FAILED
-        })
-      }
+      } 
     })
     .catch(err => {
       console.log(err);
@@ -96,14 +93,11 @@ export const login = (form) => {
           type: LOGIN_SUCCESS,
           form: res.user
         })
-        setCookie('token', res.accessToken);
+        const accessToken = res.accessToken.split('Bearer ')[1];
+        setCookie('token', accessToken, { path: '/' });
         localStorage.setItem('token', res.refreshToken);
 
-      } else {
-        dispatch({
-          type: LOGIN_FAILED
-        })
-      }
+      } 
     })
     .catch(err => {
       console.log(err);
@@ -233,7 +227,7 @@ export function getUser() {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('token')
+        Authorization: 'Bearer ' + getCookie('token')
       }    
     })
     .then(checkResponse)
@@ -241,8 +235,7 @@ export function getUser() {
       if (res && res.success) {
         dispatch({
           type: GET_USER_SUCCESS,
-          form: res.user
-          //payload: res.user
+          form: res.user,
         })
       } else {
         dispatch(updateToken())
@@ -269,7 +262,7 @@ export function updateUser(form) {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: getCookie('token')
+        Authorization: 'Bearer ' + getCookie('token')
       },
       body: JSON.stringify(form)    
     })
@@ -280,11 +273,7 @@ export function updateUser(form) {
           type: UPDATE_USER_SUCCESS,
           form: res.user
         })
-      } else {
-        dispatch({
-          type: UPDATE_USER_FAILED
-        });
-      }
+      } 
     })
     .catch(err => {
       console.log(err)
@@ -312,7 +301,8 @@ export function updateToken() {
     .then(checkResponse)
     .then(res => {
       if (res && res.success) {
-        setCookie('token', res.accessToken);
+        const accessToken = res.accessToken.split('Bearer ')[1];
+        setCookie('token', accessToken, { path: '/' });
         localStorage.setItem('token', res.refreshToken);  
         dispatch({
           type: UPDATE_TOKEN_SUCCESS

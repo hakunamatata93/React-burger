@@ -112,6 +112,7 @@ import {
       case LOGOUT_SUCCESS: {
         return {
           ...state,
+          form: initialUserState.form,
           isAuth: false,        
         };
       }

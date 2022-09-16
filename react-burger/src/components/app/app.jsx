@@ -41,19 +41,12 @@ const App = () => {
   // при монтировании приложения проверяем, есть ли accessToken, 
   // и если есть, выполняем запрос для получения данных пользователя
   useEffect(() => {
-      const accessToken = getCookie('token')
-      if (accessToken) {
-        dispatch(getUser())
-      }
+    dispatch(getUser())
     }, 
-    []
+    [dispatch]
   );
 
-  useEffect(() => {
-    dispatch(getUser())
-  }, 
-[dispatch]
-);
+
 
   const closeModal = () => {
     history.goBack();

@@ -4,7 +4,7 @@ import { NavLink, Redirect } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../services/actions/auth';
-import { WS_CONNECTION_START_USER, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'
 import { getCookie } from "../utils/constants";
 
 import { logout } from '../services/actions/auth';
@@ -22,17 +22,15 @@ export const ProfileOrdersPage = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (user.name && user.email) {
-        const token = getCookie('token').split('Bearer ')[1];
-        dispatch({
-          type: WS_CONNECTION_START_USER,
-          payload: { token }
+    dispatch(getUser());
+    dispatch({
+        type: WS_CONNECTION_START,
+        user: true
         });
         return () => {
           dispatch({ type: WS_CONNECTION_CLOSED });
         }
-    }
-  }, [user]);
+  }, [dispatch]);
   
   if (!isAuth) {
     return (
