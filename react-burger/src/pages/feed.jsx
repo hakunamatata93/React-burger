@@ -6,8 +6,8 @@ import styles from './style.module.css';
 export const FeedPage = () => {
 
   return (
-    <main>
-      <h2>Лента заказов</h2>
+    <main className={styles.feedMain}>
+      <h2 className="text text_type_main-large mb-5">Лента заказов</h2>
       <div className={styles.feed}>
         <OrdersFeed />
         <OrdersStatus />
