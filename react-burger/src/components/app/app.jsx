@@ -49,8 +49,14 @@ const App = () => {
     []
   );
 
+  useEffect(() => {
+    dispatch(getUser())
+  }, 
+[dispatch]
+);
+
   const closeModal = () => {
-    history.replace({ pathname: '/' });
+    history.goBack();
   };
 
   return (

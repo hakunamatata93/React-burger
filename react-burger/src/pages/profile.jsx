@@ -15,6 +15,13 @@ export const ProfilePage = () => {
   const dispatch = useDispatch();
   const { isAuth } = useSelector(store => store.user);
 
+
+  if (!isAuth) {
+    return (
+      <Redirect to={{ pathname: '/login' }} />
+    );
+  }  
+
   const handleLogout = () =>
     dispatch(
       logout()

@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../services/actions/auth';
-import { WS_CONNECTION_START, WS_CONNECTION_START_USER, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'
+import { WS_CONNECTION_START_USER, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'
+import { getCookie } from "../utils/constants";
 
 import { logout } from '../services/actions/auth';
 
@@ -16,17 +17,22 @@ import { OrderHistory } from "../components/order-history/order-history";
 export const ProfileOrdersPage = () => {
 
   const { isAuth } = useSelector(store => store.user);
+  const user = useSelector((store) => store.user.form);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch({
-        type: WS_CONNECTION_START_USER
-    });
-    return () => {
-      dispatch({ type: WS_CONNECTION_CLOSED });
+    if (user.name && user.email) {
+        const token = getCookie('token').split('Bearer ')[1];
+        dispatch({
+          type: WS_CONNECTION_START_USER,
+          payload: { token }
+        });
+        return () => {
+          dispatch({ type: WS_CONNECTION_CLOSED });
+        }
     }
-  }, [dispatch]);
+  }, [user]);
   
   if (!isAuth) {
     return (
