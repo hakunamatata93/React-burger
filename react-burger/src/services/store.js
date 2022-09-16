@@ -31,7 +31,9 @@ const composeEnhancers =
     : compose;
 
 // расширитель хранилища
-const enhancer = composeEnhancers(applyMiddleware(thunk, socketMiddleware(wsUrl, wsActions)));
+const enhancer = composeEnhancers(applyMiddleware(
+   thunk,
+   socketMiddleware(wsUrl, wsActions)));
 
 // инициализируем хранилище
 export const store = createStore(rootReducer, enhancer);

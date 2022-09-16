@@ -2,6 +2,8 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import { placeOrderDate } from '../../utils/constants';
+
 
 import cardOrderStyles from './card-order.module.css';
 
@@ -32,7 +34,7 @@ export const CardOrder = ({ card }) => {
     <article className={`${cardOrderStyles.card} mr-2`}>
       <div className={cardOrderStyles.info}>
         <p className="text text_type_digits-default">#{number}</p>
-        <p className="text text_type_main-default text_color_inactive">Сегодня, 16:20 i-GMT+3</p>
+        <p className="text text_type_main-default text_color_inactive">{placeOrderDate(createdAt)}</p>
       </div>
               
       <p className="text text_type_main-medium  mt-6 mb-6">{name}</p>
