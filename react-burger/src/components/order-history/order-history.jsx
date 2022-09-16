@@ -12,17 +12,17 @@ export const OrderHistory = () => {
 
   return (
     <ul className={`${orderHistoryStyles.cardList} custom-scroll`}>
-        {orders.map(item => (
+        {orders.map(item => ( 
           <Link key={item._id}
             className={orderHistoryStyles.link}
             to={{
-                pathname: `/profile/orders/${item._id}`,
-                state: { background: location },
+              pathname: `/profile/orders/${item._id}`,
+              state: { background: location },
             }}
           >
             <CardOrder card={item} />
           </Link>
-        )).reverse()}
-    </ul>
+        ))}
+      </ul>
   )
 }

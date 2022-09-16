@@ -47,9 +47,15 @@ export function checkResponse(res) {
     }
     document.cookie = updatedCookie;
   }
+
+  
   
   export function deleteCookie(name) {
     setCookie(name, null, { expires: -1 });
+  }
+
+  export function getStorageItem(token) {
+    return JSON.parse(localStorage.getItem(token));
   }
 
   export const placeOrderDate = (date) => {

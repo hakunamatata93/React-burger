@@ -126,18 +126,22 @@ const OrderTotal = () => {
   const { constructorItems, bun } = useSelector(
     (store) => store.constructorItems
   );
+
   const { order, orderRequest } = useSelector((store) => store.order);
   const [modalActive, setModalActive] = useState(false);
   const { isAuth } = useSelector(store => store.user);
   const history = useHistory();
-  const orderItems = [bun, ...constructorItems, bun];
+  const orderItemsId = [bun, bun, ...constructorItems].map(el => el._id);
   // console.log(orderItemsId)
   const dispatch = useDispatch();
 
   const openModal = () => {
-    console.log();
-    setModalActive(true);
-    dispatch(postOrder(orderItems)); // отправляем данные заказа
+    if (isAuth) {
+      setModalActive(true);
+      dispatch(postOrder(orderItemsId)); 
+    } else {
+      <Redirect to={{ pathname: '/login' }} />
+    }// отправляем данные заказа
   };
 
   const closeModal = () => {

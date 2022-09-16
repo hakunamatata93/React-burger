@@ -76,6 +76,11 @@ const App = () => {
           </ProtectedRoute>
 
           <ProtectedRoute path='/profile/orders' exact={true}>
+            <ProfileOrdersPage/>
+          </ProtectedRoute>
+
+          <ProtectedRoute path='/profile/orders/:id' exact={true}>
+            <OrderPage />
           </ProtectedRoute>
 
           <Route path='/ingridients/:id'>
@@ -114,6 +119,14 @@ const App = () => {
 
         { background && (
           <Route path='/feed/:id'>
+            <Modal closing={closeModal} showModal={true}>
+              <OrderPage />
+            </Modal>
+          </Route>
+        )}
+
+        { background && (
+          <Route path='/profile/orders/:id'>
             <Modal closing={closeModal} showModal={true}>
               <OrderPage />
             </Modal>

@@ -1,7 +1,9 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation} from 'react-router-dom';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import { placeOrderDate } from '../../utils/constants';
 
 
@@ -12,8 +14,9 @@ export const CardOrder = ({ card }) => {
 
   const { name, number, createdAt, ingredients: ingridientsId} = card;
 
-  const { orders } = useSelector(store => store.ws);
   const { ingridients } = useSelector(store => store.ingridients);
+
+  const { pathname } = useLocation();
 
 
   const orderedIngridients = ingridientsId.filter(ingridient => ingridient != null).map(item => {
@@ -29,6 +32,22 @@ export const CardOrder = ({ card }) => {
     );
   }, [orderedIngridients]);
 
+  let status;
+  let color;
+  switch (card.status) {
+    case 'done':
+      status = 'Выполнен';
+      color = '#00CCCC';
+      break;
+    case 'pending':
+      status = 'Готовится';
+      break;
+    case 'created':
+      status = 'Создан';
+      break;
+      default:
+  }
+
 
   return (
     <article className={`${cardOrderStyles.card} mr-2`}>
@@ -37,9 +56,13 @@ export const CardOrder = ({ card }) => {
         <p className="text text_type_main-default text_color_inactive">{placeOrderDate(createdAt)}</p>
       </div>
               
-      <p className="text text_type_main-medium  mt-6 mb-6">{name}</p>
+      <div>       
+        <p className="text text_type_main-medium mt-6 mb-2">{name}</p>
+        {(pathname === '/profile/orders') && 
+        (<p className='text text_type_main-default' style={{color}}>{status}</p>)}
+        </div> 
 
-      <div className={cardOrderStyles.total}>
+        <div className={`${cardOrderStyles.total} mt-6`}>
         <ul className={cardOrderStyles.icons}>
           { 
             (ingridientsId.length > 5) &&
@@ -51,7 +74,7 @@ export const CardOrder = ({ card }) => {
             orderedIngridients.slice(0, 5).reverse().map((item, index) => {
               return (
                 <li key={index} className={cardOrderStyles.img}>
-                  <img src={item.image_mobile} className={cardOrderStyles.icon}/>
+                  <img src={item.image_mobile} className={cardOrderStyles.icon} alt='иконка ингредиента'/>
                 </li>
               )
             })

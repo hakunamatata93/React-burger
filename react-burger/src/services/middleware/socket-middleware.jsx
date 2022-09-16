@@ -5,7 +5,7 @@ export const socketMiddleware = (wsUrl, wsActions) => {
     let socket = null;
 
     return next => action => {
-      const { dispatch, getState } = store;
+      const { dispatch} = store;
       const { type, payload } = action;
       const token = getCookie('token').split("Bearer ")[1];
       const { 
@@ -16,7 +16,6 @@ export const socketMiddleware = (wsUrl, wsActions) => {
         onClose, 
         onError, 
         onMessage } = wsActions;
-      //const { user } = getState().user;
     
 
       if (type === wsInit) {

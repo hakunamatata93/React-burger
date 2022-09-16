@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../../services/actions/auth';
+import { SET_UPDATE_USER, CANCEL_UPDATE_USER, updateUser } from '../../services/actions/auth';
 import { logout } from '../../services/actions/auth';
 
 
@@ -29,11 +29,6 @@ export const ProfileForm = () => {
     dispatch(updateUser(form));
     setActionButtons(false);
   }; 
-
-  const handleLogout = () =>
-    dispatch(
-      logout()
-  );
 
   const cancelUpdateForm = () => {
     dispatch({ 

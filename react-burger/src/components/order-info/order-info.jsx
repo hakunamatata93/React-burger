@@ -29,7 +29,7 @@ export const OrderInfo = () => {
 
   const currentOrder = orders.find(order => order._id === id);
   if (!currentOrder) return null;
-  const { name, number, status, createdAt, ingredients: ingridientsId} = currentOrder;
+  const { name, number, createdAt, ingredients: ingridientsId} = currentOrder;
   
   const orderedIngridients = ingridientsId.filter(ingridient => ingridient != null).map(item => {
     return ingridients.find(el => el._id === item);
@@ -38,18 +38,29 @@ export const OrderInfo = () => {
   
   const uniqueIngridients = [...new Set(orderedIngridients)];
 
-  const orderStatus = status === 'done' ? 'Выполнен' : 'Готовится';
-
   const sumTotal = orderedIngridients.reduce((acc, item) => acc + item.price, 0);
-  const timeNow = new Date();
-  console.log(timeNow)
+  let status;
+  let color;
+  switch (currentOrder.status) {
+    case 'done':
+      status = 'Выполнен';
+      color = '#00CCCC';
+      break;
+    case 'pending':
+      status = 'Готовится';
+      break;
+    case 'created':
+      status = 'Создан';
+      break;
+      default:
+  }
 
   return (
     <main className={orderInfoStyles.main}>
       <div>
         <h2 className={`${orderInfoStyles.number} text text_type_digits-default`}>#{number}</h2>
         <p className={"text text_type_main-medium mt-10 mb-3"}>{name}</p>
-        <p className={orderInfoStyles.status}>{orderStatus}</p>
+        <p className='text text_type_main-default' style={{color}}>{status}</p>
       </div>
 
       <div className='mt-15 mb-10'>
@@ -60,7 +71,7 @@ export const OrderInfo = () => {
             uniqueIngridients.map((item, index) => {
               return (
                 <li key={index} className={`${orderInfoStyles.tableItem} mb-4`}>
-                  <img src={item.image_mobile} className={orderInfoStyles.icon}/>
+                  <img src={item.image_mobile} className={orderInfoStyles.icon} alt='иконка ингредиента'/>
                   <p className="text text_type_main-default mr-4 ml-4">{item.name}</p>
                   <div className={`${orderInfoStyles.quantity} mr-6`}>
                     <p className="text text_type_digits-default mr-2">{orderedIngridients.filter(el => el._id === item._id).length}</p>
