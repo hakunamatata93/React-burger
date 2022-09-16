@@ -1,6 +1,31 @@
+import { useSelector } from 'react-redux';
+
 import ordersStatusStyles from './orders-status.module.css';
 
 export const OrdersStatus = () => {
+
+  const { orders, total, totalToday } = useSelector(store => store.ws);
+
+  const ordersDone = orders.map(item => {
+    if (item.status === 'done') {
+      return (
+        <li className="text text_type_digits-default mb-2">
+          {item.number}
+        </li>
+      )
+    }
+  })
+
+  const ordersInWork = orders.map(item => {
+    if (item.status === 'pending') {
+      return (
+        <li className="text text_type_digits-default mb-2">
+          {item.number}
+        </li>
+      )
+    }
+  })
+
 
   return (
     <section className={ordersStatusStyles.section}>
@@ -8,10 +33,7 @@ export const OrdersStatus = () => {
         <div>
           <p className="text text_type_main-medium mb-6">Готовы:</p>
           <ul className={ordersStatusStyles.doneList}>
-            <li className="text text_type_digits-default">034533</li>
-            <li className="text text_type_digits-default">034534</li>
-            <li className="text text_type_digits-default">034535</li>
-            <li className="text text_type_digits-default">034536</li>
+            {ordersDone}
           </ul>
 
         </div>
@@ -19,9 +41,7 @@ export const OrdersStatus = () => {
         <div>
           <p className="text text_type_main-medium mb-6">В работе:</p>
           <ul className={ordersStatusStyles.inWorkList}>
-            <li className="text text_type_digits-default">034538</li>
-            <li className="text text_type_digits-default">034541</li>
-            <li className="text text_type_digits-default">034542</li>
+            {ordersInWork}
           </ul>
 
         </div>
@@ -29,13 +49,13 @@ export const OrdersStatus = () => {
 
       <div className="mb-15">
         <p className="text text_type_main-medium">Выполнено за все время:</p>
-        <p className="text text_type_digits-large">28752</p>
+        <p className="text text_type_digits-large">{total}</p>
 
       </div>
 
       <div>
         <p className="text text_type_main-medium">Выполнено за сегодня:</p>
-        <p className="text text_type_digits-large">138</p>
+        <p className="text text_type_digits-large">{totalToday}</p>
 
       </div>
     </section>
