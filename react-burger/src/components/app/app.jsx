@@ -16,7 +16,8 @@ import { HomePage,
          IngridientPage, 
          NotFound,
          ProfileOrdersPage,
-         FeedPage } from '../../pages';
+         FeedPage,
+         OrderPage} from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngridientDetails from '../ingridient-details/ingridient-details';
@@ -91,6 +92,10 @@ const App = () => {
 
           <Route path='/feed' exact={true}>
             <FeedPage />
+          </Route>
+
+          <Route path='/feed/:id' exact={true}>
+            <OrderPage />
           </Route>
 
           <Route path='*'>
