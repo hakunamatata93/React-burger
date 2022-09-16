@@ -73,7 +73,8 @@ import {
       case SET_REGISTER_USER: {
         return {
           ...state,
-          form: action.payload
+          form: action.payload,
+          isAuth: true,
         };
       }
       case LOGIN_REQUEST: {
@@ -102,7 +103,7 @@ import {
       case SET_LOGIN_USER: {
         return {
           ...state,
-          form: action.payload
+          form: action.payload,
         };
       }
       case LOGOUT_REQUEST: {
@@ -147,6 +148,7 @@ import {
           form: action.form,
           userFailed: false,
           userRequest: false,
+          isAuth: true,
         };
       }
       case UPDATE_USER_FAILED: {
@@ -181,6 +183,7 @@ import {
           ...state,
           updateTokenRequest: false,
           updateTokenFailed: false,
+          isAuth: true,
         };
       }
       case UPDATE_TOKEN_FAILED: {

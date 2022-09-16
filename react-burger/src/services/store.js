@@ -12,6 +12,7 @@ import {
   WS_CONNECTION_ERROR,
   WS_GET_MESSAGE,
   WS_SEND_MESSAGE,
+  WS_GET_MESSAGE_USER,
 } from './actions/wsActions';
 
 const wsActions = {
@@ -22,6 +23,7 @@ const wsActions = {
   onClose: WS_CONNECTION_CLOSED,
   onError: WS_CONNECTION_ERROR,
   onMessage: WS_GET_MESSAGE,
+  onMessageInit: WS_GET_MESSAGE_USER,
 };
 
 // Redux DevTools
