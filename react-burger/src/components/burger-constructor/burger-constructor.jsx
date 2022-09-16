@@ -123,17 +123,15 @@ const ConstructorItems = () => {
 };
 
 const OrderTotal = () => {
-  const { constructorItems, bun } = useSelector(
-    (store) => store.constructorItems
-  );
-
-  const { order, orderRequest } = useSelector((store) => store.order);
-  const [modalActive, setModalActive] = useState(false);
+  const { constructorItems, bun } = useSelector(store => store.constructorItems);
+  const { order, orderRequest } = useSelector(store => store.order);
   const { isAuth } = useSelector(store => store.user);
-  const history = useHistory();
   const orderItemsId = [bun, bun, ...constructorItems].map(el => el._id);
-  // console.log(orderItemsId)
+
+  const [modalActive, setModalActive] = useState(false);
+
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const openModal = () => {
     if (isAuth) {

@@ -14,24 +14,23 @@ export const OrderInfo = () => {
   const dispatch = useDispatch();
   const location = useLocation();
 
-
   useEffect(() => {
     if (location.pathname.includes('feed')) {
-        dispatch({ 
-          type: WS_CONNECTION_START,
-          payload: '/all',
-        });
-      } else if (location.pathname.includes('profile')) {
-        dispatch({ 
-          type: WS_CONNECTION_START,
-          user: true,
-        });
-      }
+      dispatch({ 
+        type: WS_CONNECTION_START,
+        payload: '/all',
+      });
+    } else if (location.pathname.includes('profile')) {
+      dispatch({ 
+        type: WS_CONNECTION_START,
+        user: true,
+      });
+    }
     return () => {
       dispatch({ 
         type: WS_CONNECTION_CLOSED 
-      })
-    }
+      });
+    };
   }, [])
 
   const { orders } = useSelector(store => store.ws);
@@ -40,15 +39,15 @@ export const OrderInfo = () => {
   const currentOrder = orders.find(order => order._id === id);
   if (!currentOrder) return null;
   const { name, number, createdAt, ingredients: ingridientsId} = currentOrder;
-  
+
   const orderedIngridients = ingridientsId.filter(ingridient => ingridient != null).map(item => {
     return ingridients.find(el => el._id === item);
-   })
-   
-  
+   });
+
   const uniqueIngridients = [...new Set(orderedIngridients)];
 
   const sumTotal = orderedIngridients.reduce((acc, item) => acc + item.price, 0);
+
   let status;
   let color;
   switch (currentOrder.status) {
@@ -96,7 +95,7 @@ export const OrderInfo = () => {
       </div>
 
       <div className={orderInfoStyles.figures}>
-      <p className="text text_type_main-default text_color_inactive">{placeOrderDate(createdAt)}</p>
+        <p className="text text_type_main-default text_color_inactive">{placeOrderDate(createdAt)}</p>
 
         <div className={`${orderInfoStyles.price} ml-6`}>
           <p className="text text_type_digits-default mr-2">{sumTotal}</p>

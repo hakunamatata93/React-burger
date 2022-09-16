@@ -1,11 +1,9 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation} from 'react-router-dom';
-
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { placeOrderDate } from '../../utils/constants';
-
 
 import cardOrderStyles from './card-order.module.css';
 
@@ -15,16 +13,12 @@ export const CardOrder = ({ card }) => {
   const { name, number, createdAt, ingredients: ingridientsId} = card;
 
   const { ingridients } = useSelector(store => store.ingridients);
-
   const { pathname } = useLocation();
-
 
   const orderedIngridients = ingridientsId.filter(ingridient => ingridient != null).map(item => {
     return ingridients.find(el => el._id === item);
    }
-  );
-
-  console.log(orderedIngridients);
+  );  
 
   const sumTotal = useMemo(() => {
     return (
@@ -55,14 +49,12 @@ export const CardOrder = ({ card }) => {
         <p className="text text_type_digits-default">#{number}</p>
         <p className="text text_type_main-default text_color_inactive">{placeOrderDate(createdAt)}</p>
       </div>
-              
       <div>       
         <p className="text text_type_main-medium mt-6 mb-2">{name}</p>
         {(pathname === '/profile/orders') && 
         (<p className='text text_type_main-default' style={{color}}>{status}</p>)}
-        </div> 
-
-        <div className={`${cardOrderStyles.total} mt-6`}>
+      </div> 
+      <div className={`${cardOrderStyles.total} mt-6`}>
         <ul className={cardOrderStyles.icons}>
           { 
             (ingridientsId.length > 5) &&
