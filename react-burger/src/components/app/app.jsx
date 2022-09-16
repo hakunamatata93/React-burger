@@ -111,6 +111,15 @@ const App = () => {
             </Modal>
           </Route>
         )}
+
+        { background && (
+          <Route path='/feed/:id'>
+            <Modal closing={closeModal}>
+              <OrderPage/>
+            </Modal>
+          </Route>
+        )}
+
       </div>
     
   );

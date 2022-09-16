@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useParams } from 'react-router-dom';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -14,12 +15,26 @@ const icons = [
 
 export const OrderInfo = () => {
 
+  const { id } = useParams();
+  const dispatch = useDispatch();
+
+  const { orders } = useSelector(store => store.ws);
+  const { ingridients } = useSelector(store => store.ingridients);
+
+  const currentOrder = orders.find(order => order._id === id);
+  if (!currentOrder) return null;
+
+  console.log(currentOrder);
+
+  
+
+
   return (
     <main className={orderInfoStyles.main}>
       <div>
-        <h2 className={`${orderInfoStyles.number} text text_type_digits-default`}>#034533</h2>
-        <p className={"text text_type_main-medium mt-10 mb-3"}>Black Hole Singularity острый бургер</p>
-        <p className={orderInfoStyles.status}>Выполнен</p>
+        <h2 className={`${orderInfoStyles.number} text text_type_digits-default`}>#{currentOrder.number}</h2>
+        <p className={"text text_type_main-medium mt-10 mb-3"}>{currentOrder.name}</p>
+        <p className={orderInfoStyles.status}>{currentOrder.status}</p>
       </div>
 
       <div className='mt-15 mb-10'>
@@ -63,6 +78,5 @@ export const OrderInfo = () => {
 
       </div>
     </main>
-
   )
 }
