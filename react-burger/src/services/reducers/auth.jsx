@@ -25,6 +25,8 @@ import {
     UPDATE_TOKEN_SUCCESS,
     UPDATE_TOKEN_FAILED,
   
+    AUTH_CHECKED,
+
   } from '../actions/auth';
   
   const initialUserState = {
@@ -35,7 +37,7 @@ import {
     },
   
     isAuth: false,
-  
+    isAuthChecked: false,
     registerRequest: false,
     registerFailed: false,
   
@@ -191,6 +193,12 @@ import {
           updateTokenRequest: false,
           updateTokenFailed: true,
         };
+      }
+      case AUTH_CHECKED: {
+        return {
+          ...state,
+          isAuthChecked: true
+        }
       }
     
       default:

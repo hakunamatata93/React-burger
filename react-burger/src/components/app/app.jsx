@@ -21,6 +21,8 @@ import { HomePage,
 import { ProtectedRoute } from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngridientDetails from '../ingridient-details/ingridient-details';
+import { AUTH_CHECKED } from '../../services/actions/auth';
+
 
 import appStyles from './app.module.css';
 
@@ -41,10 +43,14 @@ const App = () => {
   // при монтировании приложения проверяем, есть ли accessToken, 
   // и если есть, выполняем запрос для получения данных пользователя
   useEffect(() => {
-    dispatch(getUser())
-    }, 
-    [dispatch]
-  );
+    const accessToken = getCookie('token');
+    if (accessToken) {
+      dispatch(getUser());
+    } else {
+      dispatch({type: AUTH_CHECKED});
+    }
+  }, []);
+
 
 
 

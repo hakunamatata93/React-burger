@@ -38,6 +38,8 @@ export const UPDATE_TOKEN_REQUEST = 'UPDATE_TOKEN_REQUEST';
 export const UPDATE_TOKEN_SUCCESS = 'UPDATE_TOKEN_SUCCESS';
 export const UPDATE_TOKEN_FAILED = 'UPDATE_TOKEN_FAILED';
 
+export const AUTH_CHECKED = 'AUTH_CHECKED';
+
 
 export const register = (form) => {
 
@@ -245,11 +247,22 @@ export function getUser() {
       }
     })
     .catch(err => {
+      if (err.message === 'jwt expired') {
+        dispatch(updateToken())
+        .then(() => {
+          dispatch(getUser())
+        })
+      }
       console.log(err)
       dispatch({
         type: GET_USER_FAILED
       });
     })
+    .finally(() => {
+      dispatch({
+        type: AUTH_CHECKED
+      });
+    });
   }
 };
 
