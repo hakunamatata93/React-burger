@@ -6,6 +6,8 @@ import { ProfilePage } from './profile';
 import { ForgotPasswordPage } from './forgot-password';
 import { ResetPasswordPage } from './reset-password';
 import { IngridientPage } from './ingridient';
+import { ProfileOrdersPage } from './profile-orders';
+import { FeedPage } from './feed';
 
 export { HomePage, 
         LoginPage, 
@@ -14,4 +16,6 @@ export { HomePage,
         ForgotPasswordPage, 
         ResetPasswordPage, 
         NotFound, 
-        IngridientPage };
+        IngridientPage,
+        ProfileOrdersPage,
+        FeedPage };

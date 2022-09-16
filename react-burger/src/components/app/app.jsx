@@ -14,7 +14,9 @@ import { HomePage,
          ForgotPasswordPage, 
          ResetPasswordPage,
          IngridientPage, 
-         NotFound } from '../../pages';
+         NotFound,
+         ProfileOrdersPage,
+         FeedPage } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngridientDetails from '../ingridient-details/ingridient-details';
@@ -85,6 +87,10 @@ const App = () => {
 
           <Route path='/reset-password' exact={true}>
             <ResetPasswordPage />
+          </Route>
+
+          <Route path='/feed' exact={true}>
+            <FeedPage />
           </Route>
 
           <Route path='*'>
