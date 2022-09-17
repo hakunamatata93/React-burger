@@ -21,6 +21,7 @@ import { HomePage,
 import { ProtectedRoute } from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngridientDetails from '../ingridient-details/ingridient-details';
+import OrderDetails from '../order-details/order-details';
 import { AUTH_CHECKED } from '../../services/actions/auth';
 
 
@@ -118,6 +119,14 @@ const App = () => {
           <Route path='/ingridients/:id'>
             <Modal closing={closeModal} showModal={true}>
               <IngridientDetails showModal={true}/>
+            </Modal>
+          </Route>
+        )}
+
+        { background && (
+          <Route path='/order-details:id'>
+            <Modal closing={closeModal} showModal={true}>
+              <OrderDetails showModal={true}/>
             </Modal>
           </Route>
         )}

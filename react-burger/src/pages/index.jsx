@@ -9,6 +9,7 @@ import { IngridientPage } from './ingridient';
 import { ProfileOrdersPage } from './profile-orders';
 import { FeedPage } from './feed';
 import { OrderPage } from './order';
+import { OrderDetailsPage } from './order-details';
 
 export { HomePage, 
         LoginPage, 
@@ -20,4 +21,5 @@ export { HomePage,
         IngridientPage,
         ProfileOrdersPage,
         FeedPage,
-        OrderPage};
+        OrderPage,
+        OrderDetailsPage};
