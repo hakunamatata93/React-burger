@@ -1,22 +1,13 @@
 import { useEffect, FC } from "react";
 import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useSelector, useDispatch } from '../../services/types';
-
 import { getUser } from '../../services/actions/auth';
 import { Loader } from '../loader/loader';
 
-export interface IProtectedRoute {
-  path: string;
-  exact: boolean;
-  children: any;
-}
-
-export const ProtectedRoute: FC<IProtectedRoute> = ({ children, ...rest }) => {
+export const ProtectedRoute: FC<RouteProps& {children?: React.ReactNode}> = ({ children, ...rest }) => {
 
   const { isAuth } = useSelector(store => store.user);
-
   const dispatch = useDispatch();
-
   const isAuthChecked = useSelector(store => store.user.isAuthChecked);
 
   useEffect(() => {
@@ -28,7 +19,6 @@ export const ProtectedRoute: FC<IProtectedRoute> = ({ children, ...rest }) => {
   if (!isAuthChecked) {
     return <Loader />;
   }
- 
 
   return (
     <Route {...rest} render={({ location }) => 

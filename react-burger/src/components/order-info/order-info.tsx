@@ -78,7 +78,7 @@ export const OrderInfo: FC = () => {
 
         <ul className={`${orderInfoStyles.table} custom-scroll`}>
           {
-            uniqueIngredients.map((item: TIngredient | undefined, index: number) => {
+            uniqueIngredients.map((item, index) => {
               return (
                 <li key={index} className={`${orderInfoStyles.tableItem} mb-4`}>
                   <img src={item!.image_mobile} className={orderInfoStyles.icon} alt='иконка ингредиента'/>

@@ -1,9 +1,9 @@
 import { FC } from 'react';
-import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import { logout } from '../services/actions/auth';
 import { ProfileForm } from '../components/profile-form/profile-form';
 import styles from './style.module.css';
+import { useDispatch } from "../services/types";
 
 
 export const ProfilePage: FC = () => {
