@@ -30,9 +30,8 @@ import appStyles from './app.module.css';
 const App = () => {
 
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location = useLocation<any>();
   const history = useHistory();
-
   const background = location.state && location.state.background;
   
   useEffect(() => {
