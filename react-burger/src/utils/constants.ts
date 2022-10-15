@@ -2,10 +2,13 @@ import { format, formatDistanceToNowStrict, isToday, isYesterday } from "date-fn
 import { ru } from "date-fns/locale";
 
 
-export const BASEURL= 'https://norma.nomoreparties.space/api';
-
+export const BASEURL = 'https://norma.nomoreparties.space/api';
 export const wsUrl = 'wss://norma.nomoreparties.space/orders';
 
+/*
+interface CustomBody extends Body {
+  json(): Promise;
+}
 export interface CustomResponse extends Body {
   readonly headers: Headers;
   readonly ok: boolean;
@@ -17,81 +20,80 @@ export interface CustomResponse extends Body {
   readonly url: string;
   clone(): Response;
 }
-
 export function checkResponse(res: CustomResponse): Promise<any> {
   if (res.ok) {
     return res.json()
   }
   return Promise.reject(`Ошибка: ${res.status}`);
 }
+*/
 
-// export function checkResponse(res: Response) {
-//     if (res.ok) {
-//       return res.json()
-//     }
-//     return Promise.reject(`Ошибка: ${res.status}`);
-//   } 
-  export const burgerBoilerplate = [
-    {"_id":"60d3b41abdacab0026a733c6","name":"Краторная булка N-200i","type":"bun","proteins":80,"fat":24,"carbohydrates":53,"calories":420,"price":1255,"image":"https://code.s3.yandex.net/react/code/bun-02.png","image_mobile":"https://code.s3.yandex.net/react/code/bun-02-mobile.png","image_large":"https://code.s3.yandex.net/react/code/bun-02-large.png","__v":0},
-    {"_id":"60d3b41abdacab0026a733c8","name":"Филе Люминесцентного тетраодонтимформа","type":"main","proteins":44,"fat":26,"carbohydrates":85,"calories":643,"price":988,"image":"https://code.s3.yandex.net/react/code/meat-03.png","image_mobile":"https://code.s3.yandex.net/react/code/meat-03-mobile.png","image_large":"https://code.s3.yandex.net/react/code/meat-03-large.png","__v":0},
-    {"_id":"60d3b41abdacab0026a733ce","name":"Соус традиционный галактический","type":"sauce","proteins":42,"fat":24,"carbohydrates":42,"calories":99,"price":15,"image":"https://code.s3.yandex.net/react/code/sauce-03.png","image_mobile":"https://code.s3.yandex.net/react/code/sauce-03-mobile.png","image_large":"https://code.s3.yandex.net/react/code/sauce-03-large.png","__v":0},
-  ]
 
-  export function getCookie(name: string) {
-    const matches = document.cookie.match(
-      new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
-    );
-    return matches ? decodeURIComponent(matches[1]) : undefined;
+export function checkResponse(res: Response) {
+  if (res.ok) {
+    return res.json()
   }
-  
-  export function setCookie(name:string, value:string, props?:any) {
-    props = props || {};
-    let exp = props.expires;
-    if (typeof exp == 'number' && exp) {
-      const d = new Date();
-      d.setTime(d.getTime() + exp * 1000);
-      exp = props.expires = d;
+  return Promise.reject(`Ошибка: ${res.status}`);
+}
+
+
+
+
+export function getCookie(name: string) {
+  const matches = document.cookie.match(
+    new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
+  );
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
+export function setCookie(name: string, value: string, props?: any) {
+  props = props || {};
+  let exp = props.expires;
+  if (typeof exp == 'number' && exp) {
+    const d = new Date();
+    d.setTime(d.getTime() + exp * 1000);
+    exp = props.expires = d;
+  }
+  if (exp && exp.toUTCString) {
+    props.expires = exp.toUTCString();
+  }
+  value = encodeURIComponent(value);
+  let updatedCookie = name + '=' + value;
+  for (const propName in props) {
+    updatedCookie += '; ' + propName;
+    const propValue = props[propName];
+    if (propValue !== true) {
+      updatedCookie += '=' + propValue;
     }
-    if (exp && exp.toUTCString) {
-      props.expires = exp.toUTCString();
-    }
-    value = encodeURIComponent(value);
-    let updatedCookie = name + '=' + value;
-    for (const propName in props) {
-      updatedCookie += '; ' + propName;
-      const propValue = props[propName];
-      if (propValue !== true) {
-        updatedCookie += '=' + propValue;
-      }
-    }
-    document.cookie = updatedCookie;
   }
+  document.cookie = updatedCookie;
+}
 
-  
-  
-  export function deleteCookie(name:string) {
-    setCookie(name, '', { expires: -1 });
-  }
+export function deleteCookie(name: string) {
+  setCookie(name, '', { expires: -1 });
+}
 
-  export function getStorageItem(token:string) {
-    return JSON.parse(localStorage.getItem(token) as string);
-  }
+/*
+export function getStorageItem(token: string) {
+  return JSON.parse(localStorage.getItem(token));
+}
+*/
 
-  export const placeOrderDate = (date:string) => {
+export const placeOrderDate = (date: string) => {
 
-    const dateCreatedAt = new Date(date);
+  const dateCreatedAt = new Date(date);
+
+  const day = isToday(dateCreatedAt)
+    ? 'Сегодня'
+    : isYesterday(dateCreatedAt)
+    ? 'Вчера'
+    : formatDistanceToNowStrict(dateCreatedAt, {
+        unit: 'day',      // кол-во дней, если не 'сегодня-вчера'
+        addSuffix: true, // 'назад'
+        locale: ru,
+      });
+
+  const hours = format(dateCreatedAt, 'p', {locale: ru}); //24-ч 'русская' система
   
-    const day = isToday(dateCreatedAt)
-      ? 'Сегодня'
-      : isYesterday(dateCreatedAt)
-      ? 'Вчера'
-      : formatDistanceToNowStrict(dateCreatedAt, {
-          unit: 'day',      // кол-во дней, если не 'сегодня-вчера'
-          addSuffix: true, // 'назад'
-          locale: ru,
-        });
-  
-    const hours = format(dateCreatedAt, 'p', {locale: ru}); //24-ч 'русская' система
-  
-    return `${day}, ${hours} i-GMT+3`;
-  };
+  return `${day}, ${hours} i-GMT+3`;
+};
