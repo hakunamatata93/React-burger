@@ -13,6 +13,7 @@ import { TOrderActions } from '../actions/order';
 import { TConstructorActions } from '../actions/constructor';
 import { TPasswordActions } from '../actions/password';
 import { TAuthActions } from '../actions/auth';
+import { TWSActions } from '../actions/wsActions';
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -24,7 +25,8 @@ type TApplicationActions =
 | TOrderActions
 | TConstructorActions
 | TPasswordActions
-| TAuthActions;
+| TAuthActions
+| TWSActions;
 
 
 // Типизация thunk

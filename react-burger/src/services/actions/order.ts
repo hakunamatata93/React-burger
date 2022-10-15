@@ -13,6 +13,7 @@ export interface IGetOrderAction {
 
 export interface IGetOrderSuccessAction {
   readonly type: typeof GET_ORDER_SUCCESS;
+  readonly order: number;
 }
 
 export interface IGetOrderFailedAction {
@@ -29,7 +30,7 @@ export type TOrderActions =
   | IResetOrderAction;
 
 
-export const postOrder: AppThunk = (Ids) => {
+export const postOrder: AppThunk = (Ids: string[]) => {
 
   return function(dispatch: AppDispatch) {
     dispatch({
