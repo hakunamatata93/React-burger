@@ -1,22 +1,19 @@
-import { useState } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, FormEvent, ChangeEvent, FC  } from "react";
+//import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector, useDispatch } from '../../services/types';
 import { SET_UPDATE_USER, CANCEL_UPDATE_USER, updateUser } from '../../services/actions/auth';
-import { logout } from '../../services/actions/auth';
-
-
 import styles from './profile-form.module.css';
 
-export const ProfileForm = () => {
+export const ProfileForm: FC = () => {
 
   const dispatch = useDispatch();
   const form = useSelector(store => store.user.form);
   const [actionButtons, setActionButtons] = useState(false);
   const { isAuth } = useSelector(store => store.user);
 
-  const onChange = (evt) => {
+  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: SET_UPDATE_USER,
       payload: {...form, [evt.target.name]: evt.target.value}
@@ -24,7 +21,7 @@ export const ProfileForm = () => {
     setActionButtons(true)
   };
 
-  const onSubmitForm = (evt) => {
+  const onSubmitForm = (evt: FormEvent) => {
     evt.preventDefault();
     dispatch(updateUser(form));
     setActionButtons(false);
@@ -35,7 +32,7 @@ export const ProfileForm = () => {
       type: CANCEL_UPDATE_USER 
     });
   };
-
+  
   if (!isAuth) {
     return (
       <Redirect to={{ pathname: '/login' }} />
@@ -49,7 +46,7 @@ export const ProfileForm = () => {
               type={'text'}
               placeholder={'Имя'}
               onChange={onChange}
-              value={form.name}
+              value={`${form.name}`}
               name={'name'}
               icon={'EditIcon'}
               errorText={"Ошибка"}          
@@ -58,7 +55,7 @@ export const ProfileForm = () => {
               type={'email'}
               placeholder={'Логин'}
               onChange={onChange}
-              value={form.email}
+              value={`${form.email}`}
               name={'email'}
               icon={'EditIcon'}
               errorText={"Ошибка"}
@@ -75,16 +72,15 @@ export const ProfileForm = () => {
           </fieldset>
 
           {actionButtons && (<div className={styles.actions}>
-            <Button onClick={cancelUpdateForm} type="secondary" size="medium">
+            <Button onClick={cancelUpdateForm} htmlType='button' type="secondary" size="medium">
               Отмена
             </Button>
 
-            <Button type="primary" size="large">
+            <Button htmlType='button' type="primary" size="large">
               Сохранить
             </Button>
           </div>)}
 
         </form>
-
   )
-}
+};
