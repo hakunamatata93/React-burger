@@ -1,29 +1,37 @@
 import { 
-    CLOSE_MODAL, 
-    OPEN_MODAL 
-  } from '../actions/currentIngridient';
-  
-  
-  const initialCurrentIngridientState = {
-    currentIngridient: null, 
-  };
-  
-  export const currentIngridientReducer = (state = initialCurrentIngridientState, action) => {
-  
-    switch (action.type) {
-      case OPEN_MODAL: {
-        return {
-          ...state,
-          currentIngridient: action.payload
-        }
+  CLOSE_MODAL, 
+  OPEN_MODAL,
+  TModalActions
+} from '../actions/currentIngridient';
+
+import { TIngredient } from '../types/data';
+
+
+interface ICurrentIngredientState {
+  currentIngredient: TIngredient | null;
+}
+
+
+const initialCurrentIngredientState: ICurrentIngredientState = {
+  currentIngredient: null, 
+};
+
+export const currentIngredientReducer = (state = initialCurrentIngredientState, action: TModalActions): ICurrentIngredientState => {
+
+  switch (action.type) {
+    case OPEN_MODAL: {
+      return {
+        ...state,
+        currentIngredient: action.payload
       }
-      case CLOSE_MODAL: {
-        return {
-          ...state,
-          currentIngridient: ''
-        }
-      }
-      default:
-        return state;
     }
+    case CLOSE_MODAL: {
+      return {
+        ...state,
+        currentIngredient: null
+      }
+    }
+    default:
+      return state;
   }
+}

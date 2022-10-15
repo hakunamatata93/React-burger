@@ -1,66 +1,57 @@
-import { v4 as uuid4 } from 'uuid';
+import {
+  ADD_INGREDIENT,
+  DELETE_INGREDIENT,
+  SHIFT_INGREDIENT,
+  RESET_CONSTRUCTOR,
+  TConstructorActions
+} from '../actions/constructor';
 
 import { TIngredient } from '../types/data';
 
-export const ADD_INGREDIENT: 'ADD_INGREDIENT' ='ADD_INGREDIENT';
-export const DELETE_INGREDIENT: 'DELETE_INGREDIENT' = 'DELETE_INGREDIENT';
-export const SHIFT_INGREDIENT: 'SHIFT_INGREDIENT' = 'SHIFT_INGREDIENT';
-export const RESET_CONSTRUCTOR: 'RESET_CONSTRUCTOR' = 'RESET_CONSTRUCTOR';
 
-
-export interface IAddIngredientAction {
-  readonly type: typeof ADD_INGREDIENT;
-  readonly payload: object | TIngredient | any;
+interface IConstructorState {
+  constructorItems: ReadonlyArray<TIngredient>;
+  bun: TIngredient | string;
 }
 
-export interface IDeleteIngredientAction {
-  readonly type: typeof DELETE_INGREDIENT;
-  readonly payload: number;
-}
+const initialConstructorState: IConstructorState = {
+  constructorItems: [], 
+  bun: '',
+};
 
-export interface ISortIngredientAction {
-  readonly type: typeof SHIFT_INGREDIENT;
-  readonly payload: {
-    from: number,
-    to: number
-  };
-}
+export const constructorReducer = (state = initialConstructorState, action: TConstructorActions): IConstructorState => {
 
-export interface IResetConstructorAction {
-  readonly type: typeof RESET_CONSTRUCTOR;
-}
-
-export type TConstructorActions =
-  | IAddIngredientAction
-  | IDeleteIngredientAction
-  | ISortIngredientAction
-  | IResetConstructorAction;
-
-
-export const addToConstructor = (ingredient: TIngredient, index: number): IAddIngredientAction => {
-  return {
-    type: ADD_INGREDIENT,
-    payload: {
-      ...ingredient,
-      id: uuid4(),
-      index
+  switch (action.type) {
+    case ADD_INGREDIENT: {
+      if (action.payload.type === 'bun') {
+        return {...state, bun: action.payload}
+      }
+      return {
+        ...state,
+        constructorItems:[...state.constructorItems, action.payload],
+      };
     }
-  };
-};  
-  
-export const deleteIngredient = (index: number): IDeleteIngredientAction => (
-  {
-    type: DELETE_INGREDIENT,
-    payload: index
+    case DELETE_INGREDIENT: {
+      return {
+        ...state,
+        constructorItems: [...state.constructorItems].filter((_, index) => index !== action.payload),
+      };
+    }
+    case SHIFT_INGREDIENT: {
+      const array = [...state.constructorItems];
+      array.splice(action.payload.to, 0, ...array.splice(action.payload.from, 1))
+      return {
+        ...state,
+        constructorItems: [...array],
+      }
+    }
+    case RESET_CONSTRUCTOR: {
+      return {
+        constructorItems: [], 
+        bun: '',
+      }
+    }
+    default:
+      return state;
   }
-);
-
-export const sortIngredient = (fromIndex: number, toIndex: number): ISortIngredientAction => (
-  {
-    type: SHIFT_INGREDIENT,
-    payload: {
-      from: fromIndex, 
-      to: toIndex,
-    },
-  }
-);
+}
