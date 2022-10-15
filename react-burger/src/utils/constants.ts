@@ -6,7 +6,7 @@ export const BASEURL= 'https://norma.nomoreparties.space/api';
 
 export const wsUrl = 'wss://norma.nomoreparties.space/orders';
 
-export function checkResponse(res) {
+export function checkResponse(res: Response) {
     if (res.ok) {
       return res.json()
     }
@@ -18,14 +18,14 @@ export function checkResponse(res) {
     {"_id":"60d3b41abdacab0026a733ce","name":"Соус традиционный галактический","type":"sauce","proteins":42,"fat":24,"carbohydrates":42,"calories":99,"price":15,"image":"https://code.s3.yandex.net/react/code/sauce-03.png","image_mobile":"https://code.s3.yandex.net/react/code/sauce-03-mobile.png","image_large":"https://code.s3.yandex.net/react/code/sauce-03-large.png","__v":0},
   ]
 
-  export function getCookie(name) {
+  export function getCookie(name: string) {
     const matches = document.cookie.match(
       new RegExp('(?:^|; )' + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + '=([^;]*)')
     );
     return matches ? decodeURIComponent(matches[1]) : undefined;
   }
   
-  export function setCookie(name, value, props) {
+  export function setCookie(name:string, value:string, props?:any) {
     props = props || {};
     let exp = props.expires;
     if (typeof exp == 'number' && exp) {
@@ -50,15 +50,15 @@ export function checkResponse(res) {
 
   
   
-  export function deleteCookie(name) {
-    setCookie(name, null, { expires: -1 });
+  export function deleteCookie(name:string) {
+    setCookie(name, '', { expires: -1 });
   }
 
-  export function getStorageItem(token) {
-    return JSON.parse(localStorage.getItem(token));
+  export function getStorageItem(token:string) {
+    return JSON.parse(localStorage.getItem(token) as string);
   }
 
-  export const placeOrderDate = (date) => {
+  export const placeOrderDate = (date:string) => {
 
     const dateCreatedAt = new Date(date);
   
