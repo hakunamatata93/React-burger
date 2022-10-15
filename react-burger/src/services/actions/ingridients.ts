@@ -52,12 +52,12 @@ export const getIngredients: AppThunk = () => {
       if (res && res.success) {
         dispatch(getReceivedIngredients(res.data))
       } else {
-        dispatch(getIngredientsFailed)
+        dispatch(getIngredientsFailed())
       }
     })
     .catch(err => {
       console.log(err);
-      dispatch(getIngredientsFailed)
+      dispatch(getIngredientsFailed())
     })
   }
 };

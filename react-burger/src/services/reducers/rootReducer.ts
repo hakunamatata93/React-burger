@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import { ingridientsReducer } from './ingridients';
+import { ingredientsReducer } from './ingridients';
 import { orderReducer } from './order';
 import { currentIngridientReducer } from './current-ingridient';
 import { constructorReducer } from './constructor';
@@ -9,7 +9,7 @@ import { resetPasswordReducer } from './reset-password';
 import { wsReducer } from './wsReducer';
 
 export const rootReducer = combineReducers({
-  ingridients: ingridientsReducer,
+  ingridients: ingredientsReducer,
   order: orderReducer,
   currentIngridient: currentIngridientReducer,
   constructorItems: constructorReducer,
