@@ -12,6 +12,7 @@
     "@types/node": "^16.11.43",
     "@types/react": "^18.0.14",
     "@types/react-dom": "^18.0.5",
+    "@types/uuid": "^8.3.4",
     "@ya.praktikum/react-developer-burger-ui-components": "^1.13.1",
     "date-fns": "^2.29.3",
     "react": "^18.2.0",
@@ -23,6 +24,7 @@
     "react-router-dom": "^5.2.1",
     "react-scripts": "5.0.1",
     "redux": "^4.2.0",
+    "redux-devtools-extension": "^2.13.9",
     "redux-thunk": "^2.4.1",
     "typescript": "^4.7.4",
     "uuid": "^8.3.2",
@@ -54,6 +56,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "@types/react-router-dom": "^5.3.3",
+    "gh-pages": "^4.0.0"
   }
 }
