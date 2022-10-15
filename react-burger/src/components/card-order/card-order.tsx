@@ -1,30 +1,34 @@
-import { useMemo } from 'react';
-import { useSelector } from 'react-redux';
+import { useMemo, FC } from 'react';
+//import { useSelector } from 'react-redux';
 import { useLocation} from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { useSelector } from '../../services/types';
 import { placeOrderDate } from '../../utils/constants';
+import { TOrder } from '../../services/types/data';
 
 import cardOrderStyles from './card-order.module.css';
 
+interface ICardOrderProps {
+  card: TOrder;
+}
 
-export const CardOrder = ({ card }) => {
+export const CardOrder: FC<ICardOrderProps> = ({ card }) => {
 
-  const { name, number, createdAt, ingredients: ingridientsId} = card;
+  const { name, number, createdAt, ingredients: ingredientsId} = card;
 
-  const { ingridients } = useSelector(store => store.ingridients);
+  const { ingredients } = useSelector(store => store.ingredients);
   const { pathname } = useLocation();
 
-  const orderedIngridients = ingridientsId.filter(ingridient => ingridient != null).map(item => {
-    return ingridients.find(el => el._id === item);
+  const orderedIngredients = ingredientsId.filter(ingredient => ingredient != null).map(item => {
+    return ingredients.find(el => el._id === item);
    }
   );  
 
   const sumTotal = useMemo(() => {
     return (
-      orderedIngridients.reduce((acc, item) => acc + item.price, 0)
+      orderedIngredients.reduce((acc, item) => acc + item!.price, 0)
     );
-  }, [orderedIngridients]);
+  }, [orderedIngredients]);
 
   let status;
   let color;
@@ -57,16 +61,16 @@ export const CardOrder = ({ card }) => {
       <div className={`${cardOrderStyles.total} mt-6`}>
         <ul className={cardOrderStyles.icons}>
           { 
-            (ingridientsId.length > 5) &&
-              ( <div className={cardOrderStyles.icon} style={{backgroundImage: `url(${orderedIngridients[5].image_mobile})` }}>
-                  <p className={`${cardOrderStyles.lastIcon} text text_type_main-default`}>+{orderedIngridients.length - 5}</p>
+            (ingredientsId.length > 5) &&
+              ( <div className={cardOrderStyles.icon} style={{backgroundImage: `url(${orderedIngredients[5]!.image_mobile})` }}>
+                  <p className={`${cardOrderStyles.lastIcon} text text_type_main-default`}>+{orderedIngredients.length - 5}</p>
                 </div>)
           }
           {
-            orderedIngridients.slice(0, 5).reverse().map((item, index) => {
+            orderedIngredients.slice(0, 5).reverse().map((item, index) => {
               return (
                 <li key={index} className={cardOrderStyles.img}>
-                  <img src={item.image_mobile} className={cardOrderStyles.icon} alt='иконка ингредиента'/>
+                  <img src={item!.image_mobile} className={cardOrderStyles.icon} alt='иконка ингредиента'/>
                 </li>
               )
             })

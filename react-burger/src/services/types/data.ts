@@ -42,3 +42,4 @@ export type TIngredient = {
     wsConnected: boolean;
   };
   
+  export type TType = 'bun' | 'main' | 'sauce';
