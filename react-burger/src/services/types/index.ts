@@ -7,9 +7,12 @@ import {
 } from 'react-redux';
 
 import { store } from '../store';
-import { TIngredientsActions } from '../actions/ingredients';
-import { TModalActions } from '../actions/currentIngredient';
+import { TIngredientsActions } from '../actions/ingridients';
+import { TModalActions } from '../actions/currentIngridient';
 import { TOrderActions } from '../actions/order';
+import { TConstructorActions } from '../actions/constructor';
+import { TPasswordActions } from '../actions/password';
+import { TAuthActions } from '../actions/auth';
 
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -18,7 +21,10 @@ export type RootState = ReturnType<typeof store.getState>;
 type TApplicationActions = 
 | TIngredientsActions
 | TModalActions
-| TOrderActions;
+| TOrderActions
+| TConstructorActions
+| TPasswordActions
+| TAuthActions;
 
 
 // Типизация thunk

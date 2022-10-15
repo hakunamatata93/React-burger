@@ -12,3 +12,9 @@ export type TIngredient = {
     image_large: string;
     __v: number;
   };
+
+  export type TUser = {
+    name?: string;
+    email: string;
+    password?: string;
+  }
