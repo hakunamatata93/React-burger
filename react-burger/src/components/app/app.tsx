@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, FC } from 'react';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { Location } from 'history';
 import { useDispatch } from '../../services/types';
 import { AppHeader } from '../app-header/app-header';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { Modal } from '../modal/modal';
-import { IngredientDetails } from '../ingridient-details/ingridient-details';
-import { getIngredients } from '../../services/actions/ingridients';
+import { IngredientDetails } from '../ingredient-details/ingredient-details';
+import { ErrorBoundary } from '../error-boundary/error-boundary';
+import { getIngredients } from '../../services/actions/ingredients';
 import { getUser, AUTH_CHECKED } from '../../services/actions/auth';
 import { getCookie } from '../../utils/constants';
 import { HomePage, 
@@ -20,13 +21,11 @@ import { HomePage,
          ProfileOrdersPage,
          FeedPage,
          OrderPage } from '../../pages';
-
 import appStyles from './app.module.css';
 
-const App = () => {
+const App: FC = () => {
 
   const dispatch = useDispatch();
-  
   const history = useHistory();
 
 /*
@@ -68,7 +67,7 @@ const App = () => {
   };
 
   return (
-    
+    <ErrorBoundary>
       <div className={appStyles.app}>
         <AppHeader />
 
@@ -149,7 +148,7 @@ const App = () => {
         )}
 
       </div>
-    
+    </ErrorBoundary>
   );
 }
 
