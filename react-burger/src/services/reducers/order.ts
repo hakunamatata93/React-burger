@@ -1,4 +1,3 @@
-import { ReactNode } from 'react';
 
 import {
   GET_ORDER_REQUEST,

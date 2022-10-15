@@ -1,17 +1,9 @@
-import { useState, useMemo, FC } from 'react';
-import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingridient-details/ingridient-details';
-import burgerIngredientsStyles from '../burger-ingredients/burger-ingredients.module.css';
-//import { useSelector, useDispatch } from 'react-redux';
-import { CLOSE_MODAL } from '../../services/actions/currentIngridient';
-import { getCurrentIngredient } from '../../services/actions/currentIngridient';
-import { useDrag } from 'react-dnd';
-import { Link, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from '../../services/types';
-import { TIngredient, TType } from '../../services/types/data';
+import { FC } from 'react';
+import { useSelector } from '../../services/types';
+import { TType } from '../../services/types/data';
 import { Card } from '../card/card';
 
+import MenuListStyles from './menu-list.module.css';
 
 interface IMenuListProps {
   type: TType;
@@ -19,12 +11,11 @@ interface IMenuListProps {
 
 export const MenuList: FC<IMenuListProps> = ({ type }) => {
 
-  const { constructorItems, bun } = useSelector(store => store.constructorItems);
   const { ingredients } = useSelector(store => store.ingredients);
   const typeData = ingredients.filter(item => item.type === type);
 
   return(
-    <div className={`${burgerIngredientsStyles.menuItems}`}>
+    <div className={`${MenuListStyles.main}`}>
       {typeData.map(item => (
         <Card key={item._id} cardData={item} />
       ))}

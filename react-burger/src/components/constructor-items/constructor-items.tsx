@@ -1,74 +1,71 @@
-import { useEffect, FormEvent, ChangeEvent, FC  } from "react";
 //import { useSelector, useDispatch } from 'react-redux';
-import { Link, Redirect, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from "../../services/types";
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { SET_FORGOT_PASSWORD, forgotPassword } from '../../services/actions/password';
-import { ILocationState } from "../../services/types/data";
-import styles from './style.module.css';
+import { useDrag, useDrop } from 'react-dnd';
+import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector, useDispatch } from '../../services/types';
+import { addToConstructor, deleteIngredient, sortIngredient } from '../../services/actions/constructor';
+import { ConstructorItem } from '../constructor-item/constructor-item';
+import { TIngredient } from '../../services/types/data';
+import construtorItemsStyles from './constructor-items.module.css';
 
-
-export const ForgotPasswordPage: FC = () => {
+export const ConstructorItems = () => {
 
   const dispatch = useDispatch();
-  const { state } = useLocation<ILocationState>();
-  const { isAuth } = useSelector(store => store.user);
-  const { form, forgotPasswordSuccess } = useSelector(store => store.forgotPassword);
+  const { constructorItems, bun } = useSelector(store => store.constructorItems);
 
-  useEffect(() => {
-    form.email = '';
-  }, []);
+  //const constructs = useSelector(store => store.constructorItems);
+  const { ingredients } = useSelector(store => store.ingridients);
 
-  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
-    dispatch({
-      type: SET_FORGOT_PASSWORD,
-      payload: {...form, [evt.target.name]: evt.target.value} 
-    })
-  };
+  //const ingredientsBun = ingredients.filter(item => item._id === bun);
 
-  const onSubmitForm = (evt: FormEvent) => {
-    evt.preventDefault();
-    dispatch(forgotPassword(form))
-  }; 
 
-  if (forgotPasswordSuccess) {
-    return (
-      <Redirect
-        to={{ pathname: '/reset-password' }}
-      />
-    );
-  }
+  const [, dropTarget] = useDrop(() => ({
+    accept: 'ingredient',
+    drop: (item: TIngredient) => dispatch(addToConstructor(item)),
+  }));
 
-  if (isAuth) {
-    return (
-      <Redirect 
-        to={ state?.from || '/' } 
-      />
-    )
-  };
- 
-    return (
-      <main className={styles.container}>
-        <form onSubmit={onSubmitForm} className={`${styles.form} mb-20`}>
-          <h2 className='text text_type_main-medium mb-6'>Восстановление пароля</h2>
-          <fieldset className={styles.fieldset}>
-            <Input
-              type={'email'}
-              placeholder={'Укажите e-mail'}
-              onChange={onChange}
-              value={`${form.email}`}
-              name={'email'}
-            />
-          </fieldset>
-          
-            <Button type="primary" size="large" htmlType="submit"> 
-              Восстановить
-            </Button>
-          
-        </form>
-
-        <p className="text text_type_main-default text_color_inactive">Вспомнили пароль?
-          <Link to='/login' className={`${styles.link} ml-3`}>Войти</Link></p>
-      </main>
-    );
-  };
+  return (
+    <ul className={`${construtorItemsStyles.main} pl-4`} ref={dropTarget}>
+      <li className={`${construtorItemsStyles.list} ml-5`}>
+        {bun
+        ? 
+          <ConstructorElement
+            type='top'
+            isLocked={true}
+            text={bun.name + ' (верх)'}
+            price={bun.price}
+            thumbnail={bun.image}
+          />
+          : ''}
+      </li>
+      
+      <li className={`${construtorItemsStyles.list} ${construtorItemsStyles.window} custom-scroll`}>
+        {constructorItems.length > 0 
+        ? (
+            constructorItems.map((item, index) => {
+              return (
+                <ConstructorItem
+                  cardData={item}
+                  key={item.id}
+                  index={index}
+                />
+              );
+            })
+          )
+        : ''}
+      </li>
+      
+      <li className={`${construtorItemsStyles.list} ml-5`}>
+        {bun
+        ? 
+          <ConstructorElement
+            type='bottom'
+            isLocked={true}
+            text={bun.name + ' (низ)'}
+            price={bun.price}
+            thumbnail={bun.image}
+        />
+        : ''}
+      </li>
+    </ul>
+  );
+}
