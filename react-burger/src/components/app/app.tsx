@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import {Router, Route, Switch, useLocation, useHistory } from 'react-router-dom';
-
+import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
+import { Location } from 'history';
 import { AppHeader } from '../app-header/app-header';
-import { getIngridients } from '../../services/actions/ingridients';
+import { getIngredients } from '../../services/actions/ingridients';
 import { getUser } from '../../services/actions/auth';
-import { CLOSE_MODAL } from '../../services/actions/currentIngridient';
 import { getCookie } from '../../utils/constants';
 import { HomePage, 
          LoginPage, 
@@ -14,34 +13,47 @@ import { HomePage,
          ForgotPasswordPage, 
          ResetPasswordPage,
          IngridientPage, 
-         NotFound,
+         NotFound, 
          ProfileOrdersPage,
          FeedPage,
-         OrderPage} from '../../pages';
+         OrderPage } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import Modal from '../modal/modal';
-import IngridientDetails from '../ingridient-details/ingridient-details';
-import OrderDetails from '../order-details/order-details';
+import IngredientDetails from '../ingredient-details/ingridient-details';
 import { AUTH_CHECKED } from '../../services/actions/auth';
-
 
 import appStyles from './app.module.css';
 
 const App = () => {
 
   const dispatch = useDispatch();
-  const location = useLocation<any>();
+  
   const history = useHistory();
+
+/*
+  interface ILocation {
+    key: string;
+    pathname: string;
+    search: string;
+    hash: string;
+    state: {};    
+  };
+  // ругается на background в 'location.state.background'
+  */
+
+  interface IAppLocation {
+    background: Location
+  }
+
+  const location = useLocation<IAppLocation>();
+
   const background = location.state && location.state.background;
   
   useEffect(() => {
-      dispatch(getIngridients());
+      dispatch(getIngredients());
     },
-    []
-  ); 
+    []); 
 
-  // при монтировании приложения проверяем, есть ли accessToken, 
-  // и если есть, выполняем запрос для получения данных пользователя
   useEffect(() => {
     const accessToken = getCookie('token');
     if (accessToken) {
@@ -52,8 +64,6 @@ const App = () => {
   }, []);
 
 
-
-
   const closeModal = () => {
     history.goBack();
   };
@@ -62,6 +72,7 @@ const App = () => {
     
       <div className={appStyles.app}>
         <AppHeader />
+
         <Switch location={ background || location }>
 
           <Route path='/' exact={true}>
@@ -88,7 +99,7 @@ const App = () => {
             <OrderPage />
           </ProtectedRoute>
 
-          <Route path='/ingridients/:id'>
+          <Route path='/ingredients/:id'>
             <IngridientPage />
           </Route>
 
@@ -111,21 +122,13 @@ const App = () => {
           <Route path='*'>
             <NotFound />
           </Route>
-        
+
         </Switch>
 
         { background && (
-          <Route path='/ingridients/:id'>
+          <Route path='/ingredients/:id'>
             <Modal closing={closeModal} showModal={true}>
-              <IngridientDetails showModal={true}/>
-            </Modal>
-          </Route>
-        )}
-
-        { background && (
-          <Route path='/order-details:id'>
-            <Modal closing={closeModal} showModal={true}>
-              <OrderDetails showModal={true}/>
+              <IngredientDetails showModal={true}/>
             </Modal>
           </Route>
         )}

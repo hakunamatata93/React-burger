@@ -1,11 +1,11 @@
 import { useState, useMemo, FC } from 'react';
 import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingredient-details';
+import IngredientDetails from '../ingridient-details/ingridient-details';
 import burgerIngredientsStyles from './burger-ingredients.module.css';
 //import { useSelector, useDispatch } from 'react-redux';
-import { CLOSE_MODAL } from '../../services/actions/currentIngredient';
-import { getCurrentIngredient } from '../../services/actions/currentIngredient';
+import { CLOSE_MODAL } from '../../services/actions/currentIngridient';
+import { getCurrentIngredient } from '../../services/actions/currentIngridient';
 import { useDrag } from 'react-dnd';
 import { Link, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from '../../services/types';
@@ -154,22 +154,13 @@ const BurgerIngredients: FC = () => {
     }
   }
 
-  /*
-  const Tab: React.FC<{
-    active: boolean;
-    value: string;
-    onClick: (value: string) => void;
-  }>
-  */
-  
-
   return(
     <section className={burgerIngredientsStyles.main}>
       <h1 className='mt-10 mb-5 text text_type_main-large'>Соберите бургер</h1>
       
       <div className={burgerIngredientsStyles.tab}>
         
-        {/*<Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+        <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
           Булки
         </Tab>
         <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
@@ -177,7 +168,7 @@ const BurgerIngredients: FC = () => {
         </Tab>
         <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
           Начинки
-        </Tab>*/}
+        </Tab>
       </div>
       <div className={`${burgerIngredientsStyles.window} custom-scroll`} onScroll={setTabScroll}>
         <ul className={burgerIngredientsStyles.menu}>
