@@ -1,20 +1,17 @@
-import { useEffect } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, FC } from "react";
+//import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-
-import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../services/actions/auth';
+import { useSelector, useDispatch } from "../services/types";
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'
-import { getCookie } from "../utils/constants";
-
 import { logout } from '../services/actions/auth';
+import { OrderHistory } from "../components/order-history/order-history";
+import { getCookie } from "../utils/constants";
+import { getUser } from "../services/actions/auth";
 
 import styles from './style.module.css';
-import { ProfileForm } from "../components/profile-form/profile-form";
-import { OrderHistory } from "../components/order-history/order-history";
 
 
-export const ProfileOrdersPage = () => {
+export const ProfileOrdersPage: FC = () => {
 
   const { isAuth } = useSelector(store => store.user);
   const user = useSelector((store) => store.user.form);
@@ -26,11 +23,12 @@ export const ProfileOrdersPage = () => {
     dispatch({
         type: WS_CONNECTION_START,
         user: true
-        });
-        return () => {
-          dispatch({ type: WS_CONNECTION_CLOSED });
-        }
+      });
+      return () => {
+        dispatch({ type: WS_CONNECTION_CLOSED });
+      }
   }, []);
+
   
   if (!isAuth) {
     return (
@@ -39,9 +37,8 @@ export const ProfileOrdersPage = () => {
   }  
 
   const handleLogout = () =>
-  dispatch(
-    logout()
-);
+    dispatch(logout());
+
 
   return (
     <main className={`${styles.main} mt-30`}>

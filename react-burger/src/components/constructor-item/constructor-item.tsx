@@ -11,7 +11,6 @@ import OrderDetails from '../order-details/order-details';
 import { postOrder, RESET_ORDER } from '../../services/actions/order';
 import { addToConstructor, deleteIngredient, sortIngredient } from '../../services/actions/constructor';
 import { Loader } from '../loader/loader';
-import { ConstructorItems } from '../constructor-items/constructor-items';
 import { TIngredient } from '../../services/types/data';
 
 import burgerConstructorStyles from '../burger-constructor/burger-constructor.module.css';

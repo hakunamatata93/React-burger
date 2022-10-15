@@ -1,25 +1,24 @@
-import { useState, useEffect, useCallback } from "react";
-import { useSelector, useDispatch } from 'react-redux';
+import { useCallback, useState, useEffect, FormEvent, ChangeEvent, FC  } from "react";
+//import { useSelector, useDispatch } from 'react-redux';
 import { Link, Redirect, useLocation } from 'react-router-dom';
 
 import { Input, PasswordInput, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { useSelector, useDispatch } from "../services/types";
 import { SET_LOGIN_USER, login } from '../services/actions/auth';
-//import { getStorageItem } from "../utils/constants"; 
+// import { getStorageItem } from "../utils/constants"; 
+import { ILocationState } from "../services/types/data";
 
 import styles from './style.module.css';
 
-export const LoginPage = () => {
+
+export const LoginPage: FC = () => {
 
   const dispatch = useDispatch();
-  
-  //const isAuth = localStorage.getItem('token');
-
   const { form, isAuth } = useSelector(store => store.user);
-  const { state } = useLocation();
+  const { state } = useLocation<ILocationState>();
 
-  
 
-  const onChange = (evt) => {
+  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
     dispatch({
       type: SET_LOGIN_USER,
       payload: {...form, [evt.target.name]: evt.target.value}
@@ -27,7 +26,7 @@ export const LoginPage = () => {
   }
 
   const onSubmitForm = useCallback(
-    (evt) => {
+    (evt: FormEvent) => {
       evt.preventDefault();
       dispatch(login(form))
     },
@@ -37,15 +36,16 @@ export const LoginPage = () => {
   if (isAuth) {
     return (
       <Redirect
-        // Если объект state не является undefined, вернём пользователя назад.
         to={ state?.from || '/' }
       />
     );
   }
 
+  /*
   if (getStorageItem('refreshToken')) {
     return <Redirect to={state?.from || "/"} />;
   }
+  */
   
   return (
     <main className={styles.container}>
@@ -56,7 +56,7 @@ export const LoginPage = () => {
             type={'email'}
             placeholder={'E-mail'}
             onChange={onChange}
-            value={form.email}
+            value={`${form.email}`}
             name={'email'}
           />
           <PasswordInput 

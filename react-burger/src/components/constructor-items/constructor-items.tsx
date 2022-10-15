@@ -1,64 +1,74 @@
+import { useEffect, FormEvent, ChangeEvent, FC  } from "react";
 //import { useSelector, useDispatch } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
-import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useSelector, useDispatch } from '../../services/types';
-import { addToConstructor, deleteIngredient, sortIngredient } from '../../services/actions/constructor';
-import { ConstructorItem } from '../constructor-item/constructor-item';
-import burgerConstructorStyles from '../burger-constructor/burger-constructor.module.css';
+import { Link, Redirect, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from "../../services/types";
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+import { SET_FORGOT_PASSWORD, forgotPassword } from '../../services/actions/password';
+import { ILocationState } from "../../services/types/data";
+import styles from './style.module.css';
 
-export const ConstructorItems = () => {
+
+export const ForgotPasswordPage: FC = () => {
 
   const dispatch = useDispatch();
-  const { constructorItems, bun } = useSelector(store => store.constructorItems);
+  const { state } = useLocation<ILocationState>();
+  const { isAuth } = useSelector(store => store.user);
+  const { form, forgotPasswordSuccess } = useSelector(store => store.forgotPassword);
 
-  const [, dropTarget] = useDrop(() => ({
-    accept: 'ingredient',
-    drop: (item) => dispatch(addToConstructor(item)),
-  }));
+  useEffect(() => {
+    form.email = '';
+  }, []);
 
-  return (
-    <ul className={`${burgerConstructorStyles.items} pl-4`} ref={dropTarget}>
-      <li className={`${burgerConstructorStyles.list} ml-5`}>
-        {bun
-        ? 
-          <ConstructorElement
-            type='top'
-            isLocked={true}
-            text={bun.name + ' (верх)'}
-            price={bun.price}
-            thumbnail={bun.image}
-          />
-          : ''}
-      </li>
+  const onChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    dispatch({
+      type: SET_FORGOT_PASSWORD,
+      payload: {...form, [evt.target.name]: evt.target.value} 
+    })
+  };
 
-      <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
-        {constructorItems.length > 0 
-        ? (
-            constructorItems.map((item, index) => {
-              return (
-                <ConstructorItem
-                  cardData={item}
-                  key={item.id}
-                  index={index}
-                />
-              );
-            })
-          )
-        : ''}
-      </li>
+  const onSubmitForm = (evt: FormEvent) => {
+    evt.preventDefault();
+    dispatch(forgotPassword(form))
+  }; 
 
-      <li className={`${burgerConstructorStyles.list} ml-5`}>
-        {bun
-        ? 
-          <ConstructorElement
-            type='bottom'
-            isLocked={true}
-            text={bun.name + ' (низ)'}
-            price={bun.price}
-            thumbnail={bun.image}
-        />
-        : ''}
-      </li>
-    </ul>
-  );
-}
+  if (forgotPasswordSuccess) {
+    return (
+      <Redirect
+        to={{ pathname: '/reset-password' }}
+      />
+    );
+  }
+
+  if (isAuth) {
+    return (
+      <Redirect 
+        to={ state?.from || '/' } 
+      />
+    )
+  };
+ 
+    return (
+      <main className={styles.container}>
+        <form onSubmit={onSubmitForm} className={`${styles.form} mb-20`}>
+          <h2 className='text text_type_main-medium mb-6'>Восстановление пароля</h2>
+          <fieldset className={styles.fieldset}>
+            <Input
+              type={'email'}
+              placeholder={'Укажите e-mail'}
+              onChange={onChange}
+              value={`${form.email}`}
+              name={'email'}
+            />
+          </fieldset>
+          
+            <Button type="primary" size="large" htmlType="submit"> 
+              Восстановить
+            </Button>
+          
+        </form>
+
+        <p className="text text_type_main-default text_color_inactive">Вспомнили пароль?
+          <Link to='/login' className={`${styles.link} ml-3`}>Войти</Link></p>
+      </main>
+    );
+  };

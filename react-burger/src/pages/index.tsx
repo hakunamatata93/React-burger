@@ -5,7 +5,7 @@ import { RegisterPage } from './register';
 import { ProfilePage } from './profile';
 import { ForgotPasswordPage } from './forgot-password';
 import { ResetPasswordPage } from './reset-password';
-import { IngridientPage } from './ingridient';
+import { IngredientPage } from './ingridient';
 import { ProfileOrdersPage } from './profile-orders';
 import { FeedPage } from './feed';
 import { OrderPage } from './order';
@@ -18,7 +18,7 @@ export { HomePage,
         ForgotPasswordPage, 
         ResetPasswordPage, 
         NotFound, 
-        IngridientPage,
+        IngredientPage,
         ProfileOrdersPage,
         FeedPage,
         OrderPage,
