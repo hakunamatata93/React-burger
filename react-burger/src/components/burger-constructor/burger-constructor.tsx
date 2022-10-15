@@ -11,29 +11,22 @@ import OrderDetails from '../order-details/order-details';
 import { postOrder, RESET_ORDER } from '../../services/actions/order';
 import { addToConstructor, deleteIngredient, sortIngredient } from '../../services/actions/constructor';
 import { Loader } from '../loader/loader';
+import { ConstructorItems } from '../constructor-items/constructor-items';
+import { OrderTotal } from '../order-total/order-total';
 
 import burgerConstructorStyles from './burger-constructor.module.css';
 import { TIngredient } from '../../services/types/data';
 
-
-interface IConstructorItemProps {
-  cardData: TIngredient;
-  index: number;
-};
-
-const ConstructorItem: FC<IConstructorItemProps> = ({ cardData, index }) => {
-
+/*
+export const ConstructorItem = ({ cardData, index }) => {
   const dispatch = useDispatch();
-
   const handleDeleteIngredient = (index: number) => {
     dispatch(deleteIngredient(index))
   }
-
   const [, dragRef] = useDrag({
     type: 'item',
     item: { index }  
   });
-
   const [, dropRef] = useDrop({
     accept: 'item',
     drop(dragObject: {index: number}) {
@@ -43,10 +36,8 @@ const ConstructorItem: FC<IConstructorItemProps> = ({ cardData, index }) => {
       dispatch(sortIngredient(dragObject.index, index))
     }
   })
-
   const ref: any = useRef<HTMLLIElement>(null);
   dragRef(dropRef(ref));
-
   return(
     <div 
       key={cardData._id}
@@ -62,18 +53,16 @@ const ConstructorItem: FC<IConstructorItemProps> = ({ cardData, index }) => {
     </div> 
   )
 }
+*/
 
-
+/*
 const ConstructorItems = () => {
-
   const dispatch = useDispatch();
   const { constructorItems, bun } = useSelector(store => store.constructorItems);
-
   const [, dropTarget] = useDrop(() => ({
     accept: 'ingredient',
     drop: (item: TIngredient) => dispatch(addToConstructor(item)),
   }));
-
   return (
     <ul className={`${burgerConstructorStyles.items} pl-4`} ref={dropTarget}>
       <li className={`${burgerConstructorStyles.list} ml-5`}>
@@ -120,20 +109,17 @@ const ConstructorItems = () => {
     </ul>
   );
 }
+*/
 
-
+/*
 const OrderTotal = () => {
-
   const { constructorItems, bun } = useSelector(store => store.constructorItems);
   const { order, orderRequest } = useSelector(store => store.order);
   const { isAuth } = useSelector(store => store.user);
   const orderItemsId = [bun, bun, ...constructorItems].map(el => el._id);
-
   const [modalActive, setModalActive] = useState(false);
-
   const dispatch = useDispatch();
   const history = useHistory();
-
   const openModal = () => {
     if (isAuth) {
       setModalActive(true);
@@ -155,7 +141,6 @@ const OrderTotal = () => {
       <OrderDetails/>
     </Modal >
   );
-
   const handlerOrder = () => {
     if (isAuth) {
       openModal()
@@ -163,15 +148,12 @@ const OrderTotal = () => {
       history.replace({ pathname: 'login' })
     }
   }
-
   const total = useMemo(() => {
     const bunPrice = bun ? bun.price*2 : 0;
-
     return (
       constructorItems.reduce((acc, item) => acc + item.price, 0) + bunPrice
     );
   }, [constructorItems, bun]);
-
   
   return(
     <>
@@ -192,8 +174,9 @@ const OrderTotal = () => {
     </>
   );
 }
+*/
 
-const BurgerConstructor = () => {
+const BurgerConstructor: FC = () => {
 
   return(
     <section className={`${burgerConstructorStyles.main} mt-25`}>

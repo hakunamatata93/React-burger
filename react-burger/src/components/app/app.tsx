@@ -19,7 +19,7 @@ import { HomePage,
          OrderPage } from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import Modal from '../modal/modal';
-import IngredientDetails from '../ingredient-details/ingridient-details';
+import IngredientDetails from '../ingridient-details/ingridient-details';
 import { AUTH_CHECKED } from '../../services/actions/auth';
 
 import appStyles from './app.module.css';

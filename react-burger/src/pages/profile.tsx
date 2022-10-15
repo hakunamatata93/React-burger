@@ -1,37 +1,31 @@
-import { useState } from "react";
+import { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
-import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../services/actions/auth';
 import { logout } from '../services/actions/auth';
-
-import styles from './style.module.css';
 import { ProfileForm } from "../components/profile-form/profile-form";
 
+import styles from './style.module.css';
 
-export const ProfilePage = () => {
+
+export const ProfilePage: FC = () => {
 
   const dispatch = useDispatch();
-  const { isAuth } = useSelector(store => store.user);
+  //const { isAuth } = useSelector(store => store.user);
 
-
-  // if (!isAuth) {
-  //   return (
-  //     <Redirect to={{ pathname: '/login' }} />
-  //   );
-  // }  
-
-  const handleLogout = () =>
-    dispatch(
-      logout()
-  );
-  
+  /*
   if (!isAuth) {
     return (
       <Redirect to={{ pathname: '/login' }} />
     );
   }  
+  */
+
+  const handleLogout = () =>
+    dispatch(
+      logout()
+  );
+
 
   return (
     <main className={`${styles.main} mt-30`}>

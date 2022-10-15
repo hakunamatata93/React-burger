@@ -1,20 +1,21 @@
-import { useEffect } from "react";
-import { useDispatch } from 'react-redux';
-
+import { useEffect, FC } from "react";
+//import { useDispatch } from 'react-redux';
+import { useDispatch } from "../services/types";
 import { OrdersFeed } from '../components/orders-feed/orders-feed';
 import { OrdersStatus } from '../components/orders-status/orders-status';
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'
 
+
 import styles from './style.module.css';
 
-export const FeedPage = () => {
+export const FeedPage: FC = () => {
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch({
-        type: WS_CONNECTION_START,
-        payload: '/all'
+      type: WS_CONNECTION_START,
+      payload: '/all'
     });
     return () => {
       dispatch({ type: WS_CONNECTION_CLOSED });
