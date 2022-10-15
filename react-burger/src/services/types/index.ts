@@ -11,7 +11,7 @@ import { TIngredientsActions } from '../actions/ingridients';
 import { TModalActions } from '../actions/currentIngridient';
 import { TOrderActions } from '../actions/order';
 import { TConstructorActions } from '../actions/constructor';
-import { TPasswordActions } from '../actions/password';
+import { TForgotPasswordActions, TResetPasswordActions } from '../actions/password';
 import { TAuthActions } from '../actions/auth';
 import { TWSActions } from '../actions/wsActions';
 
@@ -24,7 +24,8 @@ type TApplicationActions =
 | TModalActions
 | TOrderActions
 | TConstructorActions
-| TPasswordActions
+| TForgotPasswordActions
+| TResetPasswordActions
 | TAuthActions
 | TWSActions;
 
