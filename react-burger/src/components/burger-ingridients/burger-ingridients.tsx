@@ -168,7 +168,8 @@ const BurgerIngredients: FC = () => {
       <h1 className='mt-10 mb-5 text text_type_main-large'>Соберите бургер</h1>
       
       <div className={burgerIngredientsStyles.tab}>
-        <Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
+        
+        {/*<Tab value="Булки" active={current === 'Булки'} onClick={setCurrent}>
           Булки
         </Tab>
         <Tab value="Соусы" active={current === 'Соусы'} onClick={setCurrent}>
@@ -176,7 +177,7 @@ const BurgerIngredients: FC = () => {
         </Tab>
         <Tab value="Начинки" active={current === 'Начинки'} onClick={setCurrent}>
           Начинки
-        </Tab>
+        </Tab>*/}
       </div>
       <div className={`${burgerIngredientsStyles.window} custom-scroll`} onScroll={setTabScroll}>
         <ul className={burgerIngredientsStyles.menu}>

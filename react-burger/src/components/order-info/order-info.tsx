@@ -1,16 +1,18 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useEffect, FC } from 'react';
+//import { useSelector, useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from '../../services/types';
 
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../../services/actions/wsActions';
 import { placeOrderDate } from '../../utils/constants';
 
 import orderInfoStyles from './order-info.module.css';
+import { TIngredient } from '../../services/types/data';
 
-export const OrderInfo = () => {
+export const OrderInfo: FC = () => {
 
-  const { id } = useParams();
+  const { id } = useParams<{id: string}>();
   const dispatch = useDispatch();
   const location = useLocation();
 
@@ -34,19 +36,20 @@ export const OrderInfo = () => {
   }, [])
 
   const { orders } = useSelector(store => store.ws);
-  const { ingridients } = useSelector(store => store.ingridients);
+  const { ingredients } = useSelector(store => store.ingredients);
 
   const currentOrder = orders.find(order => order._id === id);
   if (!currentOrder) return null;
-  const { name, number, createdAt, ingredients: ingridientsId} = currentOrder;
-
-  const orderedIngridients = ingridientsId.filter(ingridient => ingridient != null).map(item => {
-    return ingridients.find(el => el._id === item);
+  const { name, number, createdAt, ingredients: ingredientsId} = currentOrder;
+  
+  const orderedIngredients = ingredientsId.filter(ingredient => ingredient != null).map(item => {
+    return ingredients.find(el => el._id === item);
    });
+   
+  //const uniqueIngredients = [...new Set(orderedIngredients)];
+  const uniqueIngredients = Array.from(orderedIngredients);
 
-  const uniqueIngridients = [...new Set(orderedIngridients)];
-
-  const sumTotal = orderedIngridients.reduce((acc, item) => acc + item.price, 0);
+  const sumTotal = orderedIngredients.reduce((acc, item) => acc + item!.price, 0);
 
   let status;
   let color;
@@ -77,14 +80,14 @@ export const OrderInfo = () => {
 
         <ul className={`${orderInfoStyles.table} custom-scroll`}>
           {
-            uniqueIngridients.map((item, index) => {
+            uniqueIngredients.map((item: TIngredient | undefined, index: number) => {
               return (
                 <li key={index} className={`${orderInfoStyles.tableItem} mb-4`}>
-                  <img src={item.image_mobile} className={orderInfoStyles.icon} alt='иконка ингредиента'/>
-                  <p className="text text_type_main-default mr-4 ml-4">{item.name}</p>
+                  <img src={item!.image_mobile} className={orderInfoStyles.icon} alt='иконка ингредиента'/>
+                  <p className="text text_type_main-default mr-4 ml-4">{item!.name}</p>
                   <div className={`${orderInfoStyles.quantity} mr-6`}>
-                    <p className="text text_type_digits-default mr-2">{orderedIngridients.filter(el => el._id === item._id).length}</p>
-                    <p className="text text_type_digits-default mr-2">x {item.price}</p>
+                    <p className="text text_type_digits-default mr-2">{orderedIngredients.filter(el => el!._id === item!._id).length}</p>
+                    <p className="text text_type_digits-default mr-2">x {item!.price}</p>
                     <CurrencyIcon type="primary" />
                   </div>
                 </li>

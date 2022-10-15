@@ -1,13 +1,15 @@
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, FC } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-import { useSelector, useDispatch } from 'react-redux';
+//import { useSelector, useDispatch } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import { useSelector, useDispatch } from '../../services/types';
 
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import { postOrder, RESET_ORDER } from '../../services/actions/order';
-import { addToConstructor, deleteIngridient, sortIngridient } from '../../services/actions/constructor';
+import { addToConstructor, deleteIngredient, sortIngredient } from '../../services/actions/constructor';
 import { Loader } from '../loader/loader';
 
 import burgerConstructorStyles from './burger-constructor.module.css';
@@ -17,8 +19,8 @@ const ConstructorItem = ({ cardData, index }) => {
 
   const dispatch = useDispatch();
 
-  const handleDeleteIngridient = (index) => {
-    dispatch(deleteIngridient(index))
+  const handleDeleteIngredient = (index) => {
+    dispatch(deleteIngredient(index))
   }
 
   const [, dragRef] = useDrag({
@@ -32,7 +34,7 @@ const ConstructorItem = ({ cardData, index }) => {
       if (dragObject.index === index) {
         return
       }
-      dispatch(sortIngridient(dragObject.index, index))
+      dispatch(sortIngredient(dragObject.index, index))
     }
   })
 
@@ -49,13 +51,11 @@ const ConstructorItem = ({ cardData, index }) => {
           text={cardData.name}
           price={cardData.price}
           thumbnail={cardData.image}
-          handleClose={() => handleDeleteIngridient(index)}
+          handleClose={() => handleDeleteIngredient(index)}
         />
     </div> 
   )
 }
-
-
 
 
 const ConstructorItems = () => {
@@ -64,7 +64,7 @@ const ConstructorItems = () => {
   const { constructorItems, bun } = useSelector(store => store.constructorItems);
 
   const [, dropTarget] = useDrop(() => ({
-    accept: 'ingridient',
+    accept: 'ingredient',
     drop: (item) => dispatch(addToConstructor(item)),
   }));
 
