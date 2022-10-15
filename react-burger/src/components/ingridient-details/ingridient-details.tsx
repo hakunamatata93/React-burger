@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useSelector } from '../../services/types';
-import ingredientDetailsStyles from './ingredient-details.module.css';
+import ingredientDetailsStyles from './ingridient-details.module.css';
 
 
 export const IngredientDetails = ({showModal = false}) => {

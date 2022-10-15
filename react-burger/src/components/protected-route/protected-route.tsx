@@ -1,5 +1,5 @@
 import { useEffect, FC } from "react";
-import { Redirect, Route} from 'react-router-dom';
+import { Redirect, Route, RouteProps } from 'react-router-dom';
 import { useSelector, useDispatch } from '../../services/types';
 
 import { getUser } from '../../services/actions/auth';

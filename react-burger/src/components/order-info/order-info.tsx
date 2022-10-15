@@ -7,6 +7,7 @@ import { placeOrderDate } from '../../utils/constants';
 import { TIngredient } from '../../services/types/data';
 import orderInfoStyles from './order-info.module.css';
 
+
 export const OrderInfo: FC = () => {
 
   const { id } = useParams<{id: string}>();
@@ -105,4 +106,4 @@ export const OrderInfo: FC = () => {
       </div>
     </main>
   )
-}
+};
