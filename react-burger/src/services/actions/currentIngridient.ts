@@ -25,7 +25,7 @@ export type TModalActions =
   | IGetCardOpenAction
   | IGetCardCloseAction;
 
-export const getCurrentIngredient: AppThunk = (cardData) => {
+export const getCurrentIngredient: AppThunk = (cardData:TIngredient) => {
   return function(dispatch: AppDispatch) {
     dispatch(getCardOpen(cardData))
   };

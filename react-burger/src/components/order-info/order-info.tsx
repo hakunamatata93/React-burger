@@ -33,7 +33,7 @@ export const OrderInfo: FC = () => {
   }, [])
 
   const { orders } = useSelector(store => store.ws);
-  const { ingredients } = useSelector(store => store.ingredients);
+  const { ingredients } = useSelector(store => store.ingridients);
 
   const currentOrder = orders.find(order => order._id === id);
   if (!currentOrder) return null;

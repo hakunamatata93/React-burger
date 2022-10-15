@@ -6,7 +6,7 @@ import ingredientDetailsStyles from './ingredient-details.module.css';
 export const IngredientDetails = ({showModal = false}) => {
 
   const { id } = useParams<{id: string}>();
-  const ingredients = useSelector(store => store.ingredients.ingredients);
+  const ingredients = useSelector(store => store.ingridients.ingredients);
   const currentIngredient = ingredients.find(ingredient => ingredient._id === id);
 
   if (!currentIngredient) return null;

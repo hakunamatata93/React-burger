@@ -15,7 +15,7 @@ export const CardOrder: FC<ICardOrderProps> = ({ card }) => {
 
   const { name, number, createdAt, ingredients: ingredientsId} = card;
 
-  const { ingredients } = useSelector(store => store.ingredients);
+  const { ingredients } = useSelector(store => store.ingridients);
   const { pathname } = useLocation();
 
   const orderedIngredients = ingredientsId.filter(ingredient => ingredient != null).map(item => {

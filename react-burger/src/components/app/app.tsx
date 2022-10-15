@@ -5,9 +5,9 @@ import { useDispatch } from '../../services/types';
 import { AppHeader } from '../app-header/app-header';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import { Modal } from '../modal/modal';
-import { IngredientDetails } from '../ingredient-details/ingredient-details';
+import { IngredientDetails } from '../ingridient-details/ingridient-details';
 import { ErrorBoundary } from '../error-boundary/error-boundary';
-import { getIngredients } from '../../services/actions/ingredients';
+import { getIngredients } from '../../services/actions/ingridients';
 import { getUser, AUTH_CHECKED } from '../../services/actions/auth';
 import { getCookie } from '../../utils/constants';
 import { HomePage, 
@@ -22,25 +22,13 @@ import { HomePage,
          FeedPage,
          OrderPage 
         } from '../../pages';
-import { ILocationState } from '../../services/types/data';
 import appStyles from './app.module.css';
 
-const App: FC = () => {
+export const App: FC = () => {
 
   const dispatch = useDispatch();
   const history = useHistory();
 
-/*
-  interface ILocation {
-    key: string;
-    pathname: string;
-    search: string;
-    hash: string;
-    state: {};    
-  };
-  // ругается на background в 'location.state.background'
- 
-*/
   interface IAppLocation {
     background: Location
   }
@@ -151,6 +139,4 @@ const App: FC = () => {
       </div>
     </ErrorBoundary>
   );
-}
-
-export default App;
+};

@@ -1,4 +1,4 @@
-import { useState, useEffect, FC } from "react";
+import { useEffect, FC } from "react";
 import { Redirect, Route} from 'react-router-dom';
 import { useSelector, useDispatch } from '../../services/types';
 

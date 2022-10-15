@@ -11,7 +11,7 @@ interface IMenuListProps {
 
 export const MenuList: FC<IMenuListProps> = ({ type }) => {
 
-  const { ingredients } = useSelector(store => store.ingredients);
+  const { ingredients } = useSelector(store => store.ingridients);
   const typeData = ingredients.filter(item => item.type === type);
 
   return(

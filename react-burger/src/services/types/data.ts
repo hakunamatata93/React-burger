@@ -26,13 +26,13 @@ export type TIngredient = {
 
   
   export type TOrder = {
-    createdAt: string;
-    ingredients: Array<string>;
-    name: string;
-    number: number;
-    status: 'created' | 'pending' | 'done';
-    updatedAt: string;
-    _id: string;
+    readonly createdAt: string;
+    readonly ingredients: Array<string>;
+    readonly name: string;
+    readonly number: number;
+    readonly status: 'created' | 'pending' | 'done';
+    readonly updatedAt: string;
+    readonly _id: string;
   };
   
 
