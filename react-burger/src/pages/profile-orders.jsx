@@ -1,37 +1,47 @@
-import { useState } from "react";
+import { useEffect } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { SET_UPDATE_USER, CANCEL_UPDATE_USER, getUser, updateUser } from '../services/actions/auth';
+import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'
+import { getCookie } from "../utils/constants";
+
 import { logout } from '../services/actions/auth';
 
 import styles from './style.module.css';
 import { ProfileForm } from "../components/profile-form/profile-form";
+import { OrderHistory } from "../components/order-history/order-history";
 
 
-export const ProfilePage = () => {
+export const ProfileOrdersPage = () => {
+
+  const { isAuth } = useSelector(store => store.user);
+  const user = useSelector((store) => store.user.form);
 
   const dispatch = useDispatch();
-  const { isAuth } = useSelector(store => store.user);
 
-
-  // if (!isAuth) {
-  //   return (
-  //     <Redirect to={{ pathname: '/login' }} />
-  //   );
-  // }  
-
-  const handleLogout = () =>
-    dispatch(
-      logout()
-  );
+  useEffect(() => {
+    dispatch(getUser());
+    dispatch({
+        type: WS_CONNECTION_START,
+        user: true
+        });
+        return () => {
+          dispatch({ type: WS_CONNECTION_CLOSED });
+        }
+  }, []);
   
   if (!isAuth) {
     return (
       <Redirect to={{ pathname: '/login' }} />
     );
   }  
+
+  const handleLogout = () =>
+  dispatch(
+    logout()
+);
 
   return (
     <main className={`${styles.main} mt-30`}>
@@ -54,8 +64,8 @@ export const ProfilePage = () => {
         <p className="text text_type_main-default text_color_inactive mt-20">В этом разделе вы можете изменить свои персональные данные</p>
       </section>
 
-      <section>
-        <ProfileForm />
+      <section className={styles.orderHistory}>
+        <OrderHistory />
       </section>
     </main>
   );

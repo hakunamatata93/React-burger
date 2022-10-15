@@ -1,156 +1,158 @@
-import { useState, useMemo, useRef } from "react";
-import PropTypes from "prop-types";
-import {
-  ConstructorElement,
-  CurrencyIcon,
-  DragIcon,
-  Button,
-} from "@ya.praktikum/react-developer-burger-ui-components";
-import burgerConstructorStyles from "./burger-constructor.module.css";
-import { cardPropTypes } from "../../utils/prop-types";
-import Modal from "../modal/modal";
-import OrderDetails from "../order-details/order-details";
-import { useSelector, useDispatch } from "react-redux";
+import { useState, useMemo, useRef } from 'react';
+import { useDrag, useDrop } from 'react-dnd';
+import { useSelector, useDispatch } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
-import { postOrder, RESET_ORDER } from "../../services/actions/order";
-import {
-  addToConstructor,
-  deleteIngridient,
-  sortIngridient,
-} from "../../services/actions/constructor";
-import { useDrag, useDrop } from "react-dnd";
+import PropTypes from 'prop-types';
+import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import { cardPropTypes } from '../../utils/prop-types';
+import Modal from '../modal/modal';
+import OrderDetails from '../order-details/order-details';
+import { postOrder, RESET_ORDER } from '../../services/actions/order';
+import { addToConstructor, deleteIngridient, sortIngridient } from '../../services/actions/constructor';
+import { Loader } from '../loader/loader';
+
+import burgerConstructorStyles from './burger-constructor.module.css';
+
 
 const ConstructorItem = ({ cardData, index }) => {
+
   const dispatch = useDispatch();
 
   const handleDeleteIngridient = (index) => {
-    dispatch(deleteIngridient(index));
-  };
+    dispatch(deleteIngridient(index))
+  }
 
   const [, dragRef] = useDrag({
-    type: "item",
-    item: { index },
+    type: 'item',
+    item: { index }  
   });
 
   const [, dropRef] = useDrop({
-    accept: "item",
+    accept: 'item',
     drop(dragObject) {
       if (dragObject.index === index) {
-        return;
+        return
       }
-      dispatch(sortIngridient(dragObject.index, index));
-    },
-  });
+      dispatch(sortIngridient(dragObject.index, index))
+    }
+  })
 
   const ref = useRef(null);
   const dragDropRef = dragRef(dropRef(ref));
 
-  return (
-    <div
+  return(
+    <div 
+      key={cardData.id}
       ref={dragDropRef}
-      className={burgerConstructorStyles.item}
-    >
-      <DragIcon type="primary" />
-      <ConstructorElement
-        text={cardData.name}
-        price={cardData.price}
-        thumbnail={cardData.image}
-        handleClose={() => handleDeleteIngridient(index)}
-      />
-    </div>
-  );
-};
+      className={burgerConstructorStyles.item}>
+        <DragIcon type="primary"/>
+        <ConstructorElement
+          text={cardData.name}
+          price={cardData.price}
+          thumbnail={cardData.image}
+          handleClose={() => handleDeleteIngridient(index)}
+        />
+    </div> 
+  )
+}
 
 ConstructorItem.propTypes = {
   cardData: cardPropTypes.isRequired,
   index: PropTypes.number.isRequired,
 };
 
+
 const ConstructorItems = () => {
+
   const dispatch = useDispatch();
-  const { constructorItems, bun } = useSelector(
-    (store) => store.constructorItems
-  );
+  const { constructorItems, bun } = useSelector(store => store.constructorItems);
 
   const [, dropTarget] = useDrop(() => ({
-    accept: "ingridient",
+    accept: 'ingridient',
     drop: (item) => dispatch(addToConstructor(item)),
   }));
 
   return (
     <ul className={`${burgerConstructorStyles.items} pl-4`} ref={dropTarget}>
       <li className={`${burgerConstructorStyles.list} ml-5`}>
-        {bun ? (
+        {bun
+        ? 
           <ConstructorElement
-            type="top"
+            type='top'
             isLocked={true}
-            text={bun.name + " (верх)"}
+            text={bun.name + ' (верх)'}
             price={bun.price}
             thumbnail={bun.image}
           />
-        ) : (
-          ""
-        )}
+          : ''}
       </li>
-
-      <li
-        className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}
-      >
-        {constructorItems.length > 0
-          ? constructorItems.map((item, index) => {
+      
+      <li className={`${burgerConstructorStyles.list} ${burgerConstructorStyles.window} custom-scroll`}>
+        {constructorItems.length > 0 
+        ? (
+            constructorItems.map((item, index) => {
               return (
-                <ConstructorItem cardData={item} key={item.id} index={index} />
+                <ConstructorItem
+                  cardData={item}
+                  key={item.id}
+                  index={index}
+                />
               );
             })
-          : ""}
+          )
+        : ''}
       </li>
-
+      
       <li className={`${burgerConstructorStyles.list} ml-5`}>
-        {bun ? (
+        {bun
+        ? 
           <ConstructorElement
-            type="bottom"
+            type='bottom'
             isLocked={true}
-            text={bun.name + " (низ)"}
+            text={bun.name + ' (низ)'}
             price={bun.price}
             thumbnail={bun.image}
-          />
-        ) : (
-          ""
-        )}
+        />
+        : ''}
       </li>
     </ul>
   );
-};
+}
+
 
 const OrderTotal = () => {
-  const { constructorItems, bun } = useSelector(
-    (store) => store.constructorItems
-  );
-  const { order, orderRequest } = useSelector((store) => store.order);
-  const [modalActive, setModalActive] = useState(false);
+
+  const { constructorItems, bun } = useSelector(store => store.constructorItems);
+  const { order, orderRequest } = useSelector(store => store.order);
   const { isAuth } = useSelector(store => store.user);
-  const history = useHistory();
-  const orderItems = [bun, ...constructorItems, bun];
-  // console.log(orderItemsId)
+  const orderItemsId = [bun, bun, ...constructorItems].map(el => el._id);
+
+  const [modalActive, setModalActive] = useState(false);
+
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const openModal = () => {
-    console.log();
-    setModalActive(true);
-    dispatch(postOrder(orderItems)); // отправляем данные заказа
+    if (isAuth) {
+      setModalActive(true);
+      dispatch(postOrder(orderItemsId)); 
+    } else {
+      <Redirect to={{ pathname: '/login' }} />
+    }// отправляем данные заказа
   };
-
+ 
   const closeModal = () => {
     setModalActive(false);
     dispatch({
-      type: RESET_ORDER,
-    });
+      type: RESET_ORDER
+    })
   };
-
+  
   const modalOrder = (
-    <Modal closing={closeModal}>
+    <Modal closing={closeModal} showModal={true}>
       <OrderDetails />
-    </Modal>
+    </Modal >
   );
 
   const handlerOrder = () => {
@@ -162,14 +164,15 @@ const OrderTotal = () => {
   }
 
   const total = useMemo(() => {
-    const bunPrice = bun ? bun.price * 2 : 0;
+    const bunPrice = bun ? bun.price*2 : 0;
 
     return (
       constructorItems.reduce((acc, item) => acc + item.price, 0) + bunPrice
     );
   }, [constructorItems, bun]);
 
-  return (
+  
+  return(
     <>
       <div className={`${burgerConstructorStyles.order} mt-10`}>
         <div className={`${burgerConstructorStyles.price} mr-10`}>
@@ -178,25 +181,25 @@ const OrderTotal = () => {
         </div>
         <Button type="primary" size="large" 
                 onClick={ handlerOrder }
-          // делаем неактивной кнопку без булки и ингредиентов
-          disabled={bun && constructorItems.length ? false : true}
-        >
+            // делаем неактивной кнопку без булки и ингредиентов
+            disabled={(bun && constructorItems.length) ? false : true}> 
           Оформить заказ
         </Button>
       </div>
-      {orderRequest}
+      {orderRequest && <Loader />}
       {order && modalActive && modalOrder}
     </>
   );
-};
+}
 
 const BurgerConstructor = () => {
-  return (
+
+  return(
     <section className={`${burgerConstructorStyles.main} mt-25`}>
       <ConstructorItems />
       <OrderTotal />
     </section>
   );
-};
+}
 
 export default BurgerConstructor;

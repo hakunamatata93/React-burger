@@ -14,10 +14,16 @@ import { HomePage,
          ForgotPasswordPage, 
          ResetPasswordPage,
          IngridientPage, 
-         NotFound } from '../../pages';
+         NotFound,
+         ProfileOrdersPage,
+         FeedPage,
+         OrderPage} from '../../pages';
 import { ProtectedRoute } from '../protected-route/protected-route';
 import Modal from '../modal/modal';
 import IngridientDetails from '../ingridient-details/ingridient-details';
+import OrderDetails from '../order-details/order-details';
+import { AUTH_CHECKED } from '../../services/actions/auth';
+
 
 import appStyles from './app.module.css';
 
@@ -38,16 +44,19 @@ const App = () => {
   // при монтировании приложения проверяем, есть ли accessToken, 
   // и если есть, выполняем запрос для получения данных пользователя
   useEffect(() => {
-      const accessToken = getCookie('token')
-      if (accessToken) {
-        dispatch(getUser())
-      }
-    }, 
-    []
-  );
+    const accessToken = getCookie('token');
+    if (accessToken) {
+      dispatch(getUser());
+    } else {
+      dispatch({type: AUTH_CHECKED});
+    }
+  }, []);
+
+
+
 
   const closeModal = () => {
-    history.replace({ pathname: '/' });
+    history.goBack();
   };
 
   return (
@@ -73,6 +82,11 @@ const App = () => {
           </ProtectedRoute>
 
           <ProtectedRoute path='/profile/orders' exact={true}>
+            <ProfileOrdersPage/>
+          </ProtectedRoute>
+
+          <ProtectedRoute path='/profile/orders/:id' exact={true}>
+            <OrderPage />
           </ProtectedRoute>
 
           <Route path='/ingridients/:id'>
@@ -85,6 +99,14 @@ const App = () => {
 
           <Route path='/reset-password' exact={true}>
             <ResetPasswordPage />
+          </Route>
+
+          <Route path='/feed' exact={true}>
+            <FeedPage />
+          </Route>
+
+          <Route path='/feed/:id' exact={true}>
+            <OrderPage />
           </Route>
 
           <Route path='*'>
@@ -100,6 +122,31 @@ const App = () => {
             </Modal>
           </Route>
         )}
+
+        { background && (
+          <Route path='/order-details:id'>
+            <Modal closing={closeModal} showModal={true}>
+              <OrderDetails showModal={true}/>
+            </Modal>
+          </Route>
+        )}
+
+        { background && (
+          <Route path='/feed/:id'>
+            <Modal closing={closeModal} showModal={true}>
+              <OrderPage />
+            </Modal>
+          </Route>
+        )}
+
+        { background && (
+          <Route path='/profile/orders/:id'>
+            <Modal closing={closeModal} showModal={true}>
+              <OrderPage />
+            </Modal>
+          </Route>
+        )}
+
       </div>
     
   );

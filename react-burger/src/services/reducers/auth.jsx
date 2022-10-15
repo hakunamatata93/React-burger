@@ -1,7 +1,6 @@
 import {
     REGISTER_REQUEST,
     REGISTER_SUCCESS,
-    REGISTER_FAILED,
     SET_REGISTER_USER,
   
     LOGIN_REQUEST,
@@ -15,7 +14,6 @@ import {
   
     GET_USER_REQUEST,
     GET_USER_SUCCESS,
-    GET_USER_FAILED,
   
     UPDATE_USER_REQUEST,
     UPDATE_USER_SUCCESS,
@@ -27,6 +25,8 @@ import {
     UPDATE_TOKEN_SUCCESS,
     UPDATE_TOKEN_FAILED,
   
+    AUTH_CHECKED,
+
   } from '../actions/auth';
   
   const initialUserState = {
@@ -37,7 +37,7 @@ import {
     },
   
     isAuth: false,
-  
+    isAuthChecked: false,
     registerRequest: false,
     registerFailed: false,
   
@@ -73,7 +73,8 @@ import {
       case SET_REGISTER_USER: {
         return {
           ...state,
-          form: action.payload
+          form: action.payload,
+          isAuth: true,
         };
       }
       case LOGIN_REQUEST: {
@@ -102,7 +103,7 @@ import {
       case SET_LOGIN_USER: {
         return {
           ...state,
-          form: action.payload
+          form: action.payload,
         };
       }
       case LOGOUT_REQUEST: {
@@ -113,6 +114,7 @@ import {
       case LOGOUT_SUCCESS: {
         return {
           ...state,
+          form: initialUserState.form,
           isAuth: false,        
         };
       }
@@ -147,6 +149,7 @@ import {
           form: action.form,
           userFailed: false,
           userRequest: false,
+          isAuth: true,
         };
       }
       case UPDATE_USER_FAILED: {
@@ -181,6 +184,7 @@ import {
           ...state,
           updateTokenRequest: false,
           updateTokenFailed: false,
+          isAuth: true,
         };
       }
       case UPDATE_TOKEN_FAILED: {
@@ -189,6 +193,12 @@ import {
           updateTokenRequest: false,
           updateTokenFailed: true,
         };
+      }
+      case AUTH_CHECKED: {
+        return {
+          ...state,
+          isAuthChecked: true
+        }
       }
     
       default:
