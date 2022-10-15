@@ -56,3 +56,8 @@
   text-decoration: none;
   color: #F2F2F3;
 }
+
+.window {
+  height: calc(100vh - 350px);
+  overflow-y: auto;
+}

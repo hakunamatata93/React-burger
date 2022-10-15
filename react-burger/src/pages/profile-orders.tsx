@@ -1,5 +1,4 @@
 import { useEffect, FC } from "react";
-//import { useSelector, useDispatch } from 'react-redux';
 import { NavLink, Redirect } from 'react-router-dom';
 import { useSelector, useDispatch } from "../services/types";
 import { WS_CONNECTION_START, WS_CONNECTION_CLOSED } from '../services/actions/wsActions'

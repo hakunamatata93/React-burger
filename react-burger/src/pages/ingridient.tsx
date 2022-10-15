@@ -1,6 +1,6 @@
 import { FC } from 'react';
 //import { useParams } from 'react-router-dom';
-import IngredientDetails from '../components/ingridient-details/ingridient-details';
+import {IngredientDetails} from '../components/ingridient-details/ingridient-details';
 import styles from './style.module.css';
 
 

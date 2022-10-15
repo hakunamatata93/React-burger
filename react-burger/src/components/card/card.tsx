@@ -3,7 +3,6 @@ import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingridient-details/ingridient-details';
 import burgerIngredientsStyles from '../burger-ingredients/burger-ingredients.module.css';
-//import { useSelector, useDispatch } from 'react-redux';
 import { CLOSE_MODAL } from '../../services/actions/currentIngridient';
 import { getCurrentIngredient } from '../../services/actions/currentIngridient';
 import { useDrag } from 'react-dnd';

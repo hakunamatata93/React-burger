@@ -1,19 +1,10 @@
-import { useState, useMemo, useRef, FC } from 'react';
+import { useRef, FC } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
-//import { useSelector, useDispatch } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
-import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from '../../services/types';
-
-import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
-import { postOrder, RESET_ORDER } from '../../services/actions/order';
 import { addToConstructor, deleteIngredient, sortIngredient } from '../../services/actions/constructor';
-import { Loader } from '../loader/loader';
 import { TIngredient } from '../../services/types/data';
-
-import burgerConstructorStyles from '../burger-constructor/burger-constructor.module.css';
+import constructorItemStyles from './constructor-item.module.css';
 
 
 interface IConstructorItemProps {
@@ -51,7 +42,7 @@ export const ConstructorItem: FC<IConstructorItemProps> = ({ cardData, index }) 
     <div 
       key={cardData.id}
       ref={ref}
-      className={burgerConstructorStyles.item}>
+      className={constructorItemStyles.item}>
         <DragIcon type="primary"/>
         <ConstructorElement
           text={cardData.name}

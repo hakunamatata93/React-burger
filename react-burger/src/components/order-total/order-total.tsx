@@ -1,17 +1,12 @@
-import { useState, useMemo, useRef, FC } from 'react';
-import { useDrag, useDrop } from 'react-dnd';
-//import { useSelector, useDispatch } from 'react-redux';
+import { useState, useMemo, FC } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import { ConstructorElement, CurrencyIcon, DragIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
-
+import { CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useSelector, useDispatch } from '../../services/types';
-
-import Modal from '../modal/modal';
-import OrderDetails from '../order-details/order-details';
+import { Modal } from '../modal/modal';
+import { OrderDetails } from '../order-details/order-details';
 import { postOrder, RESET_ORDER } from '../../services/actions/order';
-import { addToConstructor, deleteIngredient, sortIngredient } from '../../services/actions/constructor';
 import { Loader } from '../loader/loader';
-import burgerConstructorStyles from '../burger-constructor/burger-constructor.module.css';
+import orderTotalStyles from './order-total.module.css';
 
 
 export const OrderTotal: FC = () => {
@@ -34,14 +29,14 @@ export const OrderTotal: FC = () => {
       <Redirect to={{ pathname: '/login' }} />
     }// отправляем данные заказа
   };
-
+ 
   const closeModal = () => {
     setModalActive(false);
     dispatch({
       type: RESET_ORDER
     })
   };
-
+  
   const modalOrder = (
     <Modal closing={closeModal} showModal={true}>
       <OrderDetails />
@@ -64,11 +59,11 @@ export const OrderTotal: FC = () => {
     );
   }, [constructorItems, bun]);
 
-
+  
   return(
     <>
-      <div className={`${burgerConstructorStyles.order} mt-10`}>
-        <div className={`${burgerConstructorStyles.price} mr-10`}>
+      <div className={`${orderTotalStyles.order} mt-10`}>
+        <div className={`${orderTotalStyles.price} mr-10`}>
           <span className="text text_type_digits-medium mr-4">{total}</span>
           <CurrencyIcon type="primary" />
         </div>

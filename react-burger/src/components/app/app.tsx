@@ -1,10 +1,13 @@
 import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import { Route, Switch, useLocation, useHistory } from 'react-router-dom';
 import { Location } from 'history';
+import { useDispatch } from '../../services/types';
 import { AppHeader } from '../app-header/app-header';
+import { ProtectedRoute } from '../protected-route/protected-route';
+import { Modal } from '../modal/modal';
+import { IngredientDetails } from '../ingridient-details/ingridient-details';
 import { getIngredients } from '../../services/actions/ingridients';
-import { getUser } from '../../services/actions/auth';
+import { getUser, AUTH_CHECKED } from '../../services/actions/auth';
 import { getCookie } from '../../utils/constants';
 import { HomePage, 
          LoginPage, 
@@ -12,15 +15,11 @@ import { HomePage,
          ProfilePage, 
          ForgotPasswordPage, 
          ResetPasswordPage,
-         IngridientPage, 
+         IngredientPage, 
          NotFound, 
          ProfileOrdersPage,
          FeedPage,
          OrderPage } from '../../pages';
-import { ProtectedRoute } from '../protected-route/protected-route';
-import Modal from '../modal/modal';
-import IngredientDetails from '../ingridient-details/ingridient-details';
-import { AUTH_CHECKED } from '../../services/actions/auth';
 
 import appStyles from './app.module.css';
 
@@ -100,7 +99,7 @@ const App = () => {
           </ProtectedRoute>
 
           <Route path='/ingredients/:id'>
-            <IngridientPage />
+            <IngredientPage />
           </Route>
 
           <Route path='/forgot-password' exact={true}>

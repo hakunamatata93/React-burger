@@ -1,58 +1,36 @@
-//import { useSelector } from 'react-redux';
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from '../../services/types';
-import ordersStatusStyles from './orders-status.module.css';
+import { CardOrder } from '../card-order/card-order';
+import { Loader } from '../loader/loader';
 
-export const OrdersStatus = () => {
 
-  const { orders, total, totalToday } = useSelector(store => store.ws);
+import ordersFeedStyles from './orders-feed.module.css';
 
-  const ordersDone = orders.map(item => {
-    if (item.status === 'done') {
-      return (
-        <li key={item._id} className="text text_type_digits-default mb-2">
-          {item.number}
-        </li>
-      )
-    }
-  })
 
-  const ordersInWork = orders.map(item => {
-    if (item.status === 'pending') {
-      return (
-        <li key={item._id} className="text text_type_digits-default mb-2">
-          {item.number}
-        </li>
-      )
-    }
-  })
+export const OrdersFeed = () => {
+
+  const location = useLocation();
+  const { orders } = useSelector(store => store.ws);
+
+  if (!orders) {
+    return <Loader />;
+  }
 
   return (
-    <section className={ordersStatusStyles.section}>
-      <div className={`${ordersStatusStyles.status} mb-15`}>
-        <div>
-          <p className="text text_type_main-medium mb-6">Готовы:</p>
-          <ul className={ordersStatusStyles.doneList}>
-            {ordersDone}
-          </ul>
-        </div>
-
-        <div>
-          <p className="text text_type_main-medium mb-6">В работе:</p>
-          <ul className={ordersStatusStyles.inWorkList}>
-            {ordersInWork}
-          </ul>
-        </div>
-      </div>
-
-      <div className="mb-15">
-        <p className="text text_type_main-medium">Выполнено за все время:</p>
-        <p className="text text_type_digits-large">{total}</p>
-      </div>
-
-      <div>
-        <p className="text text_type_main-medium">Выполнено за сегодня:</p>
-        <p className="text text_type_digits-large">{totalToday}</p>
-      </div>
+    <section>
+      <ul className={`${ordersFeedStyles.cardList} custom-scroll`}>
+        {orders.map(item => (
+          <Link key={item._id}
+            className={ordersFeedStyles.link}
+            to={{
+              pathname: `/feed/${item._id}`,
+              state: { background: location },
+            }}
+          >
+            <CardOrder card={item} />
+          </Link>
+        ))}
+      </ul>
     </section>
   );
 };
