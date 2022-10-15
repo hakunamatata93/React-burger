@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux';
-
+//import { useSelector } from 'react-redux';
+import { useSelector } from '../../services/types';
 import ordersStatusStyles from './orders-status.module.css';
 
 export const OrdersStatus = () => {
@@ -26,7 +26,6 @@ export const OrdersStatus = () => {
     }
   })
 
-
   return (
     <section className={ordersStatusStyles.section}>
       <div className={`${ordersStatusStyles.status} mb-15`}>
@@ -35,7 +34,6 @@ export const OrdersStatus = () => {
           <ul className={ordersStatusStyles.doneList}>
             {ordersDone}
           </ul>
-
         </div>
 
         <div>
@@ -43,22 +41,18 @@ export const OrdersStatus = () => {
           <ul className={ordersStatusStyles.inWorkList}>
             {ordersInWork}
           </ul>
-
         </div>
       </div>
 
       <div className="mb-15">
         <p className="text text_type_main-medium">Выполнено за все время:</p>
         <p className="text text_type_digits-large">{total}</p>
-
       </div>
 
       <div>
         <p className="text text_type_main-medium">Выполнено за сегодня:</p>
         <p className="text text_type_digits-large">{totalToday}</p>
-
       </div>
     </section>
-  
   );
 };
