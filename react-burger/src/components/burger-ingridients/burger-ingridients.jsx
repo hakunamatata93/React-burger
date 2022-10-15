@@ -1,10 +1,8 @@
 import { useState, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { Tab, Counter, CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngridientDetails from '../ingridient-details/ingridient-details';
 import burgerIngridientsStyles from './burger-ingridients.module.css';
-import { cardPropTypes } from '../../utils/prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { CLOSE_MODAL } from '../../services/actions/currentIngridient';
 import { getCurrentIngridient } from '../../services/actions/currentIngridient';
@@ -63,12 +61,6 @@ const Card = ({ cardData, count }) => {
     </>
   );
 };
-
-Card.propTypes = {
-  cardData: cardPropTypes.isRequired,
-  count: PropTypes.number,
-};
-
 
 const MenuList = ({ type }) => {
 

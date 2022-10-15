@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+
 import modalOverlayStyles from "./modal-overlay.module.css";
 
 export const ModalOverlay = (props) => {
@@ -7,8 +7,8 @@ export const ModalOverlay = (props) => {
   );
 };
 
-ModalOverlay.propTypes = {
-  closing: PropTypes.func,
-};
+// ModalOverlay.propTypes = {
+//   closing: PropTypes.func,
+// };
 
 export default ModalOverlay;
